@@ -1,3 +1,6 @@
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -21,10 +24,22 @@ app.use(
 app.use(express.json());
 app.use(logger);
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.get("/", (_req, res) => {
   res.send("ShopFlow backend is running");
 });
 
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health check
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: API is running
+ */
 app.get("/health", (_req, res) => {
   res.status(200).json({ ok: true });
 });
