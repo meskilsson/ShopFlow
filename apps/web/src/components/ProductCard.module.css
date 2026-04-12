@@ -43,6 +43,7 @@
 .productPrice {
     font-size: 8px;
     font-weight: 400;
+    margin-top: .4rem;
 }
 
 .productImage {

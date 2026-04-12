@@ -1,9 +1,13 @@
 .navbar {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
+    align-items: space-between;
     padding: 1rem;
     background-color: var(--bg-secondary);
     height: 4rem;
+}
+
+.container {
+    width: 940px;
 }
