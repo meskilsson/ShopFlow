@@ -1,0 +1,43 @@
+.card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--br);
+
+    width: 172px;
+    height: 239px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.productInfo {
+    width: 100%;
+    padding: 11px;
+}
+
+.productTitle {
+    font-size: 11px;
+}
+
+.productBrand {
+    font-size: 8px;
+}
+
+.productVariants {
+    font-size: 8px;
+    color: var(--text-gray);
+}
+
+.productPrice {
+    font-size: 8px;
+}
+
+.productImage {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--br);
+    margin-top: 11px;
+}
