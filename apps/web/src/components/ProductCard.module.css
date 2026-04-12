@@ -9,6 +9,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    
 }
 
 .productInfo {
@@ -18,19 +26,23 @@
 
 .productTitle {
     font-size: 11px;
+    font-weight: 400;
 }
 
 .productBrand {
     font-size: 8px;
+    font-weight: 400;
 }
 
 .productVariants {
     font-size: 8px;
     color: var(--text-gray);
+    font-weight: 200;
 }
 
 .productPrice {
     font-size: 8px;
+    font-weight: 400;
 }
 
 .productImage {
