@@ -4,8 +4,6 @@ dotenv.config();
 import { Response, Request } from "express";
 import mongoose from 'mongoose';
 
-import productsRouter from "./routes/products"
-
 import express from "express";
 import cors from "cors";
 import logger from "./middleware/logger";
@@ -45,8 +43,6 @@ app.use(logger);
 app.get("/", (_req, res) => {
   res.send("ShopFlow backend is running");
 });
-
-app.use('/api/v1/products', productsRouter);
 
 app.get("/health", (_req, res) => {
   res.status(200).json({ ok: true });
