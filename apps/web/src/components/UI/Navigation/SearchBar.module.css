@@ -1,0 +1,14 @@
+.searchBar {
+    width: 250px;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    padding: 0 .5rem;
+    background-color: var(--bg-secondary);
+    border-radius: var(--br);
+}
+
+.searchBar p {
+    color: var(--text-gray);
+    font-size: 0.6875rem;
+}

@@ -1,9 +1,9 @@
 .mainContainer {
     width: 100%;
-    max-width: 1000px;
+    max-width: var(--max-width);
     margin: 0 auto;
     min-height: 100vh;
-    padding: 1rem;
+    /* padding: 1rem; */
 
     display: flex;
     flex-direction: column;

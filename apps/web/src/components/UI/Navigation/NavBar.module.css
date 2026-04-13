@@ -2,12 +2,14 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: space-between;
-    padding: 1rem;
+    align-items: center;
+    /* padding: 1rem; */
+    /* padding-left: 3rem; */
     background-color: var(--bg-secondary);
     height: 4rem;
 }
 
 .container {
-    width: 940px;
+    width: var(--max-width);
+    /* background-color: aquamarine; */
 }

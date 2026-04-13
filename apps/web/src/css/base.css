@@ -21,6 +21,7 @@
     --btn-ghost-text: #000000;
 
     /* Properties */
+    --max-width: 1000px;
     --br: 0.5rem;
 
 }

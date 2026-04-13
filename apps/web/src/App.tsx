@@ -1,15 +1,17 @@
 import "./App.css";
 import MainContainer from "./components/Containers/MainContainer";
 import ProductsContainer from "./components/Containers/ProductsContainer"
-import NavBar from "./components/NavBar"
+import NavBar from "./components/UI/Navigation/NavBar"
 import ProductCard from "./components/ProductCard"
-import Category from "./components/Category"
+import Category from "./components/UI/Category"
+import ProductCategories from "./components/UI/Navigation/ProductCategories";
 
 function App() {
   return (
     <>
       <NavBar/>
       <MainContainer>
+        <ProductCategories/>
         <Category categoryText="Shoes" articles={666}/>
         <ProductsContainer>
           <ProductCard/>
