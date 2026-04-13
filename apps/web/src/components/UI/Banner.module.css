@@ -2,6 +2,8 @@
   width: 100%;
   background-color: #D43B3B;
   color: white;
+  font-style: italic;
+  font-weight: 700;
   height: 2rem;
   display: flex;
   align-items: center;

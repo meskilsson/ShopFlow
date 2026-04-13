@@ -10,7 +10,7 @@
     text-align: center;
     font-size: 0.75rem;
     font-weight: 400;
-    transition: background-color .25s ease;
+    transition: background-color .25s ease, color .25s ease;
 
     cursor: pointer;
 }
@@ -32,10 +32,13 @@
 }
 
 .ghost {
+    /* border: 1px solid var(--btn-ghost); */
     box-shadow: inset 0 0 0 1px var(--btn-ghost);
-    color: var(--btn-ghost);
+    border-radius: var(--br);
+    overflow: hidden;
 }
 
 .ghost:hover {
-    background-color: var(--btn-ghost-hover);
+    /* background-color: var(--btn-ghost);
+    color: var(--bg-secondary); */
 }
