@@ -24,7 +24,7 @@
 }
 
 .secondary {
-    background-color: var(--bg-secondary);
+    background-color: var(--btn-secondary);
 }
 
 .secondary:hover {

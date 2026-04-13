@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from "./Category.module.css"
+import ButtonStd from './ButtonStd'
 
 type Props = {
     categoryText: string,
@@ -8,10 +9,17 @@ type Props = {
 
 const Category = ({categoryText, articles}: Props) => {
   return (
-    <div className={styles.category}>
-        <p className={styles.articles}>{articles} articles</p>
-        <h1>{categoryText}</h1>
-    </div>
+    <>
+      {/* <p className={styles.articles}>{articles} articles</p> */}
+      <section className={styles.container}>
+        <div className={styles.category}>
+            <h1>{categoryText}</h1>
+        </div>
+        <div>
+          <ButtonStd text="Filter" variant="ghost"/>
+        </div>
+      </section>
+    </>
   )
 }
 

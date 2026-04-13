@@ -1,10 +1,18 @@
 .category {
-    height: 4.5rem;
+    /* height: 4.5rem; */
     width: 100%;
+    /* background-color: blue; */
 }
 
 .articles {
     color: var(--text-gray);
     font-size: 12px;
     font-weight: light;
+    margin-bottom: -1.2rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    /* background-color: aquamarine; */
 }

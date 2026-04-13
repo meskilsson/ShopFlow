@@ -17,6 +17,9 @@
     --text-gray: #ACACAC;
     --btn-primary: #4F7BFF;
     --btn-primary-text: #FFFFFF;
+    --btn-secondary: #FFFFFF;
+    --btn-secondary-hover: #ededed;
+    --btn-secondary-text: #000000;
     --btn-ghost: #000000;
     --btn-ghost-text: #000000;
 
