@@ -2,8 +2,8 @@
     background-color: var(--bg-secondary);
     border-radius: var(--br);
 
-    width: 172px;
-    height: 239px;
+    width: 174px;
+    height: 260px;
     overflow: hidden;
 
     display: flex;
@@ -25,23 +25,24 @@
 }
 
 .productTitle {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
 }
 
 .productBrand {
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 400;
 }
 
 .productVariants {
-    font-size: 8px;
+    margin-top: .2rem;
+    font-size: 10px;
     color: var(--text-gray);
     font-weight: 200;
 }
 
 .productPrice {
-    font-size: 8px;
+    font-size: 12px;
     font-weight: 400;
     margin-top: .4rem;
 }
