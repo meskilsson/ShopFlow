@@ -1,5 +1,5 @@
 .btnBase {
-    height: 2.25rem;
+    height: var(--btn-height);
     min-width: 3.125rem;
 
     background: none;
