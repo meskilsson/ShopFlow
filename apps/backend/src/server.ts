@@ -9,6 +9,8 @@ import cors from "cors";
 import logger from "./middleware/logger";
 import notFound from "./middleware/notFound";
 import errorHandler from "./middleware/errorHandler";
+import userRouter from "./routes/userRoutes";
+import { connectDB } from "./config/db";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -48,6 +50,8 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ ok: true });
 });
 
+app.use("/api/v1/users", userRouter);
+
 app.use(notFound);
 app.use(errorHandler);
 
@@ -57,3 +61,12 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`);
 });
+async function startServer(): Promise<void> {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`Listening on http://localhost:${PORT}`);
+  });
+}
+
+startServer();
