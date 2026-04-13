@@ -1,7 +1,7 @@
 import "./App.css";
 import express from "express";
 
-import productsRouter from "../../backend/src/routes/products"
+import productsRouter from "../../backend/src/routes/productRoutes"
 
 const app = express();
 
