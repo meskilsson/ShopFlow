@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from "./NavBar.module.css"
 import HeartIcon from "@/assets/icons/heart-solid-full.svg?react"
 import CartIcon from "@/assets/icons/cart-shopping-solid-full.svg?react"

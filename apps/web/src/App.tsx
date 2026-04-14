@@ -1,4 +1,9 @@
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
+
+import ProductsPage from "@/pages/ProductsPage"
+import ProductPage from "@/pages/ProductPage"
+
 import MainContainer from "./components/Containers/MainContainer";
 import ProductsContainer from "./components/Containers/ProductsContainer"
 import NavBar from "./components/UI/Navigation/NavBar"
@@ -10,24 +15,10 @@ import Banner from "./components/UI/Banner";
 function App() {
   return (
     <>
-      <NavBar/>
-      {/* <Banner/> */}
-      <MainContainer>
-        <ProductCategories/>
-        <Category categoryText="Shoes" articles={666}/>
-        <ProductsContainer>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-        </ProductsContainer>
-      </MainContainer>
+      <Routes>
+        <Route path="/" element={<ProductsPage />} />
+        <Route path="/product" element={<ProductPage />} />
+      </Routes>
     </>
   )
 }

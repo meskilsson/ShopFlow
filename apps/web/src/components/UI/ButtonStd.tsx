@@ -2,7 +2,7 @@ import React from 'react'
 import Styles from "./ButtonStd.module.css"
 
 interface ButtonStdProps {
-    text: string
+    text: any
     variant?: "primary" | "secondary" | "ghost"
     bold?: boolean
     onClick?: React.MouseEventHandler<HTMLButtonElement>

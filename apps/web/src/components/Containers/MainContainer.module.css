@@ -4,9 +4,9 @@
     margin: 0 auto;
     min-height: 100vh;
     /* padding: 1rem; */
-
     display: flex;
     flex-direction: column;
+    align-items: flex-start; /* Stoppar element från att stretcha */
 
     gap: 1rem;
 }
