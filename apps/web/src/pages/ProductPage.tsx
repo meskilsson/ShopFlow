@@ -5,6 +5,7 @@ import MainContainer from "../components/Containers/MainContainer";
 import NavBar from "../components/UI/Navigation/NavBar"
 import ProductCategories from "../components/UI/Navigation/ProductCategories";
 import ButtonStd from '@/components/UI/ButtonStd';
+import ProductView from "@/components/UI/Navigation/ProductView"
 
 import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"
 
@@ -19,7 +20,7 @@ const ProductPage = () => {
             <ButtonStd variant="secondary" text={<BackIcon/>} onClick={() => {
                 navigate(-1);
             }}/>
-            <h1>Hej</h1>
+            <ProductView/>
         </MainContainer>
     </>
   )
