@@ -23,11 +23,14 @@
     --btn-ghost: #000000;
     --btn-ghost-hover: #0000000c;
     --btn-ghost-text: #000000;
+    --icon-secondary: #000000;
+    --icon-secondary-hover: #565656;
 
     /* Properties */
     --max-width: 1000px;
     --br: 0.5rem;
     --btn-height: 2.5rem;
+    --icon-size: 1.55rem;
 
 }
 

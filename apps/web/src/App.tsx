@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <NavBar/>
-      <Banner/>
+      {/* <Banner/> */}
       <MainContainer>
         <ProductCategories/>
         <Category categoryText="Shoes" articles={666}/>
