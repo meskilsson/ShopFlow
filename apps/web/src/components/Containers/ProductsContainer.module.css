@@ -1,0 +1,10 @@
+.containerH {
+    width: 100%;
+    /* margin: 0; */
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 172px);
+    /* justify-content: center; */
+    /* background-color: aquamarine; */
+    gap: 2.18rem;
+}

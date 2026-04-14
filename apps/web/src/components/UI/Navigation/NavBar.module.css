@@ -1,0 +1,44 @@
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding: 1rem; */
+    /* padding-left: 3rem; */
+    background-color: var(--bg-secondary);
+    height: 4rem;
+}
+
+.container {
+    width: var(--max-width);
+    display: flex;
+    justify-content: space-between;
+    /* background-color: aquamarine; */
+}
+
+.iconContainer {
+    /* background-color: aqua; */
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconContainer a {
+    /* background-color: tomato; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    fill: "var(--icon-secondary)";
+    cursor: pointer;
+    transition: fill 0.2s ease-in-out;
+}
+
+.icon:hover {
+    fill: var(--icon-secondary-hover);
+}
