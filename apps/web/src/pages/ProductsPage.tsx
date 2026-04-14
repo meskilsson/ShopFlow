@@ -19,16 +19,76 @@ const ProductsPage = () => {
             <ProductCategories/>
             <Category categoryText="Shoes" articles={666}/>
             <ProductsContainer>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants="1"
+                    price="1200"
+                    link="/product"
+                />
             </ProductsContainer>
         </MainContainer>
     </>
