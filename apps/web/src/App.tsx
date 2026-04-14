@@ -1,24 +1,31 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom"
+import { AnimatePresence, motion } from "framer-motion"
 
 import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 
-import MainContainer from "./components/Containers/MainContainer";
-import ProductsContainer from "./components/Containers/ProductsContainer"
-import NavBar from "./components/UI/Navigation/NavBar"
-import ProductCard from "./components/ProductCard"
-import Category from "./components/UI/Category"
-import ProductCategories from "./components/UI/Navigation/ProductCategories";
-import Banner from "./components/UI/Banner";
+
 
 function App() {
+  const location = useLocation();
+
   return (
     <>
-      <Routes>
-        <Route path="/" element={<ProductsPage />} />
-        <Route path="/product" element={<ProductPage />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={
+            <motion.div
+              initial={{ opacity: 0, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 0 }}
+              >
+              <ProductsPage />
+            </motion.div>
+          }/>
+          <Route path="/product" element={<ProductPage />} />
+        </Routes>
+      </AnimatePresence>
     </>
   )
 }
