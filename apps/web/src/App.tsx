@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
+import SignupPage from "./pages/SignupPage";
 
 import MainContainer from "./components/Containers/MainContainer";
 import ProductsContainer from "./components/Containers/ProductsContainer"
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ProductsPage />} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </>
   )
