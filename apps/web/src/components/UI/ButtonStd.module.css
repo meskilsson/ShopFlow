@@ -16,6 +16,7 @@
 }
 
 .primary {
+    color: var(--btn-primary-text);
     background-color: var(--btn-primary);
 }
 
