@@ -14,7 +14,7 @@ const ProductPage = () => {
 
   return (
     <>
-        <NavBar/>
+        {/* <NavBar/> */}
         <MainContainer>
             <ProductCategories/>
             <ButtonStd variant="secondary" text={<BackIcon/>} onClick={() => {

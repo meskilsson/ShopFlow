@@ -14,8 +14,8 @@ const ProductsPage = () => {
 
   return (
     <>
-        <NavBar/>
-        <MainContainer>
+        {/* <NavBar/> */}
+        {/* <MainContainer> */}
             <ProductCategories/>
             <Category categoryText="Shoes" articles={666}/>
             <ProductsContainer>
@@ -90,7 +90,7 @@ const ProductsPage = () => {
                     link="/product"
                 />
             </ProductsContainer>
-        </MainContainer>
+        {/* </MainContainer> */}
     </>
   )
 }
