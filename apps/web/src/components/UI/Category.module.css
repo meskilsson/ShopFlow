@@ -15,4 +15,5 @@
     display: flex;
     flex-direction: row;
     /* background-color: aquamarine; */
+    width: 100%;
 }
