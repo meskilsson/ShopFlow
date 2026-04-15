@@ -55,3 +55,8 @@
   font-size: 1.5rem;
   margin-top: 1.2rem;
 }
+
+.vat {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+}
