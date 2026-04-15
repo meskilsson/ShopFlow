@@ -23,7 +23,7 @@
 
 .inputField::placeholder {
     color: var(--text-gray);
-    font-size: 0.8rem;
+    font-size: var(--btn-text-size);
 }
 
 .icon {
