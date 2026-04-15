@@ -97,8 +97,14 @@
 .commentImg {
   width: 3rem;
   height: 3rem;
-  aspect-ratio: 1/1;
-  background-color: aqua;
+  /* aspect-ratio: 1/1; */
+}
+
+.commentImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .commentName {

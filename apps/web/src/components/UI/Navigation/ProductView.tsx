@@ -21,16 +21,19 @@ const ProductView = () => {
       user: "Chas-Robin",
       comment: "Love these boots!",
       rating: 4.5,
+      imageUrl: "https://i.pravatar.cc/100?img=22"
     },
     {
       user: "Marcus",
       comment: "Livets dojjor",
       rating: 5,
+      imageUrl: "https://i.pravatar.cc/100?img=2"
     },
     {
-      user: "Robin",
+      user: "Pontus",
       comment: "Jag fick bara en 😟",
       rating: 1,
+      imageUrl: "https://i.pravatar.cc/100?img=1"
     }
   ]
 
@@ -68,6 +71,7 @@ const ProductView = () => {
                 <div className={styles.commentContainer}>
                   <div className={styles.commentImg}>
                     {/* Bild här */}
+                    <img src={c.imageUrl} alt="" />
                   </div>
                   <div className={styles.commentText}>
                     <h2 className={styles.commentName}>{c.user} <span className={styles.commentRating}>Rating: {c.rating}/5</span></h2>
