@@ -9,18 +9,20 @@ import ButtonStd from '../ButtonStd'
 const ProductView = () => {
   return (
     <section className={styles.productContainer}>
-    <img src={ProductImage} className={styles.productImage} />
+      <img src={ProductImage} className={styles.productImage} />
 
-    <div className={styles.sidebar}>
-        <h2>Nike Sportswear</h2>
-        <h1>DUNK LOW RETRO</h1>
-        <p>4,5/5</p>
-        <p>1200 kr incl. VAT</p>
-        <div className={styles.buttonContainer}>
-            <ButtonStd variant='primary' text={"Add to cart"}/>
-            <ButtonStd variant='ghost' text={"Save"}/>
-        </div>
-    </div>
+      <div className={styles.sidebar}>
+          <div className={styles.productInfo}>
+            <h2 className={styles.productBrand}>Nike Sportswear</h2>
+            <h1 className={styles.productTitle}>DUNK LOW RETRO</h1>
+            <p className={styles.productRating}>4,5/5</p>
+            <p className={styles.productPrice}>1200 kr incl. VAT</p>
+          </div>
+          <div className={styles.buttonContainer}>
+              <ButtonStd variant='primary' text={"Add to cart"}/>
+              <ButtonStd variant='ghost' text={"Save"}/>
+          </div>
+      </div>
     </section>
   )
 }
