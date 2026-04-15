@@ -8,6 +8,10 @@
 .sidebar {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+}
+
+.surfaceBlock {
   background-color: var(--bg-secondary);
   border-radius: var(--br);
   padding: 1.5rem;
@@ -58,4 +62,57 @@
 .vat {
   font-size: 0.8rem;
   color: var(--text-gray);
+}
+
+.sellerInfo {
+  font-size: 1rem;
+  font-weight: 400;;
+}
+
+.seller {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.commentsText {
+  color: var(--text-gray)
+}
+
+.comment {
+  width: 100%;
+  /* background-color: bisque; */
+  padding: .5rem 0;
+}
+
+.commentItem {
+  padding: .2rem 0;
+}
+
+.commentContainer {
+  display: flex;
+  flex-direction: row;
+  gap: .5rem;
+}
+
+.commentImg {
+  width: 3rem;
+  height: 3rem;
+  aspect-ratio: 1/1;
+  background-color: aqua;
+}
+
+.commentName {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.commentComment {
+  font-size: 0.8rem;
+  margin-top: .1rem;
+}
+
+.commentRating {
+  font-size: 0.75rem;
+  color: var(--text-gray);
+  padding-left: .2rem;
 }
