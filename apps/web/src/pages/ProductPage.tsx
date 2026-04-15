@@ -17,9 +17,9 @@ const ProductPage = () => {
         {/* <NavBar/> */}
         <MainContainer>
             <ProductCategories/>
-            <ButtonStd variant="secondary" text={<BackIcon/>} onClick={() => {
-                navigate(-1);
-            }}/>
+            <ButtonStd variant="secondary"onClick={() => {navigate(-1);}}>
+              <BackIcon/>
+            </ButtonStd>
             <ProductView/>
         </MainContainer>
     </>
