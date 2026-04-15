@@ -28,7 +28,7 @@ const ProductView = () => {
           </div>
           <div className={styles.buttonContainer}>
               <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
-              <ButtonStd variant='ghost'>Save</ButtonStd>
+              <ButtonStd variant='ghost'><HeartIconStd className={styles.buttonIcon}/></ButtonStd>
           </div>
       </div>
     </section>

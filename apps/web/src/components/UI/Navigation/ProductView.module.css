@@ -23,8 +23,7 @@
 
 .buttonIcon {
   fill: var(--icon-secondary);
-  width: 1rem;
-  aspect-ratio: 1/1;
+  width: 1.25rem;
 }
 
 .buttonContainer {
