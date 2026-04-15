@@ -16,7 +16,7 @@ const Category = ({categoryText, articles}: Props) => {
             <h1>{categoryText}</h1>
         </div>
         <div>
-          <ButtonStd text="Filter" variant="ghost"/>
+          <ButtonStd variant="ghost">Filter</ButtonStd>
         </div>
       </section>
     </>

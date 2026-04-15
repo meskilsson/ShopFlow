@@ -27,8 +27,8 @@ const ProductView = () => {
             <p className={styles.productPrice}>{product.price} kr <span className={styles.vat}>incl. VAT</span></p>
           </div>
           <div className={styles.buttonContainer}>
-              <ButtonStd variant='primary' fullWidth text={"Add to cart"}/>
-              <ButtonStd variant='ghost' text={"Save"}/>
+              <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
+              <ButtonStd variant='ghost'>Save</ButtonStd>
           </div>
       </div>
     </section>

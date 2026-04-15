@@ -8,14 +8,14 @@ const ProductCategories = () => {
   return (
     <nav className={styles.productCategories}>
       <div className={styles.container}>
-        <ButtonStd variant="secondary" bold text="Show All"/>
+        <ButtonStd variant="secondary" bold>Show All</ButtonStd>
         <NavSpacer size={"0.5rem"}/>
-        <ButtonStd variant="secondary" text="T-Shirts"/>
-        <ButtonStd variant="secondary" text="Shoes"/>
-        <ButtonStd variant="secondary" text="Pants"/>
-        <ButtonStd variant="secondary" text="Shirts"/>
-        <ButtonStd variant="secondary" text="Jackets"/>
-        <ButtonStd variant="secondary" text="Accessories"/>
+        <ButtonStd variant="secondary">T-Shirts</ButtonStd>
+        <ButtonStd variant="secondary">Shoes</ButtonStd>
+        <ButtonStd variant="secondary">Pants</ButtonStd>
+        <ButtonStd variant="secondary">Shirts</ButtonStd>
+        <ButtonStd variant="secondary">Jackets</ButtonStd>
+        <ButtonStd variant="secondary">Accessories</ButtonStd>
       </div>
       <div className={styles.container}>
         <SearchBar/>
