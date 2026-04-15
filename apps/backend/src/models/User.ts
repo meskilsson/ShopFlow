@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
   username: string;
   passwordHash: string;
-  role?: "buyer" | "seller" | "admin";
+  role: "buyer" | "seller" | "admin";
 }
 
 const userSchema = new Schema<IUser>(
@@ -43,6 +43,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       enum: ["buyer", "seller", "admin"],
       default: "buyer",
+      required: true,
     },
   },
 
