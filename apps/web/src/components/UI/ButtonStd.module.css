@@ -8,11 +8,20 @@
     color: var(--btn-text);
     padding: 0 .75rem;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: .8rem;
     font-weight: 400;
     transition: background-color .25s ease, color .25s ease;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     cursor: pointer;
+}
+
+.fullWidth {
+  /* width: 100%; */
+  flex: 1;
 }
 
 .primary {

@@ -15,11 +15,11 @@ const ProductView = () => {
           <div className={styles.productInfo}>
             <h2 className={styles.productBrand}>Nike Sportswear</h2>
             <h1 className={styles.productTitle}>DUNK LOW RETRO</h1>
-            <p className={styles.productRating}>4,5/5</p>
+            <p className={styles.productRating}>Rating: 4,5/5</p>
             <p className={styles.productPrice}>1200 kr incl. VAT</p>
           </div>
           <div className={styles.buttonContainer}>
-              <ButtonStd variant='primary' text={"Add to cart"}/>
+              <ButtonStd variant='primary' fullWidth text={"Add to cart"}/>
               <ButtonStd variant='ghost' text={"Save"}/>
           </div>
       </div>
