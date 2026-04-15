@@ -7,12 +7,12 @@ import {
     deleteProduct
 } from "../controllers/productsController.ts"
 
-const router = Router();
+const productRouter = Router();
 
-router.get("/", getAllProducts),
-router.get("/:id", getProductById),
-router.post("/:id", createProduct),
-router.put("/:id", updateProduct),
-router.delete("/:id", deleteProduct)
+productRouter.get("/", getAllProducts),
+productRouter.get("/:id", getProductById),
+productRouter.post("/", createProduct),
+productRouter.put("/:id", updateProduct),
+productRouter.delete("/:id", deleteProduct)
 
-export default router;
+export default productRouter;

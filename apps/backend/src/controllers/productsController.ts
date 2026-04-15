@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction} from "express"
 import * as productService from "../services/productService";
 
-
+type ProductIdParams = {
+  id: string;
+};
 
 // ===== CREATE ===== //
 export async function createProduct(
@@ -35,7 +37,7 @@ export async function getAllProducts(
 
 // ===== GET ID ===== //
 export async function getProductById(
-    req: Request, 
+    req: Request<ProductIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
@@ -51,7 +53,7 @@ export async function getProductById(
 
 // ===== UPDATE ===== //
 export async function updateProduct(
-    req: Request, 
+    req: Request<ProductIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
@@ -69,8 +71,8 @@ export async function updateProduct(
 
 
 // ===== DELETE ===== //
-export async function deleteproduct(
-    req: Request, 
+export async function deleteProduct(
+    req: Request<ProductIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {

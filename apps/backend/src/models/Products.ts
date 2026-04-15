@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 
 export interface IProduct {
-    // id: number;
     name: string;
     price: number;
     category: string;
@@ -10,11 +9,6 @@ export interface IProduct {
 
 const productSchema = new Schema<IProduct>(
     {
-        // id: {
-        //     type: Number, 
-        //     required: [true, "ID is missing"],
-        //     trim: true,
-        // },
         name: {
             type: String, 
             required: [true, "Name is required"],
@@ -32,14 +26,17 @@ const productSchema = new Schema<IProduct>(
         category: {
             type: String,
             required: [true, "Category is required"],
-             trim: true,
+            trim: true,
+            set: (value: string) => {
+                if (!value) return value;
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            },    
         },
         inStock: {
             type: Boolean,
             default: true,
         }
-    },
-
+    },  
     {
         timestamps: true,
     }
