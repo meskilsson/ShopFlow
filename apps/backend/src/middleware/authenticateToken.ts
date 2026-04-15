@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import type { AuthTokenPayload } from "../types/authTypes";
 
-const JWT_SECRET = process.env.JWT_SECRET || "serverns_jwt_token";
+const JWT_SECRET = process.env.JWT_SECRET || "server_jwt_token";
 
 export default function authenticateToken(
     req: Request,
