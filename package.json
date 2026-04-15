@@ -11,5 +11,11 @@
     "build:web": "npm run build -w @shopflow/web",
     "preview:web": "npm run preview -w @shopflow/web",
     "test:backend": "npm run test -w @shopflow/backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
   }
 }
