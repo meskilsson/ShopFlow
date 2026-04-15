@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: Poppins;
+    font-family: Inter;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     height: 100vh;
