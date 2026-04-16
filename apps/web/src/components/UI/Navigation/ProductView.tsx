@@ -5,6 +5,8 @@ import ProductImage from "@/assets/1.webp"
 import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react"
 
 import ButtonStd from '../ButtonStd'
+import SurfaceBlock from "../SurfaceBlock"
+import CommentCard from '@/components/CommentCard'
 
 const ProductView = () => {
 
@@ -20,18 +22,21 @@ const ProductView = () => {
     {
       user: "Chas-Robin",
       comment: "Love these boots!",
-      rating: 4.5,
+      date: "14 April 2026",
+      rating: 4,
       imageUrl: "https://i.pravatar.cc/100?img=22"
     },
     {
       user: "Marcus",
       comment: "Livets dojjor",
+      date: "14 April 2026",
       rating: 5,
       imageUrl: "https://i.pravatar.cc/100?img=2"
     },
     {
       user: "Pontus",
       comment: "Jag fick bara en 😟",
+      date: "14 April 2026",
       rating: 1,
       imageUrl: "https://i.pravatar.cc/100?img=1"
     }
@@ -44,7 +49,7 @@ const ProductView = () => {
       <div className={styles.sidebar}>
 
         {/* Main product*/}
-        <div className={styles.surfaceBlock}>
+        <SurfaceBlock>
           <div className={styles.productInfo}>
             <h2 className={styles.productBrand}>{product.brand}</h2>
             <h1 className={styles.productTitle}>{product.name}</h1>
@@ -55,22 +60,23 @@ const ProductView = () => {
               <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
               <ButtonStd variant='ghost'><HeartIconStd className={styles.buttonIcon}/></ButtonStd>
           </div>
-        </div>
+        </SurfaceBlock>
 
         {/* Seller info*/}
-        <div className={styles.surfaceBlock}>
+        <SurfaceBlock>
           <h2 className={styles.sellerInfo}>This product is sold by <span className={styles.seller}>{product.seller}</span></h2>
-        </div>
+        </SurfaceBlock>
 
         {/* Comments*/}
-        <section className={styles.surfaceBlock}>
+        <SurfaceBlock>
           <p className={styles.commentsText}>Comments:</p>
           <section className={styles.comment}>
             {comments.map((c, index) => (
               <div key={index} className={styles.commentItem}>
+
+                {/* <CommentCard profilePicture={c.imageUrl} name={c.user} date={c.date} comment={c.comment} rating={c.rating}/> */}
                 <div className={styles.commentContainer}>
                   <div className={styles.commentImg}>
-                    {/* Bild här */}
                     <img src={c.imageUrl} alt="" />
                   </div>
                   <div className={styles.commentText}>
@@ -78,10 +84,11 @@ const ProductView = () => {
                     <p className={styles.commentComment}>{c.comment}</p>
                   </div>
                 </div>
+                
               </div>
             ))}
           </section>
-        </section>
+        </SurfaceBlock>
       </div>
 
     </section>
