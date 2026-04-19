@@ -13,14 +13,11 @@ const ProductPage = () => {
 
   return (
     <>
-        {/* <NavBar/> */}
-        <MainContainer>
-            <ProductCategories/>
-            <ButtonStd variant="secondary"onClick={() => {navigate(-1);}}>
-              <BackIcon/>
-            </ButtonStd>
-            <ProductView/>
-        </MainContainer>
+      <ProductCategories/>
+      <ButtonStd variant="secondary"onClick={() => {navigate(-1);}}>
+        <BackIcon/>
+      </ButtonStd>
+      <ProductView/>
     </>
   )
 }
