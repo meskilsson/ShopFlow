@@ -1,10 +1,10 @@
-.surfaceBlock {
+.card {
   background-color: var(--bg-secondary);
   border-radius: var(--br);
   padding: 1.5rem;
   flex: 1;
 }
 
-.noBg {
+.transparent {
   background-color: transparent;
 }

@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from "./ProductCategories.module.css"
-import ButtonStd from "../ButtonStd"
-import NavSpacer from './NavSpacer'
-import SearchBar from './SearchBar'
+import ButtonStd from "../../ButtonStd"
+import NavSpacer from '../navbar/NavSpacer'
+import SearchBar from '../search/SearchBar'
 
 const ProductCategories = () => {
   return (

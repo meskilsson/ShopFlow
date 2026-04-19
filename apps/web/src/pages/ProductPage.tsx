@@ -1,11 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import MainContainer from "../components/Containers/MainContainer";
-import NavBar from "../components/UI/Navigation/NavBar"
-import ProductCategories from "../components/UI/Navigation/ProductCategories";
-import ButtonStd from '@/components/UI/ButtonStd';
-import ProductView from "@/components/UI/Navigation/ProductView"
+import MainContainer from "../components/containers/MainContainer";
+import NavBar from "../components/ui/features/navbar/NavBar"
+import ProductCategories from "../components/ui/features/products/ProductCategories";
+import ButtonStd from '@/components/ui/ButtonStd';
+import ProductView from "@/components/ui/features/product/ProductView"
 
 import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"
 

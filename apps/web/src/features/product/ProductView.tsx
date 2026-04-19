@@ -4,9 +4,9 @@ import styles from "./ProductView.module.css"
 import ProductImage from "@/assets/1.webp"
 import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react"
 
-import ButtonStd from '../ButtonStd'
-import SurfaceBlock from "../SurfaceBlock"
-import CommentCard from '@/components/CommentCard'
+import ButtonStd from '../../ButtonStd'
+import Card from "../../Card"
+// import CommentCard from '@/components/CommentCard'
 
 const ProductView = () => {
 
@@ -49,7 +49,7 @@ const ProductView = () => {
       <div className={styles.sidebar}>
 
         {/* Main product*/}
-        <SurfaceBlock>
+        <Card>
           <div className={styles.productInfo}>
             <h2 className={styles.productBrand}>{product.brand}</h2>
             <h1 className={styles.productTitle}>{product.name}</h1>
@@ -60,15 +60,15 @@ const ProductView = () => {
               <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
               <ButtonStd variant='ghost'><HeartIconStd className={styles.buttonIcon}/></ButtonStd>
           </div>
-        </SurfaceBlock>
+        </Card>
 
         {/* Seller info*/}
-        <SurfaceBlock>
+        <Card>
           <h2 className={styles.sellerInfo}>This product is sold by <span className={styles.seller}>{product.seller}</span></h2>
-        </SurfaceBlock>
+        </Card>
 
         {/* Comments*/}
-        <SurfaceBlock>
+        <Card>
           <p className={styles.commentsText}>Comments:</p>
           <section className={styles.comment}>
             {comments.map((c, index) => (
@@ -88,7 +88,7 @@ const ProductView = () => {
               </div>
             ))}
           </section>
-        </SurfaceBlock>
+        </Card>
       </div>
 
     </section>

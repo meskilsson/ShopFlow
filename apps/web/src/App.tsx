@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from "framer-motion"
 import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 
-import NavBar from "@/components/UI/Navigation/NavBar"
-import MainContainer from "@/components/Containers/MainContainer";
+import NavBar from "@/components/ui/features/navbar/NavBar"
+import MainContainer from "@/components/containers/MainContainer";
 
 
 function App() {

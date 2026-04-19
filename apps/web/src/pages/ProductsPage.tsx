@@ -1,13 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import MainContainer from "../components/Containers/MainContainer";
-import ProductsContainer from "../components/Containers/ProductsContainer"
-import NavBar from "../components/UI/Navigation/NavBar"
-import ProductCard from "../components/ProductCard"
-import Category from "../components/UI/Category"
-import ProductCategories from "../components/UI/Navigation/ProductCategories";
-import Banner from "../components/UI/Banner";
+import MainContainer from "../components/containers/MainContainer";
+import ProductsContainer from "../components/ui/features/products/ProductsContainer"
+import NavBar from "../components/ui/features/navbar/NavBar"
+import ProductCard from "../components/ui/features/products/ProductCard"
+import Category from "../components/ui/Category"
+import ProductCategories from "../components/ui/features/products/ProductCategories";
+import Banner from "../components/ui/features/products/Banner";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
