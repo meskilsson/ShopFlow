@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./Category.module.css"
-import ButtonStd from './ButtonStd'
+import ButtonStd from '@/components/ui/ButtonStd'
 
 type Props = {
     categoryText: string,

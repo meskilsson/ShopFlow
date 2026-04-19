@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 
-import NavBar from "@/components/ui/features/navbar/NavBar"
+import NavBar from "@/features/navbar/NavBar"
 import MainContainer from "@/components/containers/MainContainer";
 
 

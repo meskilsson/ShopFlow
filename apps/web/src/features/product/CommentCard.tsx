@@ -1,5 +1,5 @@
 import React from 'react'
-import SurfaceBlock from '../../Card'
+import SurfaceBlock from "@/components/ui/Card"
 import styles from "./CommentCard.module.css"
 import StarIcon from "@/assets/icons/star-solid-full.svg?react"
 

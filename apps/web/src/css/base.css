@@ -1,15 +1,4 @@
 :root {
-    /*
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    */
-
     /* Base Colors */
     --bg-primary: #DEDEDE;
     --bg-secondary: #FFFFFF;
@@ -33,10 +22,22 @@
     --btn-height: 2.5rem;
     --icon-size: 1.55rem;
     --btn-text-size: 0.875rem;
-
+    --gap: 1rem;
 }
 
 h1 {
     font-size: 2rem;
     font-weight: 400;
+}
+
+.flex-h {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+}
+
+.flex-v {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
 }
