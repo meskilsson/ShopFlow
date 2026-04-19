@@ -2,8 +2,7 @@
     width: 100%;
     max-width: var(--max-width);
     margin: 0 auto;
-    min-height: 100vh;
-    /* padding: 1rem; */
+    /* min-height: 100vh; */
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Stoppar element från att stretcha */

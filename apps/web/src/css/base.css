@@ -23,6 +23,8 @@
     --icon-size: 1.55rem;
     --btn-text-size: 0.875rem;
     --gap: 1rem;
+
+    --hero-height: 400px;
 }
 
 h1 {
