@@ -1,0 +1,33 @@
+import React from 'react'
+import styles from "./Hero.module.css"
+import { div } from 'framer-motion/client'
+
+interface HeroProps {
+  image: string
+  title?: string
+  subtitle?: string
+  children?: React.ReactNode
+  fullWidth?: boolean
+}
+
+const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps) => {
+  return (
+    <>
+        <div className={styles.heroContainer}>
+
+        </div>
+        <div
+            className={`${styles.hero} ${fullWidth ? styles.fullWidth : ""}`}
+            style={{ backgroundImage: `url(${image})` }}
+        >
+            <div className={styles.overlay}>
+            {title && <h1>{title}</h1>}
+            {subtitle && <p>{subtitle}</p>}
+            {children}
+            </div>
+        </div>
+    </>
+)
+}
+
+export default Hero

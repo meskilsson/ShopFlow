@@ -3,7 +3,8 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 1rem;
-    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
     /* background-color: aquamarine; */
     padding: 1rem 0;
 }

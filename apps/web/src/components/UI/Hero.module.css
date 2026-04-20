@@ -1,11 +1,13 @@
 .hero {
   width: var(--max-width);
   /* max-width: var(--max-width); */
+  margin: 0 auto;
   height: var(--hero-height);
   background-size: cover;
   background-position: center;
   border-radius: var(--br);
   position: relative;
+  margin-bottom: 1rem;
 }
 
 .overlay {
@@ -31,4 +33,5 @@
 
 .fullWidth {
   width: 100%;
+  border-radius: 0;
 }
