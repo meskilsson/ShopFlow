@@ -1,0 +1,29 @@
+.hero {
+  width: 100%;
+  height: var(--hero-height);
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--br);
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: white;
+}
+
+.overlay h1 {
+  font-size: 4.5rem;
+  /* margin-bottom: 1rem; */
+}
+
+.overlay p {
+  font-size: 1.5rem;
+  /* margin-bottom: 2rem; */
+}
