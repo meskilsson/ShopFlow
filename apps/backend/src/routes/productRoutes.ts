@@ -4,7 +4,10 @@ import {
     getProductById,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    createProductVariant,
+    getVariantById,
+    deleteVariant
 } from "../controllers/productsController.ts"
 
 const productRouter = Router();
@@ -14,5 +17,11 @@ productRouter.get("/:id", getProductById),
 productRouter.post("/", createProduct),
 productRouter.put("/:id", updateProduct),
 productRouter.delete("/:id", deleteProduct)
+
+// ===== VARIANT ===== //
+productRouter.get("/variants/:variantId", getVariantById),
+productRouter.post("/:id/variants", createProductVariant)
+productRouter.delete("/variants/:variantId", deleteVariant)
+
 
 export default productRouter;
