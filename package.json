@@ -1,24 +1,21 @@
 {
-  "name": "shopflow",
-  "private": true,
-  "workspaces": [
-    "apps/*"
-  ],
-  "scripts": {
-    "dev:web": "npm run dev -w @shopflow/web",
-    "dev:backend": "npm run dev -w @shopflow/backend",
-    "dev:both": "concurrently \"npm run dev:web\" \"npm run dev:backend\"",
-    "build:web": "npm run build -w @shopflow/web",
-    "preview:web": "npm run preview -w @shopflow/web",
-    "test:backend": "npm run test -w @shopflow/backend"
-  },
-  "devDependencies": {
-    "@types/express-session": "^1.18.2",
-    "concurrently": "^9.2.1"
-  },
-  "dependencies": {
-    "dotenv": "^17.4.2",
-    "express-session": "^1.19.0"
-  }
+"name": "shopflow",
+"private": true,
+"workspaces": [
+"apps/*"
+],
+"scripts": {
+"dev:web": "npm run dev -w @shopflow/web",
+"dev:backend": "npm run dev -w @shopflow/backend",
+"dev:both": "concurrently \"npm run dev:web\" \"npm run dev:backend\"",
+"build:web": "npm run build -w @shopflow/web",
+"preview:web": "npm run preview -w @shopflow/web",
+"test:backend": "npm run test -w @shopflow/backend"
+},
+"devDependencies": {
+"concurrently": "^9.2.1"
+},
+"dependencies": {
+"dotenv": "^17.4.2"
 }
 }
