@@ -4,7 +4,7 @@ import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from "@/features/products/ProductCard"
 import Category from "@/features/products/Category"
 import ProductCategories from "@/features/products/ProductCategories";
-import Container from '@/components/containers/Container';
+import Container from '@/components/Containers/Container';
 
 const ProductsPage = () => {
   const navigate = useNavigate();

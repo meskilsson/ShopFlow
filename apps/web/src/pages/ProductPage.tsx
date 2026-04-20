@@ -5,7 +5,7 @@ import MainContainer from "@/components/ContentWrapper";
 import ProductCategories from "@/features/products/ProductCategories";
 import ButtonStd from '@/components/ui/ButtonStd';
 import ProductView from "@/features/product/ProductView"
-import Container from '@/components/containers/Container';
+import Container from '@/components/Containers/Container';
 
 import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"
 
