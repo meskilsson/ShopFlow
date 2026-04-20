@@ -1,5 +1,6 @@
 .hero {
-  width: 100%;
+  width: var(--max-width);
+  /* max-width: var(--max-width); */
   height: var(--hero-height);
   background-size: cover;
   background-position: center;
@@ -26,4 +27,8 @@
 .overlay p {
   font-size: 1.5rem;
   /* margin-bottom: 2rem; */
+}
+
+.fullWidth {
+  width: 100%;
 }

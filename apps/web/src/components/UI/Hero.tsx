@@ -6,21 +6,22 @@ interface HeroProps {
   title?: string
   subtitle?: string
   children?: React.ReactNode
+  fullWidth?: boolean
 }
 
-const Hero = ({ image, title, subtitle, children }: HeroProps) => {
+const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps) => {
   return (
-    <div
-      className={styles.hero}
-      style={{ backgroundImage: `url(${image})` }}
-    >
-      <div className={styles.overlay}>
-        {title && <h1>{title}</h1>}
-        {subtitle && <p>{subtitle}</p>}
-        {children}
-      </div>
+  <div
+    className={`${styles.hero} ${fullWidth ? styles.fullWidth : ""}`}
+    style={{ backgroundImage: `url(${image})` }}
+  >
+    <div className={styles.overlay}>
+      {title && <h1>{title}</h1>}
+      {subtitle && <p>{subtitle}</p>}
+      {children}
     </div>
-  )
+  </div>
+)
 }
 
 export default Hero
