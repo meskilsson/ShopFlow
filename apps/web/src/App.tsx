@@ -6,7 +6,7 @@ import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 
 import NavBar from "@/features/navbar/NavBar"
-import ContentWrapper from "@/components/containers/ContentWrapper";
+import ContentWrapper from "@/components/ContentWrapper";
 
 
 function App() {

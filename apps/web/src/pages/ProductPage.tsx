@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import MainContainer from "@/components/containers/ContentWrapper";
+import MainContainer from "@/components/ContentWrapper";
 import ProductCategories from "@/features/products/ProductCategories";
 import ButtonStd from '@/components/ui/ButtonStd';
 import ProductView from "@/features/product/ProductView"
