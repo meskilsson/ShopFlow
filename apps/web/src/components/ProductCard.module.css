@@ -1,0 +1,59 @@
+.card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--br);
+
+    width: 174px;
+    height: 260px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover {
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    
+}
+
+.productInfo {
+    width: 100%;
+    padding: 11px;
+}
+
+.productTitle {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.productBrand {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.productVariants {
+    margin-top: .2rem;
+    font-size: 10px;
+    color: var(--text-gray);
+    font-weight: 200;
+}
+
+.productPrice {
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: .4rem;
+}
+
+.productImage {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--br);
+    margin-top: 11px;
+}
