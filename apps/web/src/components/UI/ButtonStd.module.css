@@ -44,14 +44,26 @@
     background-color: var(--btn-secondary-hover);
 }
 
-.ghost {
-    /* border: 1px solid var(--btn-ghost); */
-    box-shadow: inset 0 0 0 1px var(--btn-ghost);
+.ghost-dark {
+    color: var(--btn-ghost-dark-text);
+    box-shadow: inset 0 0 0 1px var(--btn-ghost-dark);
     border-radius: var(--br);
     overflow: hidden;
 }
 
-.ghost:hover {
-    background-color: var(--btn-ghost-hover);
+.ghost-dark:hover {
+    background-color: var(--btn-ghost-dark-hover);
     box-shadow: inset 0 0 0 1px #00000075;
+}
+
+.ghost-light {
+    color: var(--btn-ghost-light-text);
+    box-shadow: inset 0 0 0 1px var(--btn-ghost-light);
+    border-radius: var(--br);
+    overflow: hidden;
+}
+
+.ghost-light:hover {
+    background-color: var(--btn-ghost-light-hover);
+    box-shadow: inset 0 0 0 1px var(--btn-ghost-light);
 }

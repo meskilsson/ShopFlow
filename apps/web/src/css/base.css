@@ -10,9 +10,12 @@
     --btn-secondary: #FFFFFF;
     --btn-secondary-hover: #f2f2f2;
     --btn-secondary-text: #000000;
-    --btn-ghost: #000000;
-    --btn-ghost-hover: #0000000c;
-    --btn-ghost-text: #000000;
+    --btn-ghost-dark: #000000;
+    --btn-ghost-dark-hover: #0000000c;
+    --btn-ghost-dark-text: #000000;
+    --btn-ghost-light: #ffffff;
+    --btn-ghost-light-hover: #0000000c;
+    --btn-ghost-light-text: #ffffff;
     --icon-secondary: #000000;
     --icon-secondary-hover: #565656;
 

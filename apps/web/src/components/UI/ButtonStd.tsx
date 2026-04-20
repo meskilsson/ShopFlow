@@ -3,7 +3,7 @@ import Styles from "./ButtonStd.module.css"
 
 interface ButtonStdProps {
     children: React.ReactNode
-    variant?: "primary" | "secondary" | "ghost"
+    variant?: "primary" | "secondary" | "ghost-dark" | "ghost-light"
     bold?: boolean
     fullWidth?: boolean
     onClick?: React.MouseEventHandler<HTMLButtonElement>
