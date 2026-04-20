@@ -8,6 +8,7 @@ import logger from "./middleware/logger";
 import notFound from "./middleware/notFound";
 import errorHandler from "./middleware/errorHandler";
 import userRouter from "./routes/userRoutes";
+import orderRouter from "./routes/orderRoutes";
 import authRouter from "./routes/authRoutes";
 import { connectDB } from "./config/db";
 
@@ -46,6 +47,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/auth", authRouter);
 
