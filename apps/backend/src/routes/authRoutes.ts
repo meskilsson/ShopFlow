@@ -10,6 +10,8 @@ authRouter.get("/profile", authenticateToken, authorizeRoles("admin", "buyer", "
 
 // TEST ROUTES!
 
+// oogi
+
 authRouter.get("/buyer-area", authenticateToken, authorizeRoles("buyer"), (req, res) => {
     res.json({ message: "Welcome buyer!", user: req.user });
 });
@@ -25,6 +27,8 @@ authRouter.get("/admin-area", authenticateToken, authorizeRoles("admin"), (req, 
 authRouter.get("/management-area", authenticateToken, authorizeRoles("seller", "admin"), (req, res) => {
     res.json({ message: "Welcome seller/admin", req: req.user });
 });
+
+
 
 //END OF TEST ROUTES
 
