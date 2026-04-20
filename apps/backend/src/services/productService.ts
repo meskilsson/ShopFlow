@@ -51,6 +51,14 @@ export async function updateProduct(id: string, updateData: Partial<IProduct>) {
     return handlerNotFound(product, "Product not found")
 }
 
+// ===== UPDATE VARIANT ===== //
+export async function updateVariant(variantId: string, updateData: Partial<IProductVariant>) {
+    const variant = await ProductVariant.findByIdAndUpdate(variantId, updateData, {
+        new: true,
+        runValidators: true,
+    });
+    return handlerNotFound(variant, "Variant not found")
+}
 
 // ===== DELETE ===== //
 export async function deleteProduct(id: string) {

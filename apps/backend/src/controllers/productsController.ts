@@ -95,6 +95,23 @@ export async function updateProduct(
     }
 }
 
+// ===== UPDATE VARIANT ===== //
+export async function updateVariant(
+    req: Request<ProductIdParams>, 
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        const updatedVariant = await productService.updateVariant(
+            req.params.variantId,
+            req.body,
+        );
+        res.status(200).json(updatedVariant);
+    } catch (error) {
+        next(error);
+    }
+}
+
 // ===== DELETE ===== //
 export async function deleteProduct(
     req: Request<ProductIdParams>, 

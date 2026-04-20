@@ -7,7 +7,8 @@ import {
     deleteProduct,
     createProductVariant,
     getVariantById,
-    deleteVariant
+    deleteVariant,
+    updateVariant
 } from "../controllers/productsController.ts"
 
 const productRouter = Router();
@@ -21,6 +22,7 @@ productRouter.delete("/:id", deleteProduct)
 // ===== VARIANT ===== //
 productRouter.get("/variants/:variantId", getVariantById),
 productRouter.post("/:id/variants", createProductVariant)
+productRouter.put("/variants/:variantId", updateVariant),
 productRouter.delete("/variants/:variantId", deleteVariant)
 
 
