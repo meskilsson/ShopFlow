@@ -4,7 +4,6 @@ import CartIcon from "@/assets/icons/cart-shopping-solid-full.svg?react"
 import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react"
 
 import Dropdown from "@/components/ui/Dropdown"
-import ButtonStd from "@/components/ui/ButtonStd"
 
 const navbar = () => {
   return (
