@@ -6,7 +6,7 @@
     /* padding: 1rem; */
     /* padding-left: 3rem; */
     background-color: var(--bg-secondary);
-    height: 4rem;
+    height: var(--navbar-height);
 }
 
 .container {

@@ -6,7 +6,6 @@ import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react"
 
 import ButtonStd from "@/components/ui/ButtonStd"
 import Card from "@/components/ui/Card"
-import Dropdown from '@/components/ui/Dropdown'
 // import CommentCard from '@/components/CommentCard'
 
 const ProductView = () => {
@@ -44,56 +43,59 @@ const ProductView = () => {
   ]
 
   return (
+
     <section className={styles.productContainer}>
-      <img src={ProductImage} className={styles.productImage} />
+    <img src={ProductImage} className={styles.productImage} />
 
-      <div className={styles.sidebar}>
+    <div className={styles.sidebar}>
 
-        {/* Main product*/}
-        <Card>
-          <div className={styles.productInfo}>
-            <h2 className={styles.productBrand}>{product.brand}</h2>
-            <h1 className={styles.productTitle}>{product.name}</h1>
-            <p className={styles.productRating}>Rating: {product.rating}/5 ⭐</p>
-            <p className={styles.productPrice}>{product.price} kr <span className={styles.vat}>incl. VAT</span></p>
-          </div>
-          
-          <div className={styles.buttonContainer}>
-              <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
-              <ButtonStd variant='ghost'><HeartIconStd className={styles.buttonIcon}/></ButtonStd>
-          </div>
-        </Card>
+      {/* Main product*/}
+      <Card>
+        <div className={styles.productInfo}>
+          <h2 className={styles.productBrand}>{product.brand}</h2>
+          <h1 className={styles.productTitle}>{product.name}</h1>
+          <p className={styles.productRating}>Rating: {product.rating}/5 ⭐</p>
+          <p className={styles.productPrice}>{product.price} kr <span className={styles.vat}>incl. VAT</span></p>
+        </div>
+        
+        <div className={styles.buttonContainer}>
+            <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
+            <ButtonStd variant='ghost'><HeartIconStd className={styles.buttonIcon}/></ButtonStd>
+        </div>
+      </Card>
 
-        {/* Seller info*/}
-        <Card>
-          <h2 className={styles.sellerInfo}>This product is sold by <span className={styles.seller}>{product.seller}</span></h2>
-        </Card>
+      {/* Seller info*/}
+      <Card>
+        <h2 className={styles.sellerInfo}>This product is sold by <span className={styles.seller}>{product.seller}</span></h2>
+      </Card>
 
-        {/* Comments*/}
-        <Card>
-          <p className={styles.commentsText}>Comments:</p>
-          <section className={styles.comment}>
-            {comments.map((c, index) => (
-              <div key={index} className={styles.commentItem}>
+      {/* Comments*/}
+      <Card>
+        <p className={styles.commentsText}>Comments:</p>
+        <section className={styles.comment}>
+          {comments.map((c, index) => (
+            <div key={index} className={styles.commentItem}>
 
-                {/* <CommentCard profilePicture={c.imageUrl} name={c.user} date={c.date} comment={c.comment} rating={c.rating}/> */}
-                <div className={styles.commentContainer}>
-                  <div className={styles.commentImg}>
-                    <img src={c.imageUrl} alt="" />
-                  </div>
-                  <div className={styles.commentText}>
-                    <h2 className={styles.commentName}>{c.user} <span className={styles.commentRating}>Rating: {c.rating}/5</span></h2>
-                    <p className={styles.commentComment}>{c.comment}</p>
-                  </div>
+              {/* <CommentCard profilePicture={c.imageUrl} name={c.user} date={c.date} comment={c.comment} rating={c.rating}/> */}
+              <div className={styles.commentContainer}>
+                <div className={styles.commentImg}>
+                  <img src={c.imageUrl} alt="" />
                 </div>
-                
+                <div className={styles.commentText}>
+                  <h2 className={styles.commentName}>{c.user} <span className={styles.commentRating}>Rating: {c.rating}/5</span></h2>
+                  <p className={styles.commentComment}>{c.comment}</p>
+                </div>
               </div>
-            ))}
-          </section>
-        </Card>
-      </div>
+              
+            </div>
+          ))}
+        </section>
+      </Card>
+    </div>
 
-    </section>
+  </section>
+
+    
   )
 }
 

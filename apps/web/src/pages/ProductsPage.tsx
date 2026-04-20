@@ -1,18 +1,16 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import MainContainer from "@/components/containers/MainContainer";
 import ProductsContainer from "@/features/products/ProductsContainer"
-import NavBar from "@/features/navbar/NavBar"
 import ProductCard from "@/features/products/ProductCard"
 import Category from "@/features/products/Category"
 import ProductCategories from "@/features/products/ProductCategories";
+import Container from '@/components/containers/Container';
 
 const ProductsPage = () => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <Container>
         <ProductCategories/>
         <Category categoryText="Shoes" articles={666}/>
         <ProductsContainer>
@@ -87,7 +85,7 @@ const ProductsPage = () => {
                 link="/product"
             />
         </ProductsContainer>
-    </>
+    </Container>
   )
 }
 

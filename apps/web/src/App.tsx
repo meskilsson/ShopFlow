@@ -6,7 +6,7 @@ import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 
 import NavBar from "@/features/navbar/NavBar"
-import MainContainer from "@/components/containers/MainContainer";
+import ContentWrapper from "@/components/containers/ContentWrapper";
 
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 0.3 }}
           >
-          <MainContainer>
+          <ContentWrapper>
           <Routes location={location}>
 
             {/* Routes här under pls */}
@@ -31,7 +31,7 @@ function App() {
             <Route path="/product" element={<ProductPage />} />
 
           </Routes>
-          </MainContainer>
+          </ContentWrapper>
         </motion.div>
       </AnimatePresence>
     </>
