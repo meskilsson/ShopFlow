@@ -2,18 +2,27 @@ import React from 'react'
 import Styles from "./ButtonStd.module.css"
 
 interface ButtonStdProps {
-    text: any
-    variant?: "primary" | "secondary" | "ghost"
+    children: React.ReactNode
+    variant?: "primary" | "secondary" | "ghost-dark" | "ghost-light"
     bold?: boolean
+    fullWidth?: boolean
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const ButtonStd: React.FC<ButtonStdProps> = ({text, variant = "secondary", bold = false, onClick}) => {
+const ButtonStd: React.FC<ButtonStdProps> = ({children, variant = "secondary", bold = false, fullWidth = false, onClick}) => {
 return (
-    <button onClick={onClick} style={{fontWeight: bold ? "bold" : "normal"}} className={`${Styles.btnBase} ${Styles[variant]}`}>
-        {text}
+    <button
+      onClick={onClick}
+      style={{ fontWeight: bold ? "bold" : "normal" }}
+      className={`
+        ${Styles.btnBase} 
+        ${Styles[variant]}
+        ${fullWidth ? Styles.fullWidth : ""}
+      `}
+    >
+      {children}
     </button>
-    )
+  )
 }
 
 export default ButtonStd

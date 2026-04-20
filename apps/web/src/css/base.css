@@ -1,28 +1,21 @@
 :root {
-    /*
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    */
-
     /* Base Colors */
     --bg-primary: #DEDEDE;
     --bg-secondary: #FFFFFF;
     --text-primary: #000000;
     --text-gray: #ACACAC;
     --btn-primary: #4F7BFF;
+    --btn-primary-hover: #456bdf;
     --btn-primary-text: #FFFFFF;
     --btn-secondary: #FFFFFF;
     --btn-secondary-hover: #f2f2f2;
     --btn-secondary-text: #000000;
-    --btn-ghost: #000000;
-    --btn-ghost-hover: #0000000c;
-    --btn-ghost-text: #000000;
+    --btn-ghost-dark: #000000;
+    --btn-ghost-dark-hover: #0000000c;
+    --btn-ghost-dark-text: #000000;
+    --btn-ghost-light: #ffffff;
+    --btn-ghost-light-hover: #0000000c;
+    --btn-ghost-light-text: #ffffff;
     --icon-secondary: #000000;
     --icon-secondary-hover: #565656;
 
@@ -31,10 +24,33 @@
     --br: 0.5rem;
     --btn-height: 2.5rem;
     --icon-size: 1.55rem;
+    --btn-text-size: 0.875rem;
+    --gap: 1rem;
+    --navbar-height: 3.5rem;
 
+    --hero-height: 400px;
+
+    /* Dropdown */
+    --dropdown-bg: #2c2c2c;
+    --dropdown-text: #ffffff;
+    --dropdown-hover: #4c4c4c;
+    --dropdown-text-red: #ef5252;
+    --dropdown-text-highlight-weight: 600;
 }
 
 h1 {
     font-size: 2rem;
     font-weight: 400;
+}
+
+.flex-h {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+}
+
+.flex-v {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
 }
