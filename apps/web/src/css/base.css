@@ -31,6 +31,8 @@
     --dropdown-bg: #2c2c2c;
     --dropdown-text: #ffffff;
     --dropdown-hover: #4c4c4c;
+    --dropdown-text-red: #ef5252;
+    --dropdown-text-highlight-weight: 600;
 }
 
 h1 {

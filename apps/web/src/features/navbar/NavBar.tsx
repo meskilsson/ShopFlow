@@ -23,6 +23,7 @@ const navbar = () => {
                 <button>Settings</button>
                 <button>Log out</button>
               </Dropdown.Content>
+              
             </Dropdown>
           <a className={styles.iconBtn}><HeartIcon className={styles.icon}/></a>
           <a className={styles.iconBtn}><CartIcon className={styles.icon}/></a>

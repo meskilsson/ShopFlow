@@ -42,3 +42,14 @@
 .icon:hover {
     fill: var(--icon-secondary-hover);
 }
+
+.dropdownHighlight {
+    font-weight: var(--dropdown-text-highlight-weight);
+    color: var(--dropdown-text-red);
+}
+
+.dropdownDivider {
+    height: 1px;
+    background-color: var(--dropdown-hover);
+    margin: 0.5rem 0;
+}
