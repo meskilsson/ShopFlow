@@ -6,3 +6,12 @@ export type AuthTokenPayload = {
     username: string;
     role: UserRole;
 };
+
+
+interface PublicUser {
+    _id: string;
+    name: string;
+    email: string;
+    username: string;
+    role: UserRole;
+}

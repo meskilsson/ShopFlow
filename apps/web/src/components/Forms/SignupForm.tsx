@@ -1,10 +1,14 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 type Role = "buyer" | "seller";
 
 
 export default function SignupForm() {
+
+    const navigate = useNavigate();
+
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [username, setUsername] = useState<string>("");
@@ -99,6 +103,7 @@ export default function SignupForm() {
                 <button
                     type="submit"
                     disabled={isLoading}
+                    onClick={() => navigate("/login")}
                 >
                     {isLoading ? "Creating..." : "Create Account"}
                 </button>

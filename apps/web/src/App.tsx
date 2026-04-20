@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
 
 import MainContainer from "./components/Containers/MainContainer";
 import ProductsContainer from "./components/Containers/ProductsContainer"
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<ProductsPage />} />
         <Route path="/product" element={<ProductPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </>
   )
