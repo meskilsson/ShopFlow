@@ -15,9 +15,9 @@ const Category = ({categoryText, articles}: Props) => {
         <div className={styles.category}>
             <h1>{categoryText}</h1>
         </div>
-        <div>
+        {/* <div>
           <ButtonStd variant="ghost-dark">Filter</ButtonStd>
-        </div>
+        </div> */}
       </section>
     </>
   )
