@@ -4,7 +4,6 @@ export interface IProduct {
     name: string;
     price: number;
     category: string;
-    inStock?: boolean;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -31,10 +30,6 @@ const productSchema = new Schema<IProduct>(
                 if (!value) return value;
                 return value.charAt(0).toUpperCase() + value.slice(1)
             },    
-        },
-        inStock: {
-            type: Boolean,
-            default: true,
         }
     },  
     {
