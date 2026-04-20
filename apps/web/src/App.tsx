@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion"
 import HomePage from "./pages/HomePage";
 import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
+import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
 
 import NavBar from "@/features/navbar/NavBar"
 import ContentWrapper from "@/components/ContentWrapper";
@@ -31,6 +33,8 @@ function App() {
             <Route path="/" element={<ProductsPage />} />
             <Route path="/product" element={<ProductPage />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
 
           </Routes>
           </ContentWrapper>
