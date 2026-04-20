@@ -8,14 +8,15 @@ import Hero from '@/components/UI/Hero';
 import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from '@/features/products/ProductCard';
 import Category from '@/features/products/Category';
+import MainHero from "@/features/home/MainHero"
 
 const HomePage = () => {
   const navigate = useNavigate();
 
   return (
     <>
-    <ProductCategories/>
-    <Hero title="SUMMER TIME" subtitle="Is your wardrobe up to date?" image="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></Hero>
+    {/* <ProductCategories/> */}
+    <MainHero fullWidth title="SUMMER TIME" subtitle="Is your wardrobe up to date?" image="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></MainHero>
       <Container>
 
         <Category categoryText="Shoes" articles={666}/>
