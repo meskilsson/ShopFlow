@@ -25,7 +25,7 @@ const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps
             <div className={styles.heroNav}>
                 <nav className={styles.productCategories}>
                 <div className={styles.container}>
-                    <ButtonStd variant="ghost-light" bold>Show All</ButtonStd>
+                    <ButtonStd variant="ghost-light" bold>All Products</ButtonStd>
                     <NavSpacer size={"0.5rem"}/>
                     <ButtonStd variant="ghost-light">T-Shirts</ButtonStd>
                     <ButtonStd variant="ghost-light">Shoes</ButtonStd>

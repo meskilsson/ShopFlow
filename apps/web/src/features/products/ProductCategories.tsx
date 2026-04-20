@@ -8,7 +8,7 @@ const ProductCategories = () => {
   return (
     <nav className={styles.productCategories}>
       <div className={styles.container}>
-        <ButtonStd variant="secondary" bold>Show All</ButtonStd>
+        <ButtonStd variant="secondary" bold>All Products</ButtonStd>
         <NavSpacer size={"0.5rem"}/>
         <ButtonStd variant="secondary">T-Shirts</ButtonStd>
         <ButtonStd variant="secondary">Shoes</ButtonStd>
