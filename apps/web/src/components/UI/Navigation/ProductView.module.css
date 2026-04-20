@@ -1,0 +1,24 @@
+.productContainer {
+    width: 500px;
+    height: 500px;
+
+    background-color: var(--bg-secondary);
+    border-radius: var(--br);
+    padding: 1rem;
+
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.productImage {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--br);
+}
