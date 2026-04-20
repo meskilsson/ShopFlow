@@ -6,6 +6,7 @@ import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react"
 
 import ButtonStd from "@/components/ui/ButtonStd"
 import Card from "@/components/ui/Card"
+import Dropdown from '@/components/ui/Dropdown'
 // import CommentCard from '@/components/CommentCard'
 
 const ProductView = () => {
@@ -56,6 +57,7 @@ const ProductView = () => {
             <p className={styles.productRating}>Rating: {product.rating}/5 ⭐</p>
             <p className={styles.productPrice}>{product.price} kr <span className={styles.vat}>incl. VAT</span></p>
           </div>
+          
           <div className={styles.buttonContainer}>
               <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
               <ButtonStd variant='ghost'><HeartIconStd className={styles.buttonIcon}/></ButtonStd>

@@ -25,6 +25,11 @@
     --gap: 1rem;
 
     --hero-height: 400px;
+
+    /* Dropdown */
+    --dropdown-bg: #2c2c2c;
+    --dropdown-text: #ffffff;
+    --dropdown-hover: #4c4c4c;
 }
 
 h1 {
