@@ -1,0 +1,40 @@
+:root {
+    /*
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    */
+
+    /* Base Colors */
+    --bg-primary: #DEDEDE;
+    --bg-secondary: #FFFFFF;
+    --text-primary: #000000;
+    --text-gray: #ACACAC;
+    --btn-primary: #4F7BFF;
+    --btn-primary-text: #FFFFFF;
+    --btn-secondary: #FFFFFF;
+    --btn-secondary-hover: #f2f2f2;
+    --btn-secondary-text: #000000;
+    --btn-ghost: #000000;
+    --btn-ghost-hover: #0000000c;
+    --btn-ghost-text: #000000;
+    --icon-secondary: #000000;
+    --icon-secondary-hover: #565656;
+
+    /* Properties */
+    --max-width: 1000px;
+    --br: 0.5rem;
+    --btn-height: 2.5rem;
+    --icon-size: 1.55rem;
+
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 400;
+}
