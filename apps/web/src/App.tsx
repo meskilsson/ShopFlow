@@ -2,6 +2,7 @@ import "./App.css";
 import { Routes, Route, useLocation } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 
+import HomePage from "./pages/HomePage";
 import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 
@@ -29,6 +30,7 @@ function App() {
             {/* Routes här under pls */}
             <Route path="/" element={<ProductsPage />} />
             <Route path="/product" element={<ProductPage />} />
+            <Route path="/home" element={<HomePage />} />
 
           </Routes>
           </ContentWrapper>
