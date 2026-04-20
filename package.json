@@ -17,5 +17,8 @@
   },
   "dependencies": {
     "dotenv": "^17.4.2"
-  }
+    "@types/express-session": "^1.18.2",
+    "concurrently": "^9.2.1"
+  },
+}
 }
