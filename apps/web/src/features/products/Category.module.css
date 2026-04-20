@@ -1,0 +1,21 @@
+.category {
+    width: 100%;
+}
+
+.category h1 {
+    font-family: Poppins;
+}
+
+.articles {
+    color: var(--text-gray);
+    font-size: 12px;
+    font-weight: light;
+    margin-bottom: -1.2rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    /* background-color: aquamarine; */
+    width: 100%;
+}

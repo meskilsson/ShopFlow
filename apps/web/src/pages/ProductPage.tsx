@@ -1,11 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import MainContainer from "../components/Containers/MainContainer";
-import NavBar from "../components/UI/Navigation/NavBar"
-import ProductCategories from "../components/UI/Navigation/ProductCategories";
-import ButtonStd from '@/components/UI/ButtonStd';
-import ProductView from "@/components/UI/Navigation/ProductView"
+import MainContainer from "@/components/ContentWrapper";
+import ProductCategories from "@/features/products/ProductCategories";
+import ButtonStd from '@/components/ui/ButtonStd';
+import ProductView from "@/features/product/ProductView"
+import Container from '@/components/containers/Container';
 
 import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"
 
@@ -14,14 +14,13 @@ const ProductPage = () => {
 
   return (
     <>
-        <NavBar/>
-        <MainContainer>
-            <ProductCategories/>
-            <ButtonStd variant="secondary" text={<BackIcon/>} onClick={() => {
-                navigate(-1);
-            }}/>
-            <ProductView/>
-        </MainContainer>
+      <Container>
+        <ProductCategories/>
+        <ButtonStd variant="secondary"onClick={() => {navigate(-1);}}>
+          <BackIcon/>
+        </ButtonStd>
+        <ProductView/>
+      </Container>
     </>
   )
 }

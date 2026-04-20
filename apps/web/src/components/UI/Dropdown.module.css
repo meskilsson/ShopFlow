@@ -1,0 +1,66 @@
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Default trigger (used if not asChild) */
+.trigger {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #222;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.trigger:hover {
+    
+}
+
+/* Menu */
+.menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+
+    min-width: 200px;
+    padding: 8px;
+
+    background: var(--dropdown-bg);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+    pointer-events: none;
+
+    transition:
+        opacity 0.18s ease,
+        transform 0.18s ease;
+}
+
+.menuOpen {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Items (auto-applied to children) */
+.item {
+    color: var(--dropdown-text);
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background: none;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.item:hover {
+    /* background: #f3f3f3; */
+    background: var(--dropdown-hover);
+}
