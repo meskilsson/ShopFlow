@@ -4,7 +4,7 @@ import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from "@/features/products/ProductCard"
 import Category from "@/features/products/Category"
 import ProductCategories from "@/features/products/ProductCategories";
-import Container from '@/components/Containers/Container';
+import Container from '@/components/containers/Container';
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -17,72 +17,66 @@ const ProductsPage = () => {
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
+                image='test'
             />
         </ProductsContainer>
     </Container>

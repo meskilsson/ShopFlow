@@ -9,6 +9,7 @@ import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from '@/features/products/ProductCard';
 import Category from '@/features/products/Category';
 import MainHero from "@/features/home/MainHero"
+import ProductsCarousel from '@/components/UI/ProductsCarousel';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -20,82 +21,88 @@ const HomePage = () => {
       <Container>
 
         <Category categoryText="Shoes" articles={666}/>
-        <ProductsContainer>
+        <ProductsCarousel>
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
-            />
-        </ProductsContainer>
-
-        <Category categoryText="Pants" articles={666}/>
-        <ProductsContainer>
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
             <ProductCard
                 title="DUNK LOW RETRO"
                 brand="Nike Sportswear"
-                variants="1"
-                price="1200"
+                variants={1}
+                price={1200}
                 link="/product"
+                image='test'
             />
-        </ProductsContainer>
+            <ProductCard
+                title="DUNK LOW RETRO"
+                brand="Nike Sportswear"
+                variants={1}
+                price={1200}
+                link="/product"
+                image='test'
+            />
+        </ProductsCarousel>
       </Container>
     </>
   )

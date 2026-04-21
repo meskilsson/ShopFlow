@@ -1,0 +1,51 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center; /* 👈 FIX: knappar på sidorna */
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* 👇 VIEWPORT = exakt 5 kort */
+.viewport {
+  overflow: hidden;
+
+  width: calc(174px * 5 + 1.5rem * 4); /* 👈 exakt 5 */
+}
+
+/* 👇 TRACK */
+.track {
+  display: flex;
+  gap: 1.5rem;
+
+  overflow-x: auto;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+/* 👇 KORTEN (VIKTIGT) */
+.track > * {
+  width: 174px;
+  flex: 0 0 174px; /* 👈 STOPPAR stretching */
+}
+
+/* 👇 KNAPPAR */
+.button {
+  background: var(--bg-secondary);
+  border: none;
+  border-radius: 50%;
+
+  width: 2.5rem;
+  height: 2.5rem;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
