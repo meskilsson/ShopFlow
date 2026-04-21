@@ -22,7 +22,7 @@
 /* Menu */
 .menu {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 0.25rem);
     right: 0;
     /* z-index: 9999; */
     min-width: 200px;
