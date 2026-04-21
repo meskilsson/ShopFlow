@@ -1,12 +1,12 @@
 .card {
   width: 174px;
-  flex: 0 0 174px; /* 👈 KRITISKT */
+  flex: 0 0 174px; /* Viktigt atm */
 
   display: flex;
   flex-direction: column;
 
   background: var(--bg-secondary);
-  border-radius: 14px;
+  border-radius: var(--br);
 
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
