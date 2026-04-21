@@ -3,6 +3,20 @@ body {
     font-family: Inter;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    height: 100vh;
+    /* height: 100vh; */
     width: 100vw;
+}
+
+.appLayout {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+html, body, #root {
+  height: 100%;
 }
