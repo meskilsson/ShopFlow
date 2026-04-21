@@ -1,51 +1,122 @@
-.wrapper {
+/* ─── Layout ─────────────────────────────────────────────────── */
+.carousel {
   width: 100%;
+  margin: 0 auto;
+
+}
+
+.header {
   display: flex;
-  align-items: center; /* 👈 FIX: knappar på sidorna */
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ─── Controls (header variant) ─────────────────────────────── */
+.controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+
+  width: 32px;
+  height: 32px;
+  border-radius: var(--br, 8px);
+
+  background: var(--bg-secondary, #f5f5f5);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  color: inherit;
+  cursor: pointer;
+
+  transition: background 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
-/* 👇 VIEWPORT = exakt 5 kort */
-.viewport {
-  overflow: hidden;
-
-  width: calc(174px * 5 + 1.5rem * 4); /* 👈 exakt 5 */
+.btn:hover:not(:disabled) {
+  background: var(--bg-hover, #ebebeb);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-/* 👇 TRACK */
+.btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ─── Scrollable track ───────────────────────────────────────── */
+.wrapper {
+  position: relative;
+  max-width: calc(174px * 5 + 16px * 4);
+  margin: 0 18px;         /* space for the buttons on each side */
+}
+
 .track {
   display: flex;
-  gap: 1.5rem;
+  gap: 16px;
+  padding: 4px 4px 18px 4px;
+  margin: -4px -4px -18px -4px;
 
   overflow-x: auto;
-  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 
+  /* Hide scrollbar */
   scrollbar-width: none;
+  -ms-overflow-style: none;
+    overflow: hidden;
 }
 
 .track::-webkit-scrollbar {
   display: none;
 }
 
-/* 👇 KORTEN (VIKTIGT) */
+/* Snap each card */
 .track > * {
-  width: 174px;
-  flex: 0 0 174px; /* 👈 STOPPAR stretching */
+  scroll-snap-align: start;
+  flex: 0 0 174px;
 }
 
-/* 👇 KNAPPAR */
-.button {
-  background: var(--bg-secondary);
-  border: none;
-  border-radius: 50%;
-
-  width: 2.5rem;
-  height: 2.5rem;
-
-  cursor: pointer;
+/* ─── Side-button variant (no title) ────────────────────────── */
+.sideBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  background: var(--bg-secondary, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: inherit;
+  cursor: pointer;
+
+  transition: box-shadow 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
 }
+
+.sideBtn:hover:not(:disabled) {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.sideBtn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sideBtnLeft  { left:  -18px; }
+.sideBtnRight { right: -18px; }

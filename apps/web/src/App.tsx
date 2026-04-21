@@ -34,7 +34,7 @@ function App() {
               <Routes location={location}>
 
                 {/* Routes här under pls */}
-                <Route path="/" element={<ProductsPage />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/product" element={<ProductPage />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/signup" element={<SignupPage />} />

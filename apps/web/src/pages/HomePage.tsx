@@ -21,88 +21,179 @@ const HomePage = () => {
       <Container>
 
         <Category categoryText="Shoes" articles={666}/>
-        <ProductsCarousel>
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants={1}
-                price={1200}
-                link="/product"
-                image='test'
-            />
-        </ProductsCarousel>
+        <div style={{margin: "0 auto", marginBottom: "1rem"}}>
+            <ProductsCarousel>
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+            </ProductsCarousel>
+
+        </div>
+
+        <Category categoryText="T-Shirts" articles={462}/>
+        <div style={{margin: "0 auto", marginBottom: "1rem"}}>
+            <ProductsCarousel>
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+                <ProductCard
+                    title="DUNK LOW RETRO"
+                    brand="Nike Sportswear"
+                    variants={1}
+                    price={1200}
+                    link="/product"
+                    image='test'
+                />
+            </ProductsCarousel>
+        </div>
+        <Hero title="KATTARP" subtitle="Have you tried the new Kattarp-collection?" image='https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'/>
+        
       </Container>
     </>
   )
