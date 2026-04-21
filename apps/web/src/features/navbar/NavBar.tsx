@@ -5,7 +5,7 @@ import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react"
 
 import { Link } from "react-router-dom"
 
-import Dropdown from "@/components/ui/Dropdown"
+import Dropdown from "@/components/UI/Dropdown"
 
 const navbar = () => {
   return (
