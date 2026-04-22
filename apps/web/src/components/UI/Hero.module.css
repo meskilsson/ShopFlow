@@ -1,15 +1,24 @@
 .hero {
   width: var(--max-width);
-  /* max-width: var(--max-width); */
   margin: 0 auto;
   height: var(--hero-height);
-  background-size: cover;
+
+  background-size: 110%; /* istället för cover */
   background-position: center;
+  background-repeat: no-repeat;
+
   border-radius: var(--br);
   position: relative;
   margin-bottom: 1rem;
 
+  border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+
+  transition: background-size 0.5s ease;
+}
+
+.hero:hover {
+  background-size: 112%;
 }
 
 .overlay {
