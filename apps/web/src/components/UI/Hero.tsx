@@ -7,12 +7,13 @@ interface HeroProps {
   subtitle?: string
   children?: React.ReactNode
   fullWidth?: boolean
+  halfSize?: boolean
 }
 
-const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps) => {
+const Hero = ({ image, title, subtitle, children, fullWidth = false, halfSize = false }: HeroProps) => {
   return (
   <div
-    className={`${styles.hero} ${fullWidth ? styles.fullWidth : ""}`}
+    className={`${styles.hero} ${fullWidth ? styles.fullWidth : ""} ${halfSize ? styles.halfSize : ""}`}
     style={{ backgroundImage: `url(${image})` }}
   >
     <div className={styles.overlay}>

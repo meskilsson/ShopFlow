@@ -46,3 +46,7 @@
   width: 100%;
   border-radius: 0;
 }
+
+.halfSize {
+  width: 50%;
+}
