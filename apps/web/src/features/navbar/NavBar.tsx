@@ -4,7 +4,9 @@ import CartIcon from "@/assets/icons/cart-shopping-solid-full.svg?react"
 import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react"
 import { useAuth } from "@/contexts/AuthContext"
 
-import Dropdown from "@/components/ui/Dropdown"
+import { Link } from "react-router-dom"
+
+import Dropdown from "@/components/UI/Dropdown"
 
 const navbar = () => {
 
@@ -13,7 +15,9 @@ const navbar = () => {
   return (
     <div className={styles.navbar}>
       <div className={styles.container}>
-        <h2>ShopFlow</h2>
+        <Link to={"/home"} className={styles.link}>
+          <h2>ShopFlow</h2>
+        </Link>
         <div className={styles.iconContainer}>
           <Dropdown>
             <Dropdown.Trigger asChild>

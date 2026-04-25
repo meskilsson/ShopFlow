@@ -3,10 +3,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding: 1rem; */
-    /* padding-left: 3rem; */
+
     background-color: var(--bg-secondary);
     height: var(--navbar-height);
+
+    position: relative;
+    z-index: 1000;
+
 }
 
 .container {
@@ -52,4 +55,9 @@
     height: 1px;
     background-color: var(--dropdown-hover);
     margin: 0.5rem 0;
+}
+
+.link {
+    text-decoration: none;
+    color: var(--text-primary);
 }

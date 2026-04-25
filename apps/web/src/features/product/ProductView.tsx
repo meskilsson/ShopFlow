@@ -3,8 +3,8 @@ import styles from "./ProductView.module.css"
 import ProductImage from "@/assets/1.webp"
 import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react"
 
-import ButtonStd from "@/components/ui/ButtonStd"
-import Card from "@/components/ui/Card"
+import ButtonStd from "@/components/UI/ButtonStd"
+import Card from "@/components/UI/Card"
 // import CommentCard from '@/components/CommentCard'
 
 const ProductView = () => {

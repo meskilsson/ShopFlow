@@ -1,16 +1,15 @@
-import React from 'react';
-import styles from "./ProductsContainer.module.css";
+import styles from "./ProductsContainer.module.css"
 
 type Props = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
-const ContainerH = ({children}: Props) => {
+const ProductsContainer = ({ children }: Props) => {
   return (
-    <div className={styles.containerH}>
+    <section className={styles.container}>
       {children}
-    </div>
+    </section>
   )
 }
 
-export default ContainerH
+export default ProductsContainer
