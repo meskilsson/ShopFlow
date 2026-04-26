@@ -5,6 +5,10 @@ type ProductIdParams = {
   id: string;
 };
 
+type VariantIdParams = {
+  variantId: string;
+};
+
 // ===== CREATE ===== //
 export async function createProduct(
     req: Request, 
@@ -43,11 +47,25 @@ export async function getAllProducts(
     next: NextFunction,
 ): Promise<void> {
     try {
-        const products = await productService.getAllProducts();
-        res.status(200).json(products);
-    } catch (error) {
-        next(error);
-    }
+            const { category, inStock, sort, order, page, limit } = _req.query;
+
+            const pageNum = parseInt(page as string) || 1;
+            const limitNum = parseInt(limit as string) || 20;
+            const sortOrder = order === "desc" ? -1 : 1;
+
+            const result = await productService.getAllProducts({
+                category,
+                inStock,
+                sort,
+                sortOrder,
+                page: pageNum,
+                limit: limitNum,
+            });
+
+            res.status(200).json(result);
+            } catch (error) {
+                next(error);
+            }
 }
 
 // ===== GET ID ===== //
@@ -66,7 +84,7 @@ export async function getProductById(
 
 // ===== GET VARIANTID ===== //
 export async function getVariantById(
-    req: Request<{ variantId: string }>,
+    req: Request<VariantIdParams>,
     res: Response,
     next: NextFunction,
 ): Promise<void> {
@@ -97,7 +115,7 @@ export async function updateProduct(
 
 // ===== UPDATE VARIANT ===== //
 export async function updateVariant(
-    req: Request<ProductIdParams>, 
+    req: Request<VariantIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
@@ -128,7 +146,7 @@ export async function deleteProduct(
 
 // ===== DELETE VARIANT ===== //
 export async function deleteVariant(
-    req: Request<ProductIdParams>, 
+    req: Request<VariantIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {

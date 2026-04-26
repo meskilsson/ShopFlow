@@ -1,6 +1,15 @@
 import Product, { IProduct } from "../models/Products";
 import ProductVariant, { IProductVariant } from "../models/ProductVariant";
 
+type ProductFilters = {
+    category?: unknown;
+    inStock?: unknown;
+    sort?: unknown;
+    sortOrder: 1 | -1;
+    page: number;
+    limit: number;
+}
+
 
 
 // ===== CREATE ===== //
@@ -21,8 +30,35 @@ export async function createProductVariant(productId: string, variantData: IProd
 
 
 // ===== GET ALL  ===== //
-export async function getAllProducts() {
-    return await Product.find().sort({ createdAt: -1 });
+export async function getAllProducts(filters: ProductFilters) {
+    const query: Record<string, unknown> = {};
+
+    if (filters.category) {
+        query.category = filters.category;
+    }
+
+    if (filters.inStock !== undefined) {
+        query.inStock = filters.inStock === "true";
+    }
+
+    const sortField = typeof filters.sort === "string" ? filters.sort : "createdAt";
+
+    const products = await Product.find(query)
+        .sort({ [sortField]: filters.sortOrder })
+        .skip((filters.page -1) * filters.limit)
+        .limit(filters.limit);
+
+    const total = await Product.countDocuments(query);
+
+    return {
+        data: products,
+        meta: {
+            page: filters.page,
+            limit: filters.limit,
+            total,
+            totalPages: Math.ceil(total / filters.limit),
+        },
+    };
 }
 
 // ===== GET ID ===== //
