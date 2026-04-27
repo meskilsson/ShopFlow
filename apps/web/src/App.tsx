@@ -8,10 +8,18 @@ import ProductPage from "@/pages/ProductPage"
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import SettingsPage from "./pages/SettingsPage/SettingsPage";
+import ReturnsPage from "./pages/ReturnsPage/ReturnsPage";
+import OrdersPage from "./pages/OrdersPage/OrdersPage";
+import AddressPage from "./pages/AddressPage/AddressPage";
+
 
 import NavBar from "@/features/navbar/NavBar"
 import ContentWrapper from "@/components/ContentWrapper";
 import Footer from "./features/footer/Footer";
+import AccountLayout from "./pages/AccountLayout/AccountLayout";
+
 
 
 function App() {
@@ -39,6 +47,14 @@ function App() {
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cart" element={<CartPage />} />
+
+              <Route path="/profile" element={<AccountLayout />}>
+                <Route index element={<ProfilePage />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="address" element={<AddressPage />} />
+                <Route path="orders" element={<OrdersPage />} />
+                <Route path="returns" element={<ReturnsPage />} />
+              </Route>
 
             </Routes>
           </ContentWrapper>

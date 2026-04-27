@@ -1,0 +1,14 @@
+.active {
+    font-weight: bold;
+    color: black;
+}
+
+
+.header {
+    font-size: 16px;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+}
