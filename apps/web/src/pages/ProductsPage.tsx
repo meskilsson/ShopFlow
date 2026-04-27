@@ -1,92 +1,48 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from "@/features/products/ProductCard"
 import Category from "@/features/products/Category"
 import ProductCategories from "@/features/products/ProductCategories";
 import Container from '@/components/containers/Container';
+import { useEffect, useState } from 'react';
+import { getProducts } from '@/api/products';
+
+type Product = {
+    _id: string;
+    name: string;
+    category: string;
+    price: number;
+};
 
 const ProductsPage = () => {
-  const navigate = useNavigate();
+    const [products, setProducts] = useState<Product[]>([])
 
-  return (
-    <Container>
-        <ProductCategories/>
-        <Category categoryText="Shoes" articles={666}/>
-        <ProductsContainer>
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-            <ProductCard
-                title="DUNK LOW RETRO"
-                brand="Nike Sportswear"
-                variants="1"
-                price="1200"
-                link="/product"
-            />
-        </ProductsContainer>
-    </Container>
-  )
-}
+    useEffect(() =>  {
+        getProducts().then((result) => {
+            setProducts(result.data);
+        });
+    }, []);
+    const navigate = useNavigate();
+
+    return (
+        <Container>
+            <ProductCategories/>
+            <Category categoryText="Shoes" articles={products.length}/>
+            <ProductsContainer>
+                {products.map((product) => (
+                    <ProductCard
+                        key={product._id}
+                        title={product.name}
+                        brand={product.category}
+                        variants="1"
+                        price={String(product.price)}
+                        link={`/product/${product._id}`}
+                    />
+                ))}
+            </ProductsContainer>
+        </Container>
+    )
+    }
 
 export default ProductsPage

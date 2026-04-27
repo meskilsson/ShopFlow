@@ -7,15 +7,27 @@ import ButtonStd from "@/components/ui/ButtonStd"
 import Card from "@/components/ui/Card"
 // import CommentCard from '@/components/CommentCard'
 
-const ProductView = () => {
+type ProductVariant = {
+  _id: string;
+  product: string;
+  color: string;
+  size: string;
+  inStock?: boolean;
+  sku?: string;
+};
 
-  const product = {
-    name: "DUNK LOW RETRO",
-    brand: "Nike Sportswear",
-    rating: 4,
-    price: 1200,
-    seller: "Port 666™"
-  }
+
+type ProductViewProps = {
+  product: {
+    _id: string;
+    name: string;
+    category: string;
+    price: number;
+  };
+  variants: ProductVariant;
+};
+
+const ProductView = ({ product, variants }: ProductViewProps) => {
 
   const comments = [
     {
@@ -51,10 +63,19 @@ const ProductView = () => {
       {/* Main product*/}
       <Card>
         <div className={styles.productInfo}>
-          <h2 className={styles.productBrand}>{product.brand}</h2>
+          <h2 className={styles.productBrand}>{product.category}</h2>
           <h1 className={styles.productTitle}>{product.name}</h1>
           <p className={styles.productRating}>Rating: {product.rating}/5 ⭐</p>
           <p className={styles.productPrice}>{product.price} kr <span className={styles.vat}>incl. VAT</span></p>
+        </div>
+
+        <div>
+          <p>Variants:</p>
+          {variants.map((variant) => (
+            <button key={variant._id} disabled={!variant.inStock}>
+              {variant.size} / {variant.color}
+            </button>
+          ))}
         </div>
         
         <div className={styles.buttonContainer}>
