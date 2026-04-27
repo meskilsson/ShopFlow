@@ -3,6 +3,7 @@
     border-radius: var(--br);
 
     width: 174px;
+    flex: 1;
     height: 260px;
     overflow: hidden;
 
