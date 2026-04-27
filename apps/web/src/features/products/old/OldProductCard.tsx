@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import styles from "./ProductCard.module.css"
 
-import ProductImage from "../assets/1.webp"
+import ProductImage from "@/assets/1.webp"
 
 interface ProductCardProps {
   title: string
