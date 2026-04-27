@@ -72,8 +72,8 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         <div>
           <p>Variants:</p>
           {variants.map((variant) => (
-            <button key={variant._id} disabled={!variant.inStock}>
-              {variant.size} / {variant.color}
+            <button className={styles.variantBtn} key={variant._id} disabled={!variant.inStock}>
+              <span className={styles.greenDot}></span>{variant.size} / {variant.color}
             </button>
           ))}
         </div>

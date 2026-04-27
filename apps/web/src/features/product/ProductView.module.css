@@ -122,3 +122,18 @@
   color: var(--text-gray);
   padding-left: .2rem;
 }
+
+.variantBtn {
+  display: flex;
+  margin-top: 1rem;
+  padding: 0.1rem
+}
+
+.greenDot {
+  height: 7px;
+  width: 7px;
+  background-color: #198b19; 
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
