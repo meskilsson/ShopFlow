@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <NavBar/>
+      <NavBar />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname} // 👈 VIKTIG!
@@ -27,19 +27,20 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 0.3 }}
-          >
+        >
           <ContentWrapper>
-          <Routes location={location}>
+            <Routes location={location}>
 
-            {/* Routes här under pls */}
-            <Route path="/" element={<ProductsPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/cart" element={<CartPage />}/>
+              {/* Routes här under pls */}
+              <Route index element={<HomePage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/cart" element={<CartPage />} />
 
-          </Routes>
+            </Routes>
           </ContentWrapper>
         </motion.div>
       </AnimatePresence>
