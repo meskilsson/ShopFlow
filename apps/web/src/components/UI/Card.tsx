@@ -1,17 +1,20 @@
-import React from 'react'
-import styles from "./Card.module.css"
+import React from "react";
+import styles from "./Card.module.css";
 
-type Props = {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode;
-  variant?: "default" | "transparent"
+  variant?: "default" | "transparent";
 };
 
-const Card = ({children, variant = "default"}: Props) => {
+const Card = ({ children, variant = "default", className = "", ...props }: Props) => {
   return (
-    <div className={`${styles.card} ${variant === "transparent" ? styles.transparent : ""}`} >
-        {children}
+    <div
+      className={`${styles.card} ${variant === "transparent" ? styles.transparent : ""} ${className}`}
+      {...props}
+    >
+      {children}
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;
