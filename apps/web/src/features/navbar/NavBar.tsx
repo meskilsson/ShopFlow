@@ -29,7 +29,7 @@ const navbar = () => {
             <Dropdown.Content>
               <button>Profile</button>
               <button>Settings</button>
-              <button
+              <button onClick={logout}
               >Log out</button>
             </Dropdown.Content>
 
