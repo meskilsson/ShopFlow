@@ -1,8 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { Response, Request } from "express";
-import mongoose from 'mongoose';
 
 import express from "express";
 import cors from "cors";
@@ -14,6 +12,7 @@ import userRouter from "./routes/userRoutes";
 import productRouter from "./routes/productRoutes";
 import orderRouter from "./routes/orderRoutes";
 import authRouter from "./routes/authRoutes";
+import addressRouter from "./routes/addressRoutes";
 import { connectDB } from "./config/db";
 import cartRouter from './routes/cartRoutes';
 
