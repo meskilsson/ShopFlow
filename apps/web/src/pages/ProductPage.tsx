@@ -7,6 +7,7 @@ import ButtonStd from '@/components/UI/ButtonStd';
 import ProductView from "@/features/product/ProductView"
 import Container from '@/components/containers/Container';
 
+import ButtonStd from '@/components/UI/ButtonStd';
 import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"
 
 const ProductPage = () => {

@@ -1,6 +1,7 @@
 :root {
     /* Base Colors */
     --bg-primary: #DEDEDE;
+    
     --bg-secondary: #FFFFFF;
     --text-primary: #000000;
     --text-gray: #ACACAC;
@@ -14,7 +15,7 @@
     --btn-ghost-dark-hover: #0000000c;
     --btn-ghost-dark-text: #000000;
     --btn-ghost-light: #ffffff;
-    --btn-ghost-light-hover: #0000000c;
+    --btn-ghost-light-hover: #ffffff42;
     --btn-ghost-light-text: #ffffff;
     --icon-secondary: #000000;
     --icon-secondary-hover: #565656;
@@ -26,7 +27,7 @@
     --icon-size: 1.55rem;
     --btn-text-size: 0.875rem;
     --gap: 1rem;
-    --navbar-height: 3.5rem;
+    --navbar-height: 3rem;
 
     --hero-height: 400px;
 
@@ -47,10 +48,14 @@ h1 {
     display: flex;
     flex-direction: row;
     gap: var(--gap);
+    justify-content: center;
+    align-items: center;
 }
 
 .flex-v {
     display: flex;
     flex-direction: column;
     gap: var(--gap);
+    justify-content: center;
+    align-items: center;
 }

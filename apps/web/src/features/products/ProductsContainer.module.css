@@ -1,10 +1,39 @@
-.containerH {
-    width: 100%;
-    /* margin: 0; */
-    
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 172px);
-    /* justify-content: center; */
-    /* background-color: aquamarine; */
-    gap: 2.18rem;
+.container {
+  width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 2rem;
+
+  /* 👇 alltid vänster */
+  justify-content: flex-start;
+}
+
+/* 4 per rad */
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: repeat(4, 174px);
+  }
+}
+
+/* 3 per rad */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: repeat(3, 174px);
+  }
+}
+
+/* 2 per rad */
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: repeat(2, 174px);
+  }
+}
+
+/* 1 per rad */
+@media (max-width: 400px) {
+  .container {
+    grid-template-columns: repeat(1, 174px);
+  }
 }
