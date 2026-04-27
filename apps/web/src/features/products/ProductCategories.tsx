@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./ProductCategories.module.css"
-import ButtonStd from "@/components/ui/ButtonStd"
+import ButtonStd from "@/components/UI/ButtonStd"
 import NavSpacer from '@/features/navbar/NavSpacer'
 import SearchBar from '@/features/search/SearchBar'
 

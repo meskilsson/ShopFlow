@@ -2,8 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import ProductCategories from "@/features/products/ProductCategories";
-import ButtonStd from '@/components/ui/ButtonStd';
-import Container from '@/components/Containers/Container';
+import Container from '@/components/containers/Container';
 import Hero from '@/components/UI/Hero';
 import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from '@/features/products/ProductCard';

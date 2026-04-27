@@ -7,6 +7,7 @@ import ProductsPage from "@/pages/ProductsPage"
 import ProductPage from "@/pages/ProductPage"
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
+import CartPage from "./pages/CartPage";
 
 import NavBar from "@/features/navbar/NavBar"
 import ContentWrapper from "@/components/ContentWrapper";
@@ -35,6 +36,7 @@ function App() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/cart" element={<CartPage />}/>
 
           </Routes>
           </ContentWrapper>

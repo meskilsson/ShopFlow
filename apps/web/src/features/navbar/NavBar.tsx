@@ -1,9 +1,10 @@
 import styles from "./NavBar.module.css"
+import { Link } from "react-router-dom"
 import HeartIcon from "@/assets/icons/heart-solid-full.svg?react"
 import CartIcon from "@/assets/icons/cart-shopping-solid-full.svg?react"
 import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react"
 
-import Dropdown from "@/components/ui/Dropdown"
+import Dropdown from "@/components/UI/Dropdown"
 
 const navbar = () => {
   return (
@@ -25,7 +26,9 @@ const navbar = () => {
               
             </Dropdown>
           <a className={styles.iconBtn}><HeartIcon className={styles.icon}/></a>
-          <a className={styles.iconBtn}><CartIcon className={styles.icon}/></a>
+          <Link to="/cart" className={styles.iconBtn}>
+            <CartIcon className={styles.icon}/>
+          </Link>
         </div>
       </div>
     </div>
