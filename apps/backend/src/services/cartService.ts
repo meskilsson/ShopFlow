@@ -4,11 +4,11 @@ import type { CartOwner } from "../types/cart.types";
 import { createHttpError } from "../middleware/HttpError";
 
 export function getCartQuery(owner: CartOwner) {
-  return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
+  return "userId" in owner ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
 export function getCartPayload(owner: CartOwner) {
-  return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
+  return "userId" in owner ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
 export async function findCartByOwner(owner: CartOwner) {

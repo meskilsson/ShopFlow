@@ -148,3 +148,14 @@
   display: inline-block;
   margin-right: 5px;
 }
+
+.cartMessage {
+    position: absolute;
+  right: 24px;
+  bottom: 24px;
+  background: var(--btn-primary);
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  z-index: 1000;
+}
