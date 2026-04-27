@@ -7,7 +7,6 @@ import ButtonStd from '@/components/UI/ButtonStd';
 import ProductView from "@/features/product/ProductView"
 import Container from '@/components/containers/Container';
 
-import ButtonStd from '@/components/UI/ButtonStd';
 import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"
 
 const ProductPage = () => {
@@ -16,11 +15,11 @@ const ProductPage = () => {
   return (
     <>
       <Container>
-        <ProductCategories/>
-        <ButtonStd variant="secondary"onClick={() => {navigate(-1);}}>
-          <BackIcon/>
+        <ProductCategories />
+        <ButtonStd variant="secondary" onClick={() => { navigate(-1); }}>
+          <BackIcon />
         </ButtonStd>
-        <ProductView/>
+        <ProductView />
       </Container>
     </>
   )

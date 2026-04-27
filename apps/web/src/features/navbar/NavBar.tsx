@@ -6,8 +6,6 @@ import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
 
-import { Link } from "react-router-dom"
-
 import Dropdown from "@/components/UI/Dropdown"
 
 const navbar = () => {
@@ -23,22 +21,6 @@ const navbar = () => {
         </Link>
         <div className={styles.iconContainer}>
           <Dropdown>
-              <Dropdown.Trigger asChild>
-                {/* <ButtonStd variant='ghost' fullWidth>hej</ButtonStd> */}
-                <a className={styles.iconBtn}><ProfileIcon className={styles.icon}/></a>
-              </Dropdown.Trigger>
-
-              <Dropdown.Content>
-                <button>Profile</button>
-                <button>Settings</button>
-                <button>Log out</button>
-              </Dropdown.Content>
-              
-            </Dropdown>
-          <a className={styles.iconBtn}><HeartIcon className={styles.icon}/></a>
-          <Link to="/cart" className={styles.iconBtn}>
-            <CartIcon className={styles.icon}/>
-          </Link>
             <Dropdown.Trigger asChild>
               {/* <ButtonStd variant='ghost' fullWidth>hej</ButtonStd> */}
               <a className={styles.iconBtn}><ProfileIcon className={styles.icon} /></a>
@@ -48,13 +30,16 @@ const navbar = () => {
               <button>Profile</button>
               <button>Settings</button>
               <button
-                onClick={() => logout()}
               >Log out</button>
             </Dropdown.Content>
 
           </Dropdown>
           <a className={styles.iconBtn}><HeartIcon className={styles.icon} /></a>
-          <a className={styles.iconBtn}><CartIcon className={styles.icon} /></a>
+          <Link to="/cart" className={styles.iconBtn}>
+            <CartIcon className={styles.icon} />
+          </Link>
+
+
         </div>
       </div>
     </div>
