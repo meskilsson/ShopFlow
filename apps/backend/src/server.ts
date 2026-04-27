@@ -16,7 +16,6 @@ import orderRouter from "./routes/orderRoutes";
 import authRouter from "./routes/authRoutes";
 import { connectDB } from "./config/db";
 import cartRouter from './routes/cartRoutes';
-import addressRouter from "./routes/addressRoutes";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
