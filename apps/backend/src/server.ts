@@ -16,6 +16,7 @@ import orderRouter from "./routes/orderRoutes";
 import authRouter from "./routes/authRoutes";
 import { connectDB } from "./config/db";
 import cartRouter from './routes/cartRoutes';
+import addressRouter from "./routes/addressRoutes";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -23,6 +24,7 @@ const PORT = Number(process.env.PORT) || 5000;
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
+    credentials: true,
   }),
 );
 
@@ -52,11 +54,16 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/v1/users", userRouter);
+
 app.use("/api/v1/orders", orderRouter);
+
 app.use("/api/v1/cart", cartRouter);
+
 app.use("/api/v1/auth", authRouter);
 
 app.use("/api/v1/products", productRouter);
+
+app.use("/api/v1/address", addressRouter);
 
 app.use(notFound);
 app.use(errorHandler);

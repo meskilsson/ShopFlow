@@ -1,128 +1,131 @@
-import Cart, { ICartItem } from "../models/Cart";
+import Cart from "../models/Cart";
+import CartItem from "../models/CartItem";
+import type { CartOwner } from "../types/cart.types";
+import { createHttpError } from "../middleware/HttpError";
 
-export type CartOwner =
-  | {
-      userId: string;
-      sessionId?: never;
-    }
-  | {
-      userId?: never;
-      sessionId: string;
-    };
-
-function createHttpError(message: string, statusCode: number): Error & {
-  statusCode?: number;
-} {
-  const error = new Error(message) as Error & { statusCode?: number };
-  error.statusCode = statusCode;
-  return error;
-}
-
-function getCartQuery(owner: CartOwner) {
+export function getCartQuery(owner: CartOwner) {
   return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
-function getCartPayload(owner: CartOwner, items: ICartItem[] = []) {
-  return owner.userId
-    ? { user: owner.userId, items }
-    : { sessionId: owner.sessionId, items };
+export function getCartPayload(owner: CartOwner) {
+  return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
-export async function getCartByOwner(owner: CartOwner) {
-  const cart = await Cart.findOne(getCartQuery(owner));
+export async function findCartByOwner(owner: CartOwner) {
+  return Cart.findOne(getCartQuery(owner));
+}
+
+export async function mergeCartOwners(
+  sourceOwner: CartOwner,
+  targetOwner: CartOwner,
+) {
+  const sourceCart = await findCartByOwner(sourceOwner);
+
+  if (!sourceCart) {
+    return findCartByOwner(targetOwner);
+  }
+
+  const targetCart = await findCartByOwner(targetOwner);
+
+  if (!targetCart) {
+    sourceCart.set(getCartPayload(targetOwner));
+
+    if ("userId" in targetOwner) {
+      sourceCart.set("sessionId", undefined);
+    }
+
+    await sourceCart.save();
+    return sourceCart;
+  }
+
+  if (String(sourceCart._id) === String(targetCart._id)) {
+    return targetCart;
+  }
+
+  const sourceItems = await CartItem.find({ cart: sourceCart._id });
+
+  for (const sourceItem of sourceItems) {
+    const existingTargetItem = await CartItem.findOne({
+      cart: targetCart._id,
+      productId: sourceItem.productId,
+    });
+
+    if (existingTargetItem) {
+      existingTargetItem.quantity += sourceItem.quantity;
+      await existingTargetItem.save();
+      await sourceItem.deleteOne();
+      continue;
+    }
+
+    sourceItem.cart = targetCart._id;
+    await sourceItem.save();
+  }
+
+  await sourceCart.deleteOne();
+
+  return targetCart;
+}
+
+export async function formatCartResponse(cartId: string) {
+  const cart = await Cart.findById(cartId).select("-__v").lean();
 
   if (!cart) {
     throw createHttpError("Cart not found", 404);
   }
 
-  return cart;
+  const items = await CartItem.find({ cart: cart._id })
+    .select("-cart -__v")
+    .populate("productId", "name price category")
+    .lean();
+
+  const formattedItems = items.map((item) => ({
+    _id: item._id,
+    product: item.productId,
+    quantity: item.quantity,
+    unitPrice: item.unitPrice,
+    lineTotal: item.unitPrice * item.quantity,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
+  }));
+
+  const total = formattedItems.reduce((sum, item) => sum + item.lineTotal, 0);
+
+  return {
+    ...cart,
+    items: formattedItems,
+    total,
+  };
 }
 
-export async function createCart(owner: CartOwner, items: ICartItem[] = []) {
-  const existingCart = await Cart.findOne(getCartQuery(owner));
+export async function getCartByOwner(owner: CartOwner) {
+  const cart = await findCartByOwner(owner);
+
+  if (!cart) {
+    throw createHttpError("Cart not found", 404);
+  }
+
+  return formatCartResponse(String(cart._id));
+}
+
+export async function createCart(owner: CartOwner) {
+  const existingCart = await findCartByOwner(owner);
 
   if (existingCart) {
     throw createHttpError("Cart already exists for this owner", 409);
   }
 
-  return await Cart.create(getCartPayload(owner, items));
-}
-
-export async function addItemToCart(owner: CartOwner, item: ICartItem) {
-  let cart = await Cart.findOne(getCartQuery(owner));
-
-  if (!cart) {
-    cart = await Cart.create(getCartPayload(owner, [item]));
-
-    return cart;
-  }
-
-  const existingItem = cart.items.find(
-    (cartItem) => cartItem.productId === item.productId,
-  );
-
-  if (existingItem) {
-    existingItem.quantity += item.quantity;
-  } else {
-    cart.items.push(item);
-  }
-
-  await cart.save();
-
-  return cart;
-}
-
-export async function updateCartItemQuantity(
-  owner: CartOwner,
-  productId: string,
-  quantity: number,
-) {
-  const cart = await Cart.findOne(getCartQuery(owner));
-
-  if (!cart) {
-    throw createHttpError("Cart not found", 404);
-  }
-
-  const existingItem = cart.items.find((item) => item.productId === productId);
-
-  if (!existingItem) {
-    throw createHttpError("Cart item not found", 404);
-  }
-
-  existingItem.quantity = quantity;
-  await cart.save();
-
-  return cart;
-}
-
-export async function removeCartItem(owner: CartOwner, productId: string) {
-  const cart = await Cart.findOne(getCartQuery(owner));
-
-  if (!cart) {
-    throw createHttpError("Cart not found", 404);
-  }
-
-  const nextItems = cart.items.filter((item) => item.productId !== productId);
-
-  if (nextItems.length === cart.items.length) {
-    throw createHttpError("Cart item not found", 404);
-  }
-
-  cart.items = nextItems;
-  await cart.save();
-
-  return cart;
+  const cart = await Cart.create(getCartPayload(owner));
+  return formatCartResponse(String(cart._id));
 }
 
 export async function clearCart(owner: CartOwner) {
-  const cart = await Cart.findOne(getCartQuery(owner));
+  const cart = await findCartByOwner(owner);
 
   if (!cart) {
     throw createHttpError("Cart not found", 404);
   }
 
-  cart.items = [];
-  await cart.save();
+  await CartItem.deleteMany({ cart: cart._id });
 
-  return cart;
+  return formatCartResponse(String(cart._id));
 }

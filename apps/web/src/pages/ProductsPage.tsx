@@ -6,9 +6,6 @@ import Category from "@/features/products/Category"
 import ProductCategories from "@/features/products/ProductCategories";
 import Container from '@/components/containers/Container';
 
-import ButtonStd from '@/components/UI/ButtonStd';
-import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"
-
 const ProductsPage = () => {
   const navigate = useNavigate();
 
