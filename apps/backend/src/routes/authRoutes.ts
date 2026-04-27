@@ -10,21 +10,19 @@ authRouter.get("/profile", authenticateToken, authorizeRoles("admin", "buyer", "
 
 // TEST ROUTES!
 
-// oogi
-
-authRouter.get("/buyer-area", authenticateToken, authorizeRoles("buyer"), (req, res) => {
+authRouter.get("/buyer", authenticateToken, authorizeRoles("buyer"), (req, res) => {
     res.json({ message: "Welcome buyer!", user: req.user });
 });
 
-authRouter.get("/seller-area", authenticateToken, authorizeRoles("seller"), (req, res) => {
+authRouter.get("/seller", authenticateToken, authorizeRoles("seller"), (req, res) => {
     res.json({ message: "Welcome seller!", user: req.user });
 });
 
-authRouter.get("/admin-area", authenticateToken, authorizeRoles("admin"), (req, res) => {
-    res.json({ message: "Welcome Admin!", req: req.user });
+authRouter.get("/admin", authenticateToken, authorizeRoles("admin"), (req, res) => {
+    res.json({ message: "Welcome admin!", req: req.user });
 });
 
-authRouter.get("/management-area", authenticateToken, authorizeRoles("seller", "admin"), (req, res) => {
+authRouter.get("/seller-admin", authenticateToken, authorizeRoles("seller", "admin"), (req, res) => {
     res.json({ message: "Welcome seller/admin", req: req.user });
 });
 

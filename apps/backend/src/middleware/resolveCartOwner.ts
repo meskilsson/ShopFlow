@@ -1,17 +1,37 @@
 import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import type { AuthTokenPayload } from "../types/authTypes";
+import { mergeCartOwners } from "../services/cartService";
 
-function resolveCartOwner(
+const JWT_SECRET = process.env.JWT_SECRET || "server_jwt_token";
+
+async function resolveCartOwner(
   req: Request,
   res: Response,
   next: NextFunction,
-): void {
-  const sessionUserId = req.session?.userId;
+): Promise<void> {
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : null;
 
-  res.locals.cartOwner = sessionUserId
-    ? { userId: sessionUserId }
-    : { sessionId: req.sessionID };
+  if (!token) {
+    res.locals.cartOwner = { sessionId: req.sessionID };
+    next();
+    return;
+  }
 
-  next();
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as AuthTokenPayload;
+    const userOwner = { userId: payload.userId } as const;
+
+    await mergeCartOwners({ sessionId: req.sessionID }, userOwner);
+
+    res.locals.cartOwner = userOwner;
+    next();
+  } catch {
+    res.status(403).json({ error: "Unauthorized or expired token" });
+  }
 }
 
 export default resolveCartOwner;

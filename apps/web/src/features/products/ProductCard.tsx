@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from "react-router-dom"
 import styles from "./ProductCard.module.css"
 
@@ -7,23 +6,42 @@ import ProductImage from "@/assets/1.webp"
 interface ProductCardProps {
   title: string
   brand: string
-  variants: string
-  price: string
+  variants: number
+  price: number
   link: string
+  image: string
 }
 
-const ProductCard = ({title, brand, variants, price, link}: ProductCardProps) => {
+const ProductCard = ({
+  title,
+  brand,
+  variants,
+  price,
+  link,
+  image
+}: ProductCardProps) => {
   return (
     <Link to={link} className={styles.card}>
-      <img src={ProductImage} className={styles.productImage}/>
-      <div className={styles.productInfo}>
-          <h2 className={styles.productTitle}>{title}</h2>
-          <h3 className={styles.productBrand}>{brand}</h3>
-          <p className={styles.productVariants}>{variants} variants</p>
-          <p className={styles.productPrice}>{price} kr</p>
+      
+      <div className={styles.imageWrapper}>
+        <img src={ProductImage} alt={title} className={styles.productImage} />
       </div>
+
+      <div className={styles.productInfo}>
+        <p className={styles.productTitle}>{title}</p>
+        <p className={styles.productBrand}>{brand}</p>
+
+        <div className={styles.metaRow}>
+          <span className={styles.productVariants}>
+            {variants} variants
+          </span>
+          <span className={styles.productPrice}>
+            {price} kr
+          </span>
+        </div>
+      </div>
+
     </Link>
-    
   )
 }
 

@@ -5,6 +5,7 @@ import { div } from 'framer-motion/client'
 import ButtonStd from '@/components/UI/ButtonStd'
 import SearchBar from '../search/SearchBar'
 import NavSpacer from '../navbar/NavSpacer'
+import { useNavigate } from "react-router-dom"
 
 interface HeroProps {
   image: string
@@ -15,6 +16,7 @@ interface HeroProps {
 }
 
 const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps) => {
+    const navigate = useNavigate()
   return (
     <>
         <div
@@ -25,14 +27,14 @@ const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps
             <div className={styles.heroNav}>
                 <nav className={styles.productCategories}>
                 <div className={styles.container}>
-                    <ButtonStd variant="ghost-light" bold>All Products</ButtonStd>
+                    <ButtonStd variant="ghost-light" bold onClick={() => navigate("/products")}>All Products</ButtonStd>
                     <NavSpacer size={"0.5rem"}/>
-                    <ButtonStd variant="ghost-light">T-Shirts</ButtonStd>
-                    <ButtonStd variant="ghost-light">Shoes</ButtonStd>
-                    <ButtonStd variant="ghost-light">Pants</ButtonStd>
-                    <ButtonStd variant="ghost-light">Shirts</ButtonStd>
-                    <ButtonStd variant="ghost-light">Jackets</ButtonStd>
-                    <ButtonStd variant="ghost-light">Accessories</ButtonStd>
+                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>T-Shirts</ButtonStd>
+                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Shoes</ButtonStd>
+                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Pants</ButtonStd>
+                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Shirts</ButtonStd>
+                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Jackets</ButtonStd>
+                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Accessories</ButtonStd>
                 </div>
                 <div className={styles.container}>
                     <SearchBar/>
