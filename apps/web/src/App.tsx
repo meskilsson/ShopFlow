@@ -8,6 +8,7 @@ import ProductPage from "@/pages/ProductPage"
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
+import SellerDashboardPage from "./pages/SellerDashboardPage"
 
 import NavBar from "@/features/navbar/NavBar"
 import ContentWrapper from "@/components/ContentWrapper";
@@ -39,6 +40,7 @@ function App() {
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/sellerdashboard" element={<SellerDashboardPage/>}/>
 
             </Routes>
           </ContentWrapper>

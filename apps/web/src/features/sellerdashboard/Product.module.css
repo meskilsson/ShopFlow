@@ -1,0 +1,26 @@
+.wrapper {
+    /* background-color: tomato; */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 4rem;    
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.activeButton {
+    background-color: rgb(202, 255, 202);
+    color: rgb(1, 139, 1);
+    padding: 0.5rem 1rem;
+    border-radius: var(--br);
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+}

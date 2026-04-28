@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: var(--max-width);
+}
+.statsContainer {
+    /* margin-top: 1rem; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    /* background-color: tomato; */
+}
+
+.subHeader {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
