@@ -1,11 +1,13 @@
 import { Schema, model } from "mongoose";
 
+export type UserRole = "buyer" | "seller" | "admin";
+
 export interface IUser {
   name: string;
   email: string;
   username: string;
   passwordHash: string;
-  role: "buyer" | "seller" | "admin";
+  role: UserRole;
 }
 
 const userSchema = new Schema<IUser>(
