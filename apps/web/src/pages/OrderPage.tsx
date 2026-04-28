@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CartItems from "../features/cart/CartItems";
 import CartSummary from "../features/cart/CartSummary";
@@ -6,63 +6,85 @@ import styles from "./OrderPage.module.css";
 
 const OrderPage = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [cart, setCart] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [orderLoading, setOrderLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/v1/cart", {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setCart(data);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, []);
+
   const handleConfirmOrder = async () => {
-    setLoading(true);
+    if (!cart || cart.items.length === 0) {
+      setError("Din kundvagn är tom!");
+      return;
+    }
+
+    setOrderLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/v1/orders/from-cart",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // to send cookies/session
-        },
-      );
+      const res = await fetch("http://localhost:5000/api/v1/orders/from-cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
 
-      if (!response.ok) {
-        throw new Error("Could not create order");
-      }
+      if (!res.ok) throw new Error("Kunde inte skapa order");
 
-      const order = await response.json();
+      const order = await res.json();
       navigate(`/order-confirmation/${order._id}`);
     } catch (err: any) {
-      setError(err.message || "Something went wrong with the order");
+      setError(err.message || "Något gick fel");
     } finally {
-      setLoading(false);
+      setOrderLoading(false);
     }
   };
+
+  if (loading) return <p>Laddar kundvagn...</p>;
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        {/* Left column */}
+        {/* Vänster kolumn */}
         <div className={styles.leftColumn}>
-          <h1>Confirm your order</h1>
+          <h1>Bekräfta din beställning</h1>
 
           <div className={styles.section}>
-            <h2>Delivery address</h2>
+            <h2>Leveransadress</h2>
             <p>Tomac Jansson</p>
-            <p>Example Street 12</p>
+            <p>Exempelgatan 12</p>
             <p>123 45 Stockholm</p>
           </div>
 
           <div className={styles.section}>
-            <h2>Payment method</h2>
+            <h2>Betalningssätt</h2>
             <div className={styles.paymentOptions}>
               <label>
-                <input type="radio" name="payment" defaultChecked /> Card
+                <input type="radio" name="payment" defaultChecked /> Kort
               </label>
               <label>
                 <input type="radio" name="payment" /> Swish
               </label>
               <label>
-                <input type="radio" name="payment" /> Invoice
+                <input type="radio" name="payment" /> Faktura
               </label>
             </div>
           </div>
@@ -70,22 +92,30 @@ const OrderPage = () => {
           {error && <p className={styles.error}>{error}</p>}
         </div>
 
-        {/* Right column */}
+        {/* Höger kolumn */}
         <div className={styles.rightColumn}>
-          <h2>Your order</h2>
-          <CartItems />
-          <CartSummary />
+          <h2>Din order</h2>
+
+          {cart && cart.items && cart.items.length > 0 ? (
+            <>
+              <CartItems items={cart.items} />
+              <CartSummary />
+            </>
+          ) : (
+            <p>Din kundvagn är tom.</p>
+          )}
 
           <button
             onClick={handleConfirmOrder}
-            disabled={loading}
+            disabled={orderLoading || !cart || cart.items.length === 0}
             className={styles.confirmButton}
           >
-            {loading ? "Creating order..." : "Complete purchase"}
+            {orderLoading ? "Skapar order..." : "Slutför köp"}
           </button>
 
           <p className={styles.terms}>
-            By completing the purchase you accept our terms and privacy policy.
+            Genom att slutföra köpet godkänner du våra villkor och
+            integritetspolicy.
           </p>
         </div>
       </div>
