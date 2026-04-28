@@ -1,14 +1,176 @@
-.active {
-    font-weight: bold;
-    color: black;
+.page {
+    padding: 3rem 0 5rem;
 }
 
+.pageHeader {
+    margin-bottom: 2.25rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+}
+
+.kicker {
+    margin: 0 0 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-gray);
+}
+
+.subtitle {
+    max-width: 620px;
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    line-height: 1.1;
+    font-weight: 400;
+    color: color-mix(in srgb, var(--text-primary) 78%, var(--bg-primary));
+}
+
+.accountLayout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 2.75rem;
+    align-items: start;
+}
+
+.sideNav {
+    position: sticky;
+    top: calc(var(--navbar-height) + 3rem);
+    background: transparent;
+    border: none;
+}
 
 .header {
-    font-size: 16px;
+    margin: 0 0 0.875rem;
+    padding-left: 0.875rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-gray);
 }
 
 .links {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+}
+
+.link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.875rem;
+    border-radius: var(--br);
+    color: color-mix(in srgb, var(--text-primary) 55%, var(--bg-primary));
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.link::before {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-right: 0.75rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text-gray) 60%, var(--bg-primary));
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.link:hover {
+    background-color: color-mix(in srgb, var(--bg-secondary) 60%, var(--bg-primary));
+    color: color-mix(in srgb, var(--text-primary) 72%, var(--bg-primary));
+    transform: translateX(2px);
+}
+
+.link:hover::before {
+    background: color-mix(in srgb, var(--text-primary) 35%, var(--bg-primary));
+}
+
+.activeLink {
+    background-color: color-mix(in srgb, var(--btn-primary) 10%, var(--bg-secondary));
+    color: color-mix(in srgb, var(--text-primary) 75%, var(--bg-primary));
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-primary) 18%, transparent);
+}
+
+.activeLink::before {
+    background-color: color-mix(in srgb, var(--btn-primary) 70%, var(--text-gray));
+    transform: scale(1.15);
+}
+
+.content {
+    min-height: 420px;
+    border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: calc(var(--br) * 2);
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.045);
+}
+
+@media (max-width: 800px) {
+    .page {
+        padding: 2rem 0 3.5rem;
+    }
+
+    .pageHeader {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.375rem;
+    }
+
+    .subtitle {
+        font-size: clamp(1.6rem, 8vw, 2.25rem);
+    }
+
+    .accountLayout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .sideNav {
+        position: static;
+    }
+
+    .header {
+        padding-left: 0;
+        margin-bottom: 0.75rem;
+    }
+
+    .links {
+        flex-direction: row;
+        gap: 0.625rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .link {
+        min-height: 2.5rem;
+        white-space: nowrap;
+        padding: 0 1rem;
+        border-radius: 999px;
+        background-color: color-mix(in srgb, var(--bg-secondary) 45%, var(--bg-primary));
+    }
+
+    .link::before {
+        display: none;
+    }
+
+    .activeLink {
+        background-color: color-mix(in srgb, var(--btn-primary) 12%, var(--bg-secondary));
+        color: color-mix(in srgb, var(--text-primary) 75%, var(--bg-primary));
+    }
+
+    .content {
+        padding: 1.5rem;
+        border-radius: calc(var(--br) * 2);
+    }
 }
