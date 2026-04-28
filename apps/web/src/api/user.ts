@@ -61,10 +61,10 @@ export async function deleteUserRequest(id: string) {
 }
 
 export async function updateUserRequest(id: string, userData: UpdateUserData) {
-    const response = await fetch(`${API_URL}/users(${id})`, {
+    const response = await fetch(`${API_URL}/users/${id}`, {
         method: "PATCH",
         headers: {
-            "Content-Type": "application.json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
     });
@@ -73,6 +73,30 @@ export async function updateUserRequest(id: string, userData: UpdateUserData) {
 
     if (!response.ok) {
         throw new Error(data.message || "Failed to update user");
+    }
+
+    return data;
+}
+
+export async function changePasswordRequest(
+    id: string,
+    passwordData: {
+        currentPassword: string;
+        newPassword: string;
+    }
+) {
+    const response = await fetch(`${API_URL}/users/${id}/password`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(passwordData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to update password");
     }
 
     return data;

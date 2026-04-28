@@ -15,7 +15,6 @@ interface UpdatedUserInput {
   name?: string;
   email?: string;
   username?: string;
-  password?: string;
   role?: UserRole;
 }
 
@@ -126,14 +125,6 @@ export async function updateUser(id: string, userData: UpdatedUserInput) {
     updateData.role = userData.role;
   }
 
-  if (userData.password !== undefined) {
-    if (!userData.password) {
-      throw createHttpError("Passwod cannot be empty", 400);
-    }
-
-    updateData.passwordHash = await bcrypt.hash(userData.password, 10);
-  }
-
   const conflictConditions = [];
 
   if (updateData.email) {
@@ -162,4 +153,41 @@ export async function updateUser(id: string, userData: UpdatedUserInput) {
 
   return updatedUser;
 
+}
+
+export async function changePasswordService(
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+) {
+  const user = await User.findById(userId).select("+passwordHash");
+
+  if (!user) {
+    throw createHttpError("User not found", 404);
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(
+    currentPassword,
+    user.passwordHash
+  );
+
+  if (!isPasswordCorrect) {
+    throw createHttpError("Current password is incorrect", 400);
+  }
+
+  if (!newPassword) {
+    throw createHttpError("New password cannot be empty", 400);
+  }
+
+  if (newPassword.length < 6) {
+    throw createHttpError("New password must be at least 6 characters", 400);
+  }
+
+  user.passwordHash = await bcrypt.hash(newPassword, 10);
+
+  await user.save();
+
+  return {
+    message: "Password updated successfully",
+  };
 }

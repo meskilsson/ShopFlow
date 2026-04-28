@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as userService from "../services/userService";
 import type { UserRole } from "../models/User";
+import { createHttpError } from "../middleware/HttpError";
 
 type UserIdParams = {
   id: string;
@@ -10,8 +11,12 @@ interface UpdateUserBody {
   name?: string;
   email?: string;
   username?: string;
-  password?: string;
   role?: UserRole;
+}
+
+interface ChangePasswordBody {
+  currentPassword: string;
+  newPassword: string;
 }
 
 export async function createUser(
@@ -76,6 +81,34 @@ export async function deleteUser(
     const deletedUser = await userService.deleteUser(req.params.id);
     res.status(200).json(deletedUser);
 
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function changePassword(
+  req: Request<UserIdParams, unknown, ChangePasswordBody>,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      throw createHttpError(
+        "Current password and new password are required",
+        400
+      );
+    }
+
+    const result = await userService.changePasswordService(
+      id,
+      currentPassword,
+      newPassword
+    );
+
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
