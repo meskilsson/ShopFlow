@@ -5,6 +5,7 @@ import {
   getOrderById,
   getOrdersByUser,
   updateOrderStatus,
+  createOrderFromCart,
 } from "../controllers/orderController";
 
 const orderRouter = Router();
@@ -23,5 +24,7 @@ orderRouter.get("/user/:userId", getOrdersByUser);
 
 // UPDATE - Update order status (admin/seller)
 orderRouter.patch("/:id", updateOrderStatus);
+
+orderRouter.post("/from-cart", createOrderFromCart);
 
 export default orderRouter;

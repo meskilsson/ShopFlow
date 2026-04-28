@@ -1,5 +1,6 @@
 import Order, { IOrder } from "../models/Order";
 import OrderItem, { IOrderItem } from "../models/OrderItem";
+import { createHttpError } from "../middleware/HttpError";
 
 export async function createOrder(
   orderData: Omit<IOrder, "createdAt" | "updatedAt">,
@@ -87,4 +88,46 @@ export async function updateOrderStatus(
     ...updatedOrder.toObject(),
     items,
   };
+}
+
+export async function createOrderFromCart(userId: string) {
+  // 1. Fetch the cart
+  const cart = await Cart.findOne({ user: userId }).populate({
+    path: "items",
+    populate: { path: "productId" },
+  });
+
+  if (!cart || !cart.items || cart.items.length === 0) {
+    throw createHttpError("Cart is empty", 400);
+  }
+
+  // 2. Calculate total price
+  const totalPrice = cart.items.reduce((sum: number, item: any) => {
+    return sum + item.unitPrice * item.quantity;
+  }, 0);
+
+  // 3. Create Order
+  const order = await Order.create({
+    user: userId,
+    totalPrice,
+    status: "pending",
+    paymentStatus: "pending",
+  });
+
+  // 4. Create OrderItems from cart-items
+  const orderItemsData = cart.items.map((item: any) => ({
+    order: order._id,
+    productVariant: item.productId._id, // or productId depending on your models
+    quantity: item.quantity,
+    priceAtPurchase: item.unitPrice,
+  }));
+
+  await OrderItem.insertMany(orderItemsData);
+
+  // 5. Empty the cart
+  await CartItem.deleteMany({ cart: cart._id });
+  await cart.deleteOne();
+
+  // 6. Return complete order
+  return formatCartResponse(String(order._id)); // we reuse the format function or create our own
 }

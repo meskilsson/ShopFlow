@@ -87,3 +87,16 @@ export async function updateOrderStatus(
     next(error);
   }
 }
+
+export async function createOrderFromCart(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const order = await orderService.createOrderFromCart(req.user?.id!);
+    res.status(201).json(order);
+  } catch (error) {
+    next(error);
+  }
+}
