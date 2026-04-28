@@ -1,0 +1,180 @@
+.profilePage {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.kicker {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.title {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    color: #111827;
+}
+
+.subtitle {
+    max-width: 42rem;
+    margin: 0.35rem 0 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.summaryCard,
+.card,
+.stateCard,
+.errorCard {
+    padding: 1.5rem;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1.25rem;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+}
+
+.summaryCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.summaryCard h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: #111827;
+}
+
+.summaryCard p {
+    margin: 0.35rem 0 0;
+    color: #6b7280;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.cardHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.cardHeader h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #111827;
+}
+
+.cardHeader p,
+.stateCard p,
+.errorCard p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.detailsList {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e5e7eb;
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.detailRow span {
+    color: #6b7280;
+}
+
+.detailRow strong {
+    color: #111827;
+    font-weight: 700;
+    text-align: right;
+    word-break: break-word;
+}
+
+.statusBox {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: fit-content;
+    padding: 0.85rem 1rem;
+    border-radius: 999px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.statusBox p {
+    margin: 0;
+    color: #374151;
+    font-weight: 600;
+}
+
+.statusDot {
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 999px;
+    background: #22c55e;
+}
+
+.errorCard {
+    background: #fee2e2;
+    border-color: #fecaca;
+}
+
+.errorCard p {
+    color: #991b1b;
+    font-weight: 600;
+}
+
+@media (max-width: 640px) {
+    .profilePage {
+        gap: 1.25rem;
+    }
+
+    .summaryCard {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .summaryCard button {
+        width: 100%;
+    }
+
+    .summaryCard,
+    .card,
+    .stateCard,
+    .errorCard {
+        padding: 1.15rem;
+        border-radius: 1rem;
+    }
+
+    .detailRow {
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .detailRow strong {
+        text-align: left;
+    }
+}
