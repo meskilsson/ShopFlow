@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCart } from "@/api/cart";
 import CartItems from "../features/cart/CartItems";
 import CartSummary from "../features/cart/CartSummary";
 import styles from "./OrderPage.module.css";
@@ -14,21 +15,15 @@ const OrderPage = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/v1/cart", {
-          credentials: "include",
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setCart(data);
-        } else if (res.status === 404) {
-          setError(
-            "Din kundvagn är tom. Lägg till produkter innan du går vidare.",
-          );
-        }
-      } catch (err) {
+        const data = await getCart();
+        setCart(data);
+      } catch (err: any) {
         console.error(err);
-        setError("Kunde inte hämta kundvagnen");
+        if (err.status === 404) {
+          setError("Your cart is empty. Add products before continuing.");
+        } else {
+          setError("Could not fetch cart");
+        }
       } finally {
         setLoading(false);
       }
@@ -39,7 +34,7 @@ const OrderPage = () => {
 
   const handleConfirmOrder = async () => {
     if (!cart || !cart.items || cart.items.length === 0) {
-      setError("Din kundvagn är tom!");
+      setError("Your cart is empty!");
       return;
     }
 
@@ -53,44 +48,54 @@ const OrderPage = () => {
         credentials: "include",
       });
 
-      if (!res.ok) throw new Error("Kunde inte skapa order");
+      if (!res.ok) throw new Error("Failed to create order");
 
       const order = await res.json();
       navigate(`/order-confirmation/${order._id}`);
     } catch (err: any) {
-      setError(err.message || "Något gick fel");
+      console.error(err);
+      setError(err.message || "Something went wrong");
     } finally {
       setOrderLoading(false);
     }
   };
 
-  if (loading) return <p>Laddar kundvagn...</p>;
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <p>Loading your order...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        {/* Vänster kolumn */}
+        {/* Vänster kolumn – Delivery & Payment */}
         <div className={styles.leftColumn}>
-          <h1>Bekräfta din beställning</h1>
+          <div className={styles.header}>
+            <p className={styles.eyebrow}>Checkout</p>
+            <h1>Complete your order</h1>
+          </div>
 
           <div className={styles.section}>
-            <h2>Leveransadress</h2>
+            <h2>Delivery Address</h2>
             <p>Tomac Jansson</p>
             <p>Exempelgatan 12</p>
             <p>123 45 Stockholm</p>
           </div>
 
           <div className={styles.section}>
-            <h2>Betalningssätt</h2>
+            <h2>Payment Method</h2>
             <div className={styles.paymentOptions}>
               <label>
-                <input type="radio" name="payment" defaultChecked /> Kort
+                <input type="radio" name="payment" defaultChecked /> Credit Card
               </label>
               <label>
                 <input type="radio" name="payment" /> Swish
               </label>
               <label>
-                <input type="radio" name="payment" /> Faktura
+                <input type="radio" name="payment" /> Invoice
               </label>
             </div>
           </div>
@@ -98,9 +103,9 @@ const OrderPage = () => {
           {error && <p className={styles.error}>{error}</p>}
         </div>
 
-        {/* Höger kolumn */}
+        {/* Höger kolumn – Order summary */}
         <div className={styles.rightColumn}>
-          <h2>Din order</h2>
+          <h2>Your order</h2>
 
           {cart && cart.items && cart.items.length > 0 ? (
             <>
@@ -113,7 +118,7 @@ const OrderPage = () => {
               />
             </>
           ) : (
-            <p>Din kundvagn är tom. Lägg till produkter innan du fortsätter.</p>
+            <p>Your cart is empty. Please add products before continuing.</p>
           )}
 
           <button
@@ -123,12 +128,12 @@ const OrderPage = () => {
             }
             className={styles.confirmButton}
           >
-            {orderLoading ? "Skapar order..." : "Slutför köp"}
+            {orderLoading ? "Creating order..." : "Complete purchase"}
           </button>
 
           <p className={styles.terms}>
-            Genom att slutföra köpet godkänner du våra villkor och
-            integritetspolicy.
+            By completing your purchase you agree to our terms and privacy
+            policy.
           </p>
         </div>
       </div>
