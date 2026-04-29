@@ -124,7 +124,7 @@ const CartPage = () => {
             total={previewTotal}
             itemCount={previewItemCount}
             onContinueShopping={() => navigate("/")}
-            onCheckout={() => navigate("/order")} // ← NEw
+            onCheckout={() => navigate("/order")} // ← NEW
           />
         </div>
       </div>

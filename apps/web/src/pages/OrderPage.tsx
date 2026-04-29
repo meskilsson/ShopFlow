@@ -17,12 +17,14 @@ const OrderPage = () => {
       try {
         const data = await getCart();
         setCart(data);
+        setError(null);
       } catch (err: any) {
         console.error(err);
         if (err.status === 404) {
-          setError("Your cart is empty. Add products before continuing.");
+          setCart(null);
+          setError(null);
         } else {
-          setError("Could not fetch cart");
+          setError("Could not fetch your cart");
         }
       } finally {
         setLoading(false);
@@ -60,81 +62,96 @@ const OrderPage = () => {
     }
   };
 
+  const hasItems = cart && cart.items && cart.items.length > 0;
+
   if (loading) {
     return (
       <div className={styles.container}>
-        <p>Loading your order...</p>
+        <div className={styles.page}>
+          <div className={styles.header}>
+            <p className={styles.eyebrow}>Checkout</p>
+            <h1>Complete your order</h1>
+          </div>
+          <div className={styles.loading}>Loading order...</div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
-        {/* Vänster kolumn – Delivery & Payment */}
-        <div className={styles.leftColumn}>
-          <div className={styles.header}>
-            <p className={styles.eyebrow}>Checkout</p>
-            <h1>Complete your order</h1>
-          </div>
-
-          <div className={styles.section}>
-            <h2>Delivery Address</h2>
-            <p>Tomac Jansson</p>
-            <p>Exempelgatan 12</p>
-            <p>123 45 Stockholm</p>
-          </div>
-
-          <div className={styles.section}>
-            <h2>Payment Method</h2>
-            <div className={styles.paymentOptions}>
-              <label>
-                <input type="radio" name="payment" defaultChecked /> Credit Card
-              </label>
-              <label>
-                <input type="radio" name="payment" /> Swish
-              </label>
-              <label>
-                <input type="radio" name="payment" /> Invoice
-              </label>
-            </div>
-          </div>
-
-          {error && <p className={styles.error}>{error}</p>}
+      <div className={styles.page}>
+        {/* Header */}
+        <div className={styles.header}>
+          <p className={styles.eyebrow}>Checkout</p>
+          <h1>Complete your order</h1>
+          <p className={styles.subtitle}>
+            {hasItems
+              ? "Review your items and complete your purchase."
+              : "Your cart is empty. Add some products before continuing."}
+          </p>
         </div>
 
-        {/* Höger kolumn – Order summary */}
-        <div className={styles.rightColumn}>
-          <h2>Your order</h2>
+        <div className={styles.content}>
+          {/* Left column */}
+          <div className={styles.leftColumn}>
+            <div className={styles.section}>
+              <h2>Delivery Address</h2>
+              <p>Tomac Jansson</p>
+              <p>Exempelgatan 12</p>
+              <p>123 45 Stockholm</p>
+            </div>
 
-          {cart && cart.items && cart.items.length > 0 ? (
-            <>
-              <CartItems items={cart.items} />
-              <CartSummary
-                subtotal={cart.total || 0}
-                shipping={49}
-                total={(cart.total || 0) + 49}
-                itemCount={cart.items.length}
-              />
-            </>
-          ) : (
-            <p>Your cart is empty. Please add products before continuing.</p>
-          )}
+            <div className={styles.section}>
+              <h2>Payment Method</h2>
+              <div className={styles.paymentOptions}>
+                <label>
+                  <input type="radio" name="payment" defaultChecked /> Credit
+                  Card
+                </label>
+                <label>
+                  <input type="radio" name="payment" /> Swish
+                </label>
+                <label>
+                  <input type="radio" name="payment" /> Invoice
+                </label>
+              </div>
+            </div>
 
-          <button
-            onClick={handleConfirmOrder}
-            disabled={
-              orderLoading || !cart || !cart.items || cart.items.length === 0
-            }
-            className={styles.confirmButton}
-          >
-            {orderLoading ? "Creating order..." : "Complete purchase"}
-          </button>
+            {error && <p className={styles.error}>{error}</p>}
+          </div>
 
-          <p className={styles.terms}>
-            By completing your purchase you agree to our terms and privacy
-            policy.
-          </p>
+          {/* Right kolumn – order summary */}
+          <div className={styles.rightColumn}>
+            <h2>Your order</h2>
+
+            {hasItems ? (
+              <>
+                <CartItems items={cart.items} />
+                <CartSummary
+                  subtotal={cart.total || 0}
+                  shipping={49}
+                  total={(cart.total || 0) + 49}
+                  itemCount={cart.items.length}
+                />
+              </>
+            ) : (
+              <p>Your cart is empty. Please add products before continuing.</p>
+            )}
+
+            <button
+              onClick={handleConfirmOrder}
+              disabled={orderLoading || !hasItems}
+              className={styles.confirmButton}
+            >
+              {orderLoading ? "Creating order..." : "Complete purchase"}
+            </button>
+
+            <p className={styles.terms}>
+              By completing your purchase you agree to our terms and privacy
+              policy.
+            </p>
+          </div>
         </div>
       </div>
     </div>
