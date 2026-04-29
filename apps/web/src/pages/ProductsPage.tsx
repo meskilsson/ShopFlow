@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from "@/features/products/ProductCard"
@@ -13,16 +13,20 @@ type Product = {
     name: string;
     category: string;
     price: number;
+    variants: number;
+    ProductImage?: string;
 };
 
 const ProductsPage = () => {
     const [products, setProducts] = useState<Product[]>([])
+    const [searchParams] = useSearchParams();
+    const category = searchParams.get("category") ?? undefined;
 
     useEffect(() =>  {
-        getProducts().then((result) => {
+        getProducts(category).then((result) => {
             setProducts(result.data);
         });
-    }, []);
+    }, [category]);
     const navigate = useNavigate();
 
     return (
@@ -35,9 +39,10 @@ const ProductsPage = () => {
                         key={product._id}
                         title={product.name}
                         brand={product.category}
-                        variants="1"
-                        price={String(product.price)}
+                        variants={product.variants}
+                        price={(product.price)}
                         link={`/product/${product._id}`}
+                        image={product.ProductImage}
                     />
                 ))}
             </ProductsContainer>

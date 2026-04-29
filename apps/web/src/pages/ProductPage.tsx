@@ -17,7 +17,13 @@ type ProductData = {
   category: string;
   price: number;
   };
-  variants: [];
+  variants: {
+    _id: string;
+    product: string;
+    size: string;
+    inStock?: boolean;
+    sku?: string;
+  }[];
 };
 
 const ProductPage = () => {

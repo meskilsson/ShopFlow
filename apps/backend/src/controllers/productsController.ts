@@ -82,6 +82,20 @@ export async function getProductById(
     }
 }
 
+// ===== GET PRODUCT VARIANTS ===== //
+export async function getProductVariants(
+    req: Request<ProductIdParams>,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        const variants = await productService.getProductVariants(req.params.id);
+        res.status(200).json(variants);
+    } catch (error) {
+        next(error);
+    }
+}
+
 // ===== GET VARIANTID ===== //
 export async function getVariantById(
     req: Request<VariantIdParams>,

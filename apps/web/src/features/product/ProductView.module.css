@@ -134,17 +134,19 @@
   padding-left: .2rem;
 }
 
-.variantBtn {
-  display: flex;
+.variantDiv {
   margin-top: 1rem;
-  padding: 0.1rem
 }
 
-.greenDot {
-  height: 7px;
-  width: 7px;
-  background-color: #198b19; 
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
+.borderSelected{
+  color: var(--btn-primary-text);
+    background-color: var(--btn-primary-hover);
+}
+
+.disabledIcon {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  opacity: 50%;
+  pointer-events: none;
 }
