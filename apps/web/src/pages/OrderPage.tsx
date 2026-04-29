@@ -17,12 +17,18 @@ const OrderPage = () => {
         const res = await fetch("http://localhost:5000/api/v1/cart", {
           credentials: "include",
         });
+
         if (res.ok) {
           const data = await res.json();
           setCart(data);
+        } else if (res.status === 404) {
+          setError(
+            "Din kundvagn är tom. Lägg till produkter innan du går vidare.",
+          );
         }
       } catch (err) {
         console.error(err);
+        setError("Kunde inte hämta kundvagnen");
       } finally {
         setLoading(false);
       }
@@ -32,7 +38,7 @@ const OrderPage = () => {
   }, []);
 
   const handleConfirmOrder = async () => {
-    if (!cart || cart.items.length === 0) {
+    if (!cart || !cart.items || cart.items.length === 0) {
       setError("Din kundvagn är tom!");
       return;
     }
@@ -99,15 +105,22 @@ const OrderPage = () => {
           {cart && cart.items && cart.items.length > 0 ? (
             <>
               <CartItems items={cart.items} />
-              <CartSummary />
+              <CartSummary
+                subtotal={cart.total || 0}
+                shipping={49}
+                total={(cart.total || 0) + 49}
+                itemCount={cart.items.length}
+              />
             </>
           ) : (
-            <p>Din kundvagn är tom.</p>
+            <p>Din kundvagn är tom. Lägg till produkter innan du fortsätter.</p>
           )}
 
           <button
             onClick={handleConfirmOrder}
-            disabled={orderLoading || !cart || cart.items.length === 0}
+            disabled={
+              orderLoading || !cart || !cart.items || cart.items.length === 0
+            }
             className={styles.confirmButton}
           >
             {orderLoading ? "Skapar order..." : "Slutför köp"}

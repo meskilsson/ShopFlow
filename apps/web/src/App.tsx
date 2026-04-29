@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/OrderPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 import NavBar from "@/features/navbar/NavBar";
 import ContentWrapper from "@/components/ContentWrapper";
@@ -39,6 +40,10 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/order" element={<OrderPage />} />
+              <Route
+                path="/order-confirmation/:orderId"
+                element={<OrderConfirmationPage />}
+              />
             </Routes>
           </ContentWrapper>
         </motion.div>

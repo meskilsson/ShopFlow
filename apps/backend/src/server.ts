@@ -55,13 +55,12 @@ app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/orders", orderRouter);
 
-app.use("/api/v1/cart", cartRouter);
-
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/payments", paymentRouter);
 
 app.use("/api/v1/address", addressRouter);
+app.use("/api/v1/cart", cartRouter);
 
 app.use(notFound);
 app.use(errorHandler);
