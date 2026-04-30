@@ -48,7 +48,7 @@ const ProductsPage = () => {
     return (
         <Container>
             <ProductCategories/>
-            <Category categoryText="Shoes" articles={products.length}/>
+            <Category categoryText={category ?? "All Products"} articles={products.length}/>
             <ProductsContainer>
                 {products.map((product) => (
                     <ProductCard
