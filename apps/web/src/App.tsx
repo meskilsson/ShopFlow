@@ -13,6 +13,7 @@ import SettingsPage from "./pages/SettingsPage/SettingsPage";
 import ReturnsPage from "./pages/ReturnsPage/ReturnsPage";
 import OrdersPage from "./pages/OrdersPage/OrdersPage";
 import AddressPage from "./pages/AddressPage/AddressPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 
 import NavBar from "@/features/navbar/NavBar";
