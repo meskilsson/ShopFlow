@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as addressService from "../services/addressService";
 import { UpdateAddressData, CreateAddressData } from "../types/address.types";
+import { getAddressOwner } from "../utils/getAddressOwner";
 
 export async function createAddress(
   req: Request,
@@ -8,10 +9,12 @@ export async function createAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
     const addressData: CreateAddressData = req.body;
 
-    const address = await addressService.createAddress(userId, addressData);
+    const address = await addressService.createAddress(
+      getAddressOwner(res),
+      addressData,
+    );
 
     res.status(201).json(address);
   } catch (error) {
@@ -24,8 +27,9 @@ export async function getAddresses(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
-    const addresses = await addressService.getAddressesByUser(userId);
+    const addresses = await addressService.getAddressesByOwner(
+      getAddressOwner(res),
+    );
     res.status(200).json(addresses);
   } catch (error) {
     next(error);
@@ -37,13 +41,12 @@ export async function updateAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
     const addressId =
       typeof req.params.id === "string" ? req.params.id : undefined;
     const updateData: UpdateAddressData = req.body;
 
     const address = await addressService.updateAddresses(
-      userId,
+      getAddressOwner(res),
       addressId,
       updateData,
     );
@@ -59,10 +62,12 @@ export async function deleteAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
     const addressId =
       typeof req.params.id === "string" ? req.params.id : undefined;
-    const address = await addressService.deleteAddress(userId, addressId);
+    const address = await addressService.deleteAddress(
+      getAddressOwner(res),
+      addressId,
+    );
 
     res.status(200).json(address);
   } catch (error) {

@@ -8,7 +8,7 @@ import {
 const cartItemRouter = Router();
 
 cartItemRouter.post("/", addCartItem);
-cartItemRouter.patch("/:productId", updateCartItemQuantity);
-cartItemRouter.delete("/:productId", removeCartItem);
+cartItemRouter.patch("/:productVariantId", updateCartItemQuantity);
+cartItemRouter.delete("/:productVariantId", removeCartItem);
 
 export default cartItemRouter;

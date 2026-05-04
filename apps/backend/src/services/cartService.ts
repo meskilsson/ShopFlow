@@ -4,11 +4,11 @@ import type { CartOwner } from "../types/cart.types";
 import { createHttpError } from "../middleware/HttpError";
 
 export function getCartQuery(owner: CartOwner) {
-  return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
+  return "userId" in owner ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
 export function getCartPayload(owner: CartOwner) {
-  return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
+  return "userId" in owner ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
 export async function findCartByOwner(owner: CartOwner) {
@@ -47,7 +47,7 @@ export async function mergeCartOwners(
   for (const sourceItem of sourceItems) {
     const existingTargetItem = await CartItem.findOne({
       cart: targetCart._id,
-      productId: sourceItem.productId,
+      productVariant: sourceItem.productVariant,
     });
 
     if (existingTargetItem) {
@@ -75,18 +75,43 @@ export async function formatCartResponse(cartId: string) {
 
   const items = await CartItem.find({ cart: cart._id })
     .select("-cart -__v")
-    .populate("productId", "name price category")
+    .populate({
+      path: "productVariant",
+      select: "product color size inStock sku",
+      populate: {
+        path: "product",
+        select: "name price category ProductImage",
+      },
+    })
     .lean();
 
-  const formattedItems = items.map((item) => ({
-    _id: item._id,
-    product: item.productId,
-    quantity: item.quantity,
-    unitPrice: item.unitPrice,
-    lineTotal: item.unitPrice * item.quantity,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-  }));
+  const formattedItems = items.map((item) => {
+    const productVariant = item.productVariant as unknown as {
+      _id: unknown;
+      color: string;
+      size: string;
+      inStock?: boolean;
+      sku?: string;
+      product: unknown;
+    };
+
+    return {
+      _id: item._id,
+      productVariant: {
+        _id: productVariant._id,
+        color: productVariant.color,
+        size: productVariant.size,
+        inStock: productVariant.inStock,
+        sku: productVariant.sku,
+      },
+      product: productVariant.product,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+      lineTotal: item.unitPrice * item.quantity,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    };
+  });
 
   const total = formattedItems.reduce((sum, item) => sum + item.lineTotal, 0);
 

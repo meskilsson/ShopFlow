@@ -21,7 +21,11 @@ export async function createUser(userData: CreateUserInput) {
   const name = userData.name.trim();
   const email = userData.email.trim().toLowerCase();
   const username = userData.username.trim().toLowerCase();
-  const role = userData.role?.trim().toLowerCase();
+  const normalizedRole = userData.role?.trim().toLowerCase();
+  const role =
+    normalizedRole === "buyer" || normalizedRole === "seller"
+      ? normalizedRole
+      : undefined;
 
   const existingUser = await User.findOne({
     $or: [{ email }, { username }],
@@ -42,10 +46,10 @@ export async function createUser(userData: CreateUserInput) {
     email,
     username,
     passwordHash,
-    role,
+    ...(role ? { role } : {}),
   });
 
-  const safeUser = await User.findById(createdUser._id);
+  const safeUser = await User.findOne({ email });
 
   return safeUser;
 }

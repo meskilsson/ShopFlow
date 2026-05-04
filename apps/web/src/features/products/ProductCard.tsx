@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import styles from "./ProductCard.module.css"
 
-import ProductImage from "@/assets/1.webp"
+// import ProductImage from "@/assets/1.webp"
 
 interface ProductCardProps {
   title: string
@@ -9,7 +9,7 @@ interface ProductCardProps {
   variants: number
   price: number
   link: string
-  image: string
+  image?: string
 }
 
 const ProductCard = ({
@@ -18,13 +18,13 @@ const ProductCard = ({
   variants,
   price,
   link,
-  image
+  image,
 }: ProductCardProps) => {
   return (
     <Link to={link} className={styles.card}>
       
       <div className={styles.imageWrapper}>
-        <img src={ProductImage} alt={title} className={styles.productImage} />
+        <img src={image} alt={title} className={styles.productImage} />
       </div>
 
       <div className={styles.productInfo}>
@@ -33,7 +33,7 @@ const ProductCard = ({
 
         <div className={styles.metaRow}>
           <span className={styles.productVariants}>
-            {variants} variants
+            {variants} size(s)
           </span>
           <span className={styles.productPrice}>
             {price} kr
