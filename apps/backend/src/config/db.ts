@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import CartItem from "../models/CartItem";
 
+async function ensureCartItemIndexes(): Promise<void> {
+  await CartItem.createIndexes();
+}
+
 export async function connectDB(): Promise<void> {
 
   const mongoUri = process.env.MONGODB_URI;
@@ -17,6 +21,8 @@ export async function connectDB(): Promise<void> {
     await mongoose.connect(mongoUri, {
       ...(dbName ? { dbName } : {}),
     });
+
+    await ensureCartItemIndexes();
 
     console.log("MongoDB Connected!");
   } catch (error) {

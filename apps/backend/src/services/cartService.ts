@@ -85,17 +85,21 @@ export async function formatCartResponse(cartId: string) {
     })
     .lean();
 
-  const formattedItems = items.map((item) => {
+  const formattedItems = items.flatMap((item) => {
     const productVariant = item.productVariant as unknown as {
-      _id: unknown;
-      color: string;
-      size: string;
+      _id?: unknown;
+      color?: string;
+      size?: string;
       inStock?: boolean;
       sku?: string;
-      product: unknown;
-    };
+      product?: unknown;
+    } | null;
 
-    return {
+    if (!productVariant?._id || !productVariant.product) {
+      return [];
+    }
+
+    return [{
       _id: item._id,
       productVariant: {
         _id: productVariant._id,
@@ -110,7 +114,7 @@ export async function formatCartResponse(cartId: string) {
       lineTotal: item.unitPrice * item.quantity,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
-    };
+    }];
   });
 
   const total = formattedItems.reduce((sum, item) => sum + item.lineTotal, 0);
