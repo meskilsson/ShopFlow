@@ -1,5 +1,6 @@
 import CartItem from "../models/CartItem";
 import ProductVariant from "../models/ProductVariant";
+import { Types } from "mongoose";
 import type { CartOwner } from "../types/cart.types";
 import { createHttpError } from "../middleware/HttpError";
 import {
@@ -28,13 +29,18 @@ export async function addItemToCart(
   owner: CartOwner,
   item: CreateCartItemInput,
 ) {
-  if (item.quantity < 1) {
+  if (!Types.ObjectId.isValid(item.productVariantId)) {
+    throw createHttpError("Product variant id is invalid", 400);
+  }
+
+  if (!Number.isInteger(item.quantity) || item.quantity < 1) {
     throw createHttpError("Quantity must be at least 1", 400);
   }
+
   const cart = await getOrCreateCart(owner);
   const productVariant = await ProductVariant.findById(
     item.productVariantId,
-  ).populate("product");
+  ).populate("product", "price");
 
   if (!productVariant) {
     throw createHttpError("Product variant not found", 404);
@@ -44,7 +50,11 @@ export async function addItemToCart(
     throw createHttpError("Product variant is out of stock", 400);
   }
 
-  const product = productVariant.product as unknown as { price: number };
+  const product = productVariant.product as unknown as { price?: unknown } | null;
+
+  if (!product || typeof product.price !== "number") {
+    throw createHttpError("Product for variant not found", 404);
+  }
 
   const existingItem = await CartItem.findOne({
     cart: cart._id,
