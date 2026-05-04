@@ -14,6 +14,7 @@ import ReturnsPage from "./pages/ReturnsPage/ReturnsPage";
 import OrdersPage from "./pages/OrdersPage/OrdersPage";
 import AddressPage from "./pages/AddressPage/AddressPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import OrderPage from "./pages/OrderPage";
 
 
 import NavBar from "@/features/navbar/NavBar";
@@ -47,7 +48,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
-
+              <Route path="/order" element={<OrderPage />} />
               <Route path="/profile" element={<AccountLayout />}>
                 <Route index element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
