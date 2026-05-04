@@ -91,7 +91,9 @@ const CartPage = () => {
           <div className={styles.header}>
             <p className={styles.eyebrow}>Cart</p>
             <h1>Your cart</h1>
-            <p className={styles.subtitle}>Review your items before checkout.</p>
+            <p className={styles.subtitle}>
+              Review your items before checkout.
+            </p>
           </div>
 
           <div className={styles.loading}>Loading cart...</div>
