@@ -125,17 +125,7 @@ export default function ProfilePage() {
                     </div>
                 </section>
 
-                <section className={styles.card}>
-                    <div className={styles.cardHeader}>
-                        <h2>Account status</h2>
-                        <p>Your account is active and ready to use.</p>
-                    </div>
 
-                    <div className={styles.statusBox}>
-                        <span className={styles.statusDot}></span>
-                        <p>Active account</p>
-                    </div>
-                </section>
             </div>
         </Container>
     );
