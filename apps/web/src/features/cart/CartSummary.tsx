@@ -18,6 +18,7 @@ const CartSummary = ({
   onContinueShopping,
   onCheckout,
 }: CartSummaryProps) => {
+  const isCartEmpty = itemCount === 0;
   return (
     <aside className={styles.summary}>
       <div className={styles.block}>
@@ -41,7 +42,12 @@ const CartSummary = ({
         </div>
 
         <div className={styles.actions}>
-          <ButtonStd variant="primary" fullWidth onClick={onCheckout}>
+          <ButtonStd
+            variant="primary"
+            fullWidth
+            disabled={isCartEmpty}
+            onClick={onCheckout}
+          >
             Checkout
           </ButtonStd>
           <ButtonStd

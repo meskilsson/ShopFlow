@@ -4,6 +4,7 @@ import Container from "@/components/containers/Container";
 import ButtonStd from "@/components/UI/ButtonStd";
 import { useAuth } from "@/contexts/AuthContext";
 import AddressSection from "@/features/address/AddressSection";
+import CheckoutStepper from "@/features/checkout/CheckoutStepper";
 import styles from "./CheckoutPage.module.css";
 
 export default function CheckoutPage() {
@@ -16,6 +17,14 @@ export default function CheckoutPage() {
   return (
     <Container>
       <div className={styles.page}>
+        <CheckoutStepper
+          steps={[
+            { label: "Address", status: "current" },
+            { label: "Payment", status: "locked" },
+            { label: "Review", status: "locked" },
+          ]}
+        />
+
         <div className={styles.header}>
           <p className={styles.eyebrow}>Checkout</p>
           <h1>Checkout</h1>

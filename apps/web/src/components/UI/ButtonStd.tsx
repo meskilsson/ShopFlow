@@ -7,13 +7,15 @@ interface ButtonStdProps {
     bold?: boolean
     fullWidth?: boolean
     className?: string
+    disabled?: boolean
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const ButtonStd: React.FC<ButtonStdProps> = ({children, variant = "secondary", bold = false, fullWidth = false, className = "", onClick}) => {
+const ButtonStd: React.FC<ButtonStdProps> = ({children, variant = "secondary", bold = false, fullWidth = false, className = "", disabled = false, onClick}) => {
 return (
     <button
       onClick={onClick}
+      disabled={disabled}
       style={{ fontWeight: bold ? "bold" : "normal" }}
       className={`
         ${Styles.btnBase} 
