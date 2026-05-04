@@ -23,6 +23,11 @@
     color: var(--text-gray);
 }
 
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .error {
     color: #b42318;
 }

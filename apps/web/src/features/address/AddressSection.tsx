@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   createAddress,
   deleteAddress,
   getAddresses,
   updateAddress,
 } from "@/api/address";
+import ButtonStd from "@/components/UI/ButtonStd";
 import AddressCard from "./AddressCard";
 import AddressForm from "./AddressForm";
 import type { Address, CreateAddressData } from "./address.types";
@@ -15,6 +17,7 @@ type ApiError = Error & {
 };
 
 export default function AddressSection() {
+  const navigate = useNavigate();
   const [shippingAddress, setShippingAddress] = useState<Address | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -104,6 +107,18 @@ export default function AddressSection() {
         saving={saving}
         onSubmit={handleSaveAddress}
       />
+
+      {shippingAddress ? (
+        <div className={styles.actions}>
+          <ButtonStd
+            variant="primary"
+            fullWidth
+            onClick={() => navigate("/order")}
+          >
+            Continue to order
+          </ButtonStd>
+        </div>
+      ) : null}
 
       {error ? <p className={styles.error}>{error}</p> : null}
     </section>

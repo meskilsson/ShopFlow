@@ -40,6 +40,12 @@
     font-weight: 500;
 }
 
+.variant {
+    margin-top: 0.15rem;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
 .total {
     font-weight: 600;
     white-space: nowrap;

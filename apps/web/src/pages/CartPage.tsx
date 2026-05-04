@@ -51,27 +51,39 @@ const CartPage = () => {
       });
   }, []);
 
-  async function handleDecreaseQuantity(productId: string, quantity: number) {
+  async function handleDecreaseQuantity(
+    productVariantId: string,
+    quantity: number,
+  ) {
     try {
-      const updatedCart = await updateCartItemQuantity(productId, quantity - 1);
+      const updatedCart = await updateCartItemQuantity(
+        productVariantId,
+        quantity - 1,
+      );
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
     } catch (error) {
       console.error("Failed to decrease quantity:", error);
     }
   }
 
-  async function handleIncreaseQuantity(productId: string, quantity: number) {
+  async function handleIncreaseQuantity(
+    productVariantId: string,
+    quantity: number,
+  ) {
     try {
-      const updatedCart = await updateCartItemQuantity(productId, quantity + 1);
+      const updatedCart = await updateCartItemQuantity(
+        productVariantId,
+        quantity + 1,
+      );
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
     } catch (error) {
       console.error("Failed to increase quantity:", error);
     }
   }
 
-  async function handleRemoveItem(productId: string) {
+  async function handleRemoveItem(productVariantId: string) {
     try {
-      const updatedCart = await removeCartItem(productId);
+      const updatedCart = await removeCartItem(productVariantId);
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
     } catch (error) {
       console.error("Failed to remove item:", error);

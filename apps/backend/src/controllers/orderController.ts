@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import * as orderService from "../services/orderService";
+import { getCartOwner } from "../utils/getCartOwner";
 
 type OrderIdParams = {
   id: string;
@@ -89,12 +90,12 @@ export async function updateOrderStatus(
 }
 
 export async function createOrderFromCart(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const order = await orderService.createOrderFromCart(req.user?.id!);
+    const order = await orderService.createOrderFromCart(getCartOwner(res));
     res.status(201).json(order);
   } catch (error) {
     next(error);

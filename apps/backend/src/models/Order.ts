@@ -1,7 +1,8 @@
 import { Schema, model, Types } from "mongoose";
 
 export interface IOrder {
-  user: Types.ObjectId;
+  user?: Types.ObjectId;
+  sessionId?: string;
   totalPrice: number;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   paymentStatus: "pending" | "paid" | "failed" | "refunded";
@@ -12,7 +13,10 @@ const orderSchema = new Schema<IOrder>(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: [true, "User is required"],
+    },
+    sessionId: {
+      type: String,
+      trim: true,
     },
     totalPrice: {
       type: Number,
@@ -36,6 +40,12 @@ const orderSchema = new Schema<IOrder>(
     timestamps: true,
   },
 );
+
+orderSchema.pre("validate", function validateOrderOwner() {
+  if (!this.user && !this.sessionId) {
+    this.invalidate("user", "An order must belong to a user or a session");
+  }
+});
 
 const Order = model<IOrder>("Order", orderSchema);
 

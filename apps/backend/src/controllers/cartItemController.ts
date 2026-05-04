@@ -3,7 +3,7 @@ import * as cartItemService from "../services/cartItemService";
 import { getCartOwner } from "../utils/getCartOwner";
 
 type CartItemParams = {
-  productId: string;
+  productVariantId: string;
 };
 
 export async function addCartItem(
@@ -27,7 +27,7 @@ export async function updateCartItemQuantity(
   try {
     const cart = await cartItemService.updateCartItemQuantity(
       getCartOwner(res),
-      req.params.productId,
+      req.params.productVariantId,
       req.body.quantity,
     );
 
@@ -45,7 +45,7 @@ export async function removeCartItem(
   try {
     const cart = await cartItemService.removeCartItem(
       getCartOwner(res),
-      req.params.productId,
+      req.params.productVariantId,
     );
 
     res.status(200).json(cart);

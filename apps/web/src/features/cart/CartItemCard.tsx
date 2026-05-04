@@ -3,21 +3,25 @@ import styles from "./CartItemCard.module.css";
 import ProductImage from "@/assets/1.webp";
 
 type CartItemCardProps = {
-  productId: string;
+  productVariantId: string;
   name: string;
   category: string;
+  color: string;
+  size: string;
   quantity: number;
   unitPrice: number;
   lineTotal: number;
-  onDecreaseQuantity: (productId: string, quantity: number) => void;
-  onIncreaseQuantity: (productId: string, quantity: number) => void;
-  onRemoveItem: (productId: string) => void;
+  onDecreaseQuantity: (productVariantId: string, quantity: number) => void;
+  onIncreaseQuantity: (productVariantId: string, quantity: number) => void;
+  onRemoveItem: (productVariantId: string) => void;
 };
 
 const CartItemCard = ({
-  productId,
+  productVariantId,
   name,
   category,
+  color,
+  size,
   quantity,
   unitPrice,
   lineTotal,
@@ -34,6 +38,9 @@ const CartItemCard = ({
           <div>
             <p className={styles.category}>{category}</p>
             <h2 className={styles.title}>{name}</h2>
+            <p className={styles.variant}>
+              {size} / {color}
+            </p>
           </div>
           <p className={styles.total}>{lineTotal} kr</p>
         </div>
@@ -43,7 +50,7 @@ const CartItemCard = ({
             <button
               type="button"
               className={styles.quantityButton}
-              onClick={() => onDecreaseQuantity(productId, quantity)}
+              onClick={() => onDecreaseQuantity(productVariantId, quantity)}
               aria-label={`Decrease quantity of ${name}`}
             >
               -
@@ -52,7 +59,7 @@ const CartItemCard = ({
             <button
               type="button"
               className={styles.quantityButton}
-              onClick={() => onIncreaseQuantity(productId, quantity)}
+              onClick={() => onIncreaseQuantity(productVariantId, quantity)}
               aria-label={`Increase quantity of ${name}`}
             >
               +
@@ -62,7 +69,7 @@ const CartItemCard = ({
           <button
             type="button"
             className={styles.removeButton}
-            onClick={() => onRemoveItem(productId)}
+            onClick={() => onRemoveItem(productVariantId)}
           >
             Remove
           </button>

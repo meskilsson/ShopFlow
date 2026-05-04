@@ -22,17 +22,27 @@ type ProductViewProps = {
     name: string;
     category: string;
     price: number;
+    rating?: number;
+    seller?: string;
   };
-  variants: ProductVariant;
+  variants: ProductVariant[];
 };
 
 const ProductView = ({ product, variants }: ProductViewProps) => {
   const [cartMessage, setCartMessage] = useState<string>("");
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
+    variants.find((variant) => variant.inStock !== false)?._id ?? null,
+  );
   
   // Handler for addToCart
   async function handleAddToCart() {
+  if (!selectedVariantId) {
+    setCartMessage("Choose a size and color first");
+    return;
+  }
+
   try {
-    await addToCart(product._id, 1);
+    await addToCart(selectedVariantId, 1);
     setCartMessage("Item added to cart");
 
     setTimeout(() => {
@@ -77,9 +87,11 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
           <div className={styles.productInfo}>
             <h2 className={styles.productBrand}>{product.category}</h2>
             <h1 className={styles.productTitle}>{product.name}</h1>
-            <p className={styles.productRating}>
-              Rating: {product.rating}/5 ⭐
-            </p>
+            {product.rating ? (
+              <p className={styles.productRating}>
+                Rating: {product.rating}/5 ⭐
+              </p>
+            ) : null}
             <p className={styles.productPrice}>
               {product.price} kr <span className={styles.vat}>incl. VAT</span>
             </p>
@@ -92,6 +104,9 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
                 className={styles.variantBtn}
                 key={variant._id}
                 disabled={!variant.inStock}
+                type="button"
+                data-selected={selectedVariantId === variant._id}
+                onClick={() => setSelectedVariantId(variant._id)}
               >
                 <span className={styles.greenDot}></span>
                 {variant.size} / {variant.color}

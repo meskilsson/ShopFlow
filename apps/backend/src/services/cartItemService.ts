@@ -1,5 +1,5 @@
 import CartItem from "../models/CartItem";
-import Product from "../models/Products";
+import ProductVariant from "../models/ProductVariant";
 import type { CartOwner } from "../types/cart.types";
 import { createHttpError } from "../middleware/HttpError";
 import {
@@ -10,7 +10,7 @@ import {
 import Cart from "../models/Cart";
 
 export type CreateCartItemInput = {
-  productId: string;
+  productVariantId: string;
   quantity: number;
 };
 
@@ -32,15 +32,23 @@ export async function addItemToCart(
     throw createHttpError("Quantity must be at least 1", 400);
   }
   const cart = await getOrCreateCart(owner);
-  const product = await Product.findById(item.productId);
+  const productVariant = await ProductVariant.findById(
+    item.productVariantId,
+  ).populate("product");
 
-  if (!product) {
-    throw createHttpError("Product not found", 404);
+  if (!productVariant) {
+    throw createHttpError("Product variant not found", 404);
   }
+
+  if (productVariant.inStock === false) {
+    throw createHttpError("Product variant is out of stock", 400);
+  }
+
+  const product = productVariant.product as unknown as { price: number };
 
   const existingItem = await CartItem.findOne({
     cart: cart._id,
-    productId: item.productId,
+    productVariant: item.productVariantId,
   });
 
   if (existingItem) {
@@ -49,7 +57,7 @@ export async function addItemToCart(
   } else {
     await CartItem.create({
       cart: cart._id,
-      productId: item.productId,
+      productVariant: item.productVariantId,
       quantity: item.quantity,
       unitPrice: product.price,
     });
@@ -60,7 +68,7 @@ export async function addItemToCart(
 
 export async function updateCartItemQuantity(
   owner: CartOwner,
-  productId: string,
+  productVariantId: string,
   quantity: number,
 ) {
   const cart = await findCartByOwner(owner);
@@ -71,7 +79,7 @@ export async function updateCartItemQuantity(
 
   const existingItem = await CartItem.findOne({
     cart: cart._id,
-    productId,
+    productVariant: productVariantId,
   });
 
   if (!existingItem) {
@@ -89,7 +97,10 @@ export async function updateCartItemQuantity(
   return formatCartResponse(String(cart._id));
 }
 
-export async function removeCartItem(owner: CartOwner, productId: string) {
+export async function removeCartItem(
+  owner: CartOwner,
+  productVariantId: string,
+) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
@@ -98,7 +109,7 @@ export async function removeCartItem(owner: CartOwner, productId: string) {
 
   const deletedItem = await CartItem.findOneAndDelete({
     cart: cart._id,
-    productId,
+    productVariant: productVariantId,
   });
 
   if (!deletedItem) {

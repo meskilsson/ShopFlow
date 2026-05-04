@@ -1,8 +1,12 @@
 import Order, { IOrder } from "../models/Order";
 import OrderItem, { IOrderItem } from "../models/OrderItem";
-import Cart from "../models/Cart";
 import CartItem from "../models/CartItem";
 import { createHttpError } from "../middleware/HttpError";
+import type { CartOwner } from "../types/cart.types";
+import {
+  findCartByOwner,
+  getCartPayload,
+} from "./cartService";
 
 export async function createOrder(
   orderData: Omit<IOrder, "createdAt" | "updatedAt">,
@@ -76,45 +80,41 @@ export async function updateOrderStatus(
   };
 }
 
-// FIXED: createOrderFromCart – now fully functional
-export async function createOrderFromCart(userId: string) {
-  // 1. Fetch the user's cart
-  const cart = await Cart.findOne({ user: userId }).populate({
-    path: "items",
-    populate: { path: "productId" }, // adjust if your CartItem uses productVariant instead
-  });
+export async function createOrderFromCart(owner: CartOwner) {
+  const cart = await findCartByOwner(owner);
 
-  if (!cart || !cart.items || cart.items.length === 0) {
+  if (!cart) {
+    throw createHttpError("Cart not found", 404);
+  }
+
+  const cartItems = await CartItem.find({ cart: cart._id });
+
+  if (cartItems.length === 0) {
     throw createHttpError("Cart is empty", 400);
   }
 
-  // 2. Calculate total price
-  const totalPrice = cart.items.reduce((sum: number, item: any) => {
-    return sum + (item.unitPrice || item.productId?.price || 0) * item.quantity;
-  }, 0);
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.unitPrice * item.quantity,
+    0,
+  );
 
-  // 3. Create the Order
   const order = await Order.create({
-    user: userId,
+    ...getCartPayload(owner),
     totalPrice,
     status: "pending",
     paymentStatus: "pending",
   });
 
-  // 4. Create OrderItems from CartItems
-  const orderItemsData = cart.items.map((item: any) => ({
-    order: order._id,
-    productVariant: item.productId?._id || item.productId, // adjust according to your model
-    quantity: item.quantity,
-    priceAtPurchase: item.unitPrice || item.productId?.price,
-  }));
+  await OrderItem.insertMany(
+    cartItems.map((item) => ({
+      order: order._id,
+      productVariant: item.productVariant,
+      quantity: item.quantity,
+      priceAtPurchase: item.unitPrice,
+    })),
+  );
 
-  await OrderItem.insertMany(orderItemsData);
-
-  // 5. Clear the cart (hard delete as in MVP)
   await CartItem.deleteMany({ cart: cart._id });
-  await cart.deleteOne();
 
-  // 6. Return the complete order (same format as getOrderById)
   return getOrderById(order._id.toString());
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "@/api/client";
 import { getCart } from "@/api/cart";
 import CartItems from "../features/cart/CartItems";
 import CartSummary from "../features/cart/CartSummary";
@@ -44,15 +45,9 @@ const OrderPage = () => {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/v1/orders/from-cart", {
+      const order = await apiFetch("/orders/from-cart", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
       });
-
-      if (!res.ok) throw new Error("Failed to create order");
-
-      const order = await res.json();
       navigate(`/order-confirmation/${order._id}`);
     } catch (err: any) {
       console.error(err);
@@ -62,6 +57,7 @@ const OrderPage = () => {
     }
   };
 
+  const noopCartAction = () => {};
   const hasItems = cart && cart.items && cart.items.length > 0;
 
   if (loading) {
@@ -127,7 +123,12 @@ const OrderPage = () => {
 
             {hasItems ? (
               <>
-                <CartItems items={cart.items} />
+                <CartItems
+                  items={cart.items}
+                  onDecreaseQuantity={noopCartAction}
+                  onIncreaseQuantity={noopCartAction}
+                  onRemoveItem={noopCartAction}
+                />
                 <CartSummary
                   subtotal={cart.total || 0}
                   shipping={49}

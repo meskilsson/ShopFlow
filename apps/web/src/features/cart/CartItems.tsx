@@ -4,9 +4,9 @@ import type { CartItem } from "./types";
 
 type CartItemsProps = {
   items: CartItem[];
-  onDecreaseQuantity: (productId: string, quantity: number) => void;
-  onIncreaseQuantity: (productId: string, quantity: number) => void;
-  onRemoveItem: (productId: string) => void;
+  onDecreaseQuantity: (productVariantId: string, quantity: number) => void;
+  onIncreaseQuantity: (productVariantId: string, quantity: number) => void;
+  onRemoveItem: (productVariantId: string) => void;
 };
 
 const CartItems = ({
@@ -20,9 +20,11 @@ const CartItems = ({
       {items.map((item) => (
         <CartItemCard
           key={item._id}
-          productId={item.product._id}
+          productVariantId={item.productVariant._id}
           name={item.product.name}
           category={item.product.category}
+          color={item.productVariant.color}
+          size={item.productVariant.size}
           quantity={item.quantity}
           unitPrice={item.unitPrice}
           lineTotal={item.lineTotal}
