@@ -7,7 +7,7 @@ export default function OrdersPage() {
 
     return (
         <h1>
-            ORDERSSSSSSSS
+            Upcoming orders
         </h1>
     )
 }

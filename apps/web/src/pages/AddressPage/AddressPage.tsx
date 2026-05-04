@@ -4,6 +4,6 @@
 export default function AddressPage() {
 
     return (
-        <h1>ADDRESSSSSSSS</h1>
+        <h1>Upcoming address</h1>
     )
 }
