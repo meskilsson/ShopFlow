@@ -2,7 +2,6 @@ import { Schema, model, Types } from "mongoose";
 
 export interface IProductVariant {
     product: Types.ObjectId;
-    color: string
     size: string;
     inStock? : boolean;
     sku?: string;
@@ -14,11 +13,6 @@ const productVariantSchema = new Schema<IProductVariant>(
             type: Schema.Types.ObjectId,
             ref: "Product",
             required: [true, "Product reference is required"],
-        },
-        color: {
-            type: String,
-            required: [true, "Color is required"],
-            trim: true,
         },
         size: {
             type: String,

@@ -134,8 +134,7 @@
   padding-left: .2rem;
 }
 
-.variantBtn {
-  display: flex;
+.variantDiv {
   margin-top: 1rem;
   padding: 0.35rem 0.5rem;
   border: 1px solid #d8d8d8;
@@ -172,4 +171,18 @@
   padding: 0.8rem 1rem;
   border-radius: 6px;
   z-index: 1000;
+}
+
+
+.borderSelected{
+  color: var(--btn-primary-text);
+    background-color: var(--btn-primary-hover);
+}
+
+.disabledIcon {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  opacity: 50%;
+  pointer-events: none;
 }

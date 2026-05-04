@@ -1,16 +1,18 @@
-import styles from "./ProductView.module.css";
-import ProductImage from "@/assets/1.webp";
-import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react";
-import ButtonStd from "@/components/UI/ButtonStd";
-import Card from "@/components/UI/Card";
+import styles from "./ProductView.module.css"
+
+import ProductImage from "@/assets/1.webp"
+import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react"
+import Line from "@/assets/icons/line.svg?react"
+
+import ButtonStd from "@/components/UI/ButtonStd"
+import Card from "@/components/UI/Card"
+import { useState } from "react"
 // import CommentCard from '@/components/CommentCard'
 import { addToCart } from "@/api/cart";
-import { useState } from "react";
 
 type ProductVariant = {
   _id: string;
   product: string;
-  color: string;
   size: string;
   inStock?: boolean;
   sku?: string;
@@ -24,9 +26,12 @@ type ProductViewProps = {
     price: number;
     rating?: number;
     seller?: string;
+    ProductImage?: string;
   };
   variants: ProductVariant[];
 };
+
+
 
 const ProductView = ({ product, variants }: ProductViewProps) => {
   const [cartMessage, setCartMessage] = useState<string>("");
@@ -79,7 +84,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
 
   return (
     <section className={styles.productContainer}>
-      <img src={ProductImage} className={styles.productImage} />
+    <img src={product.ProductImage} className={styles.productImage} />
 
       <div className={styles.sidebar}>
         {/* Main product*/}
@@ -126,6 +131,29 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
             </ButtonStd>
           </div>
         </Card>
+        <div className={styles.variantDiv}>
+          <p>What's your size?</p>
+          {variants.map((variant) => (
+            <ButtonStd 
+              variant='border' 
+              className={selectedVariantId === variant._id ?  styles.borderSelected : ""} 
+              key={variant._id} 
+              disabled={!variant.inStock}
+              onClick={() => setSelectedVariantId(variant._id)}> 
+              {variant.size}
+
+              {!variant.inStock && (
+                <Line className={styles.disabledIcon} />
+                )}
+            </ButtonStd>
+          ))}
+        </div>
+        
+        <div className={styles.buttonContainer}>
+            <ButtonStd variant='primary' fullWidth>Add to cart</ButtonStd>
+            <ButtonStd variant='ghost-dark'><HeartIconStd className={styles.buttonIcon}/></ButtonStd>
+        </div>
+      </Card>
 
         {/* Seller info*/}
         <Card>
