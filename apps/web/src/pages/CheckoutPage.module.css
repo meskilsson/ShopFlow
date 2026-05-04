@@ -1,0 +1,67 @@
+.page {
+    width: 100%;
+    padding: 2rem 0 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.eyebrow {
+    font-size: 0.875rem;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.subtitle {
+    color: var(--text-gray);
+}
+
+.choicePanel {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border-radius: var(--br);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+}
+
+.choiceText {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.choiceText h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.choiceText p {
+    color: var(--text-gray);
+}
+
+.choiceActions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+    .choicePanel {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .choiceActions {
+        flex-direction: column;
+    }
+}

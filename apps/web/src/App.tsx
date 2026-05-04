@@ -1,10 +1,10 @@
 import "./App.css";
-import { Routes, Route, useLocation } from "react-router-dom"
-import { AnimatePresence, motion } from "framer-motion"
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 import HomePage from "./pages/HomePage";
-import ProductsPage from "@/pages/ProductsPage"
-import ProductPage from "@/pages/ProductPage"
+import ProductsPage from "@/pages/ProductsPage";
+import ProductPage from "@/pages/ProductPage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
@@ -15,11 +15,10 @@ import OrdersPage from "./pages/OrdersPage/OrdersPage";
 import AddressPage from "./pages/AddressPage/AddressPage";
 
 
-import NavBar from "@/features/navbar/NavBar"
+import NavBar from "@/features/navbar/NavBar";
 import ContentWrapper from "@/components/ContentWrapper";
 import Footer from "./features/footer/Footer";
 import AccountLayout from "./pages/AccountLayout/AccountLayout";
-
 
 
 function App() {
@@ -38,7 +37,6 @@ function App() {
         >
           <ContentWrapper>
             <Routes location={location}>
-
               {/* Routes här under pls */}
               <Route index element={<HomePage />} />
               <Route path="/home" element={<HomePage />} />
@@ -47,6 +45,7 @@ function App() {
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
 
               <Route path="/profile" element={<AccountLayout />}>
                 <Route index element={<ProfilePage />} />
@@ -61,7 +60,7 @@ function App() {
         </motion.div>
       </AnimatePresence>
     </>
-  )
+  );
 }
 
 export default App;

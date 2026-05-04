@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import CartItem from "../models/CartItem";
 
 export async function connectDB(): Promise<void> {
 

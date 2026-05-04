@@ -40,6 +40,12 @@
     font-weight: 500;
 }
 
+.variant {
+    margin-top: 0.15rem;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
 .total {
     font-weight: 600;
     white-space: nowrap;
@@ -49,8 +55,51 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    align-items: center;
     color: var(--text-gray);
     font-size: 0.9rem;
+}
+
+.quantityControls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantityButton {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+    background: white;
+    color: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.quantityValue {
+    min-width: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.removeButton {
+    border: 0;
+    background: transparent;
+    color: #b42318;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+    cursor: pointer;
+    padding: 0;
+}
+
+.removeIcon {
+    width: 1rem;
+    height: 1rem;
 }
 
 @media (max-width: 640px) {

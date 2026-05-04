@@ -46,7 +46,7 @@ export async function createUser(userData: CreateUserInput) {
     ...(userData.role && { role: userData.role }),
   });
 
-  const safeUser = await User.findById(createdUser._id);
+  const safeUser = await User.findOne({ email });
 
   return safeUser;
 }

@@ -6,6 +6,15 @@ import ButtonStd from "@/components/UI/ButtonStd"
 import NavSpacer from '@/features/navbar/NavSpacer'
 import SearchBar from '@/features/search/SearchBar'
 
+const categories = [
+  { label: "T-Shirts", value: "T-shirts" },
+  { label: "Shoes", value: "Shoes" },
+  { label: "Pants", value: "Pants" },
+  { label: "Shirts", value: "Shirts" },
+  { label: "Jackets", value: "Jackets" },
+  { label: "Accessories", value: "Accessories" },
+]
+
 const ProductCategories = () => {
 
   const navigate = useNavigate()
@@ -15,12 +24,14 @@ const ProductCategories = () => {
       <div className={styles.container}>
         <ButtonStd variant="secondary" bold onClick={() => navigate("/products")}>All Products</ButtonStd>
         <NavSpacer size={"0.5rem"}/>
-        <ButtonStd variant="secondary" onClick={() => navigate("/products")}>T-Shirts</ButtonStd>
-        <ButtonStd variant="secondary" onClick={() => navigate("/products")}>Shoes</ButtonStd>
-        <ButtonStd variant="secondary" onClick={() => navigate("/products")}>Pants</ButtonStd>
-        <ButtonStd variant="secondary" onClick={() => navigate("/products")}>Shirts</ButtonStd>
-        <ButtonStd variant="secondary" onClick={() => navigate("/products")}>Jackets</ButtonStd>
-        <ButtonStd variant="secondary" onClick={() => navigate("/products")}>Accessories</ButtonStd>
+        {categories.map((category) => (
+          <ButtonStd
+              key={category.value}
+              variant="secondary"
+              onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} > 
+              {category.label}
+          </ButtonStd>
+          ))}
       </div>
       <div className={styles.container}>
         <SearchBar/>

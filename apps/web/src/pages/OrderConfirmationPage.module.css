@@ -1,0 +1,71 @@
+.container {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--br);
+  padding: 3rem 2rem;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.orderNumber {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+  margin-bottom: 2rem;
+}
+
+.message {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  color: var(--text-gray);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.buttonPrimary,
+.buttonSecondary {
+  padding: 1rem 2rem;
+  border-radius: var(--br);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.buttonPrimary {
+  background-color: var(--accent);
+  color: white;
+}
+
+.buttonSecondary {
+  background-color: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--text-gray);
+}

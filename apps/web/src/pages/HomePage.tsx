@@ -1,5 +1,6 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react';
 
 import ProductCategories from "@/features/products/ProductCategories";
 import ButtonStd from '@/components/UI/ButtonStd';
@@ -10,9 +11,33 @@ import ProductCard from '@/features/products/ProductCard';
 import Category from '@/features/products/Category';
 import MainHero from "@/features/home/MainHero"
 import ProductsCarousel from '@/components/UI/ProductsCarousel';
+import { getProducts } from '@/api/products';
+
+type Product = {
+    _id: string;
+    name: string;
+    category: string;
+    price: number;
+    variants: number;
+    ProductImage?: string;
+};
 
 const HomePage = () => {
-  const navigate = useNavigate();
+    const [shoes, setShoes] = useState<Product[]>([])
+    const [tshirts, setTshirts] = useState<Product[]>([])
+
+    useEffect(() =>  {
+        getProducts("Shoes").then((result) => {
+            setShoes(result.data);
+        });
+    }, []);
+
+    useEffect(() =>  {
+        getProducts("T-shirts").then((result) => {
+            setTshirts(result.data);
+        });
+    }, []);
+    const navigate = useNavigate();
 
   return (
     <>
@@ -20,178 +45,42 @@ const HomePage = () => {
     <MainHero fullWidth title="SUMMER TIME" subtitle="Is your wardrobe up to date?" image="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></MainHero>
       <Container>
 
-        <Category categoryText="Shoes" articles={666}/>
+        <Category categoryText="Shoes" articles={shoes.length}/>
         <div style={{margin: "0 auto", marginBottom: "1rem"}}>
             <ProductsCarousel>
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
+                {shoes.map((product) => (
+                    <ProductCard
+                        key={product._id}
+                        title={product.name}
+                        brand={product.category}
+                        variants={product.variants}
+                        price={(product.price)}
+                        link={`/product/${product._id}`}
+                        image={product.ProductImage}
+                    /> ))}
+                
             </ProductsCarousel>
 
         </div>
 
-        <Category categoryText="T-Shirts" articles={462}/>
+        <Category categoryText="T-Shirts" articles={tshirts.length}/>
         <div style={{margin: "0 auto", marginBottom: "1rem"}}>
             <ProductsCarousel>
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
-                <ProductCard
-                    title="DUNK LOW RETRO"
-                    brand="Nike Sportswear"
-                    variants={1}
-                    price={1200}
-                    link="/product"
-                    image='test'
-                />
+                {tshirts.map((product) => (
+                    <ProductCard
+                        key={product._id}
+                        title={product.name}
+                        brand={product.category}
+                        variants={product.variants}
+                        price={(product.price)}
+                        link={`/product/${product._id}`}
+                        image={product.ProductImage}
+                    /> ))}
+                
             </ProductsCarousel>
+
         </div>
+
         <Hero title="KATTARP" subtitle="Have you tried the new Kattarp-collection?" image='https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'>
             <div style={{marginTop: "1rem"}}></div>
             <ButtonStd variant='ghost-light'>Check it out now</ButtonStd>

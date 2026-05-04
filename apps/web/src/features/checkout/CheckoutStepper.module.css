@@ -1,0 +1,67 @@
+.stepper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.step {
+    min-height: 3rem;
+    border: 1px solid #e5e5e5;
+    border-radius: var(--br);
+    padding: 0.65rem 0.85rem;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--text-gray);
+}
+
+.marker {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    background-color: #eeeeee;
+    color: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.label {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.complete {
+    border-color: #b7dfc1;
+    color: #247a35;
+}
+
+.complete .marker {
+    background-color: #e8f7ec;
+}
+
+.current {
+    border-color: #222222;
+    color: inherit;
+}
+
+.current .marker {
+    background-color: #222222;
+    color: white;
+}
+
+.locked {
+    background-color: #f7f7f7;
+    color: #9a9a9a;
+}
+
+@media (max-width: 640px) {
+    .stepper {
+        grid-template-columns: 1fr;
+    }
+}
