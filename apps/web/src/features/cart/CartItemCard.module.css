@@ -89,9 +89,17 @@
     border: 0;
     background: transparent;
     color: #b42318;
-    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
     cursor: pointer;
     padding: 0;
+}
+
+.removeIcon {
+    width: 1rem;
+    height: 1rem;
 }
 
 @media (max-width: 640px) {

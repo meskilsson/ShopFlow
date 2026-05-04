@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "@/api/client";
 import { getCart } from "@/api/cart";
+import CheckoutStepper from "@/features/checkout/CheckoutStepper";
 import CartItems from "../features/cart/CartItems";
 import CartSummary from "../features/cart/CartSummary";
 import styles from "./OrderPage.module.css";
@@ -77,6 +78,14 @@ const OrderPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.page}>
+        <CheckoutStepper
+          steps={[
+            { label: "Address", status: "complete" },
+            { label: "Payment", status: "current" },
+            { label: "Review", status: "locked" },
+          ]}
+        />
+
         {/* Header */}
         <div className={styles.header}>
           <p className={styles.eyebrow}>Checkout</p>

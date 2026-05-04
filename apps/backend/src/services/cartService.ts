@@ -80,7 +80,7 @@ export async function formatCartResponse(cartId: string) {
       select: "product color size inStock sku",
       populate: {
         path: "product",
-        select: "name price category",
+        select: "name price category ProductImage",
       },
     })
     .lean();

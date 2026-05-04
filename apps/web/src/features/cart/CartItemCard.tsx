@@ -1,11 +1,12 @@
+import { Trash2 } from "lucide-react";
 import styles from "./CartItemCard.module.css";
-
-import ProductImage from "@/assets/1.webp";
+import FallbackProductImage from "@/assets/1.webp";
 
 type CartItemCardProps = {
   productVariantId: string;
   name: string;
   category: string;
+  image?: string;
   color: string;
   size: string;
   quantity: number;
@@ -20,6 +21,7 @@ const CartItemCard = ({
   productVariantId,
   name,
   category,
+  image,
   color,
   size,
   quantity,
@@ -31,7 +33,11 @@ const CartItemCard = ({
 }: CartItemCardProps) => {
   return (
     <article className={styles.card}>
-      <img src={ProductImage} alt={name} className={styles.image} />
+      <img
+        src={image || FallbackProductImage}
+        alt={name}
+        className={styles.image}
+      />
 
       <div className={styles.content}>
         <div className={styles.header}>
@@ -69,9 +75,10 @@ const CartItemCard = ({
           <button
             type="button"
             className={styles.removeButton}
+            aria-label={`Remove ${name} from cart`}
             onClick={() => onRemoveItem(productVariantId)}
           >
-            Remove
+            <Trash2 className={styles.removeIcon} aria-hidden="true" />
           </button>
         </div>
       </div>

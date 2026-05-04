@@ -23,6 +23,7 @@ const CartItems = ({
           productVariantId={item.productVariant._id}
           name={item.product.name}
           category={item.product.category}
+          image={item.product.ProductImage}
           color={item.productVariant.color}
           size={item.productVariant.size}
           quantity={item.quantity}

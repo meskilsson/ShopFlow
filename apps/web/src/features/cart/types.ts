@@ -3,6 +3,7 @@ export type CartProduct = {
   name: string;
   price: number;
   category: string;
+  ProductImage?: string;
 };
 
 export type CartProductVariant = {
