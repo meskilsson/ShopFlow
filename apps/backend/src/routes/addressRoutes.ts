@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authenticateToken from "../middleware/authenticateToken";
+import resolveAddressOwner from "../middleware/resolveAddressOwner";
 import {
   createAddress,
   getAddresses,
@@ -9,7 +9,7 @@ import {
 
 const addressRouter = Router();
 
-addressRouter.use(authenticateToken);
+addressRouter.use(resolveAddressOwner);
 
 addressRouter.post("/", createAddress);
 addressRouter.get("/", getAddresses);

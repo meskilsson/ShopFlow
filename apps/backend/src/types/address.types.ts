@@ -2,8 +2,20 @@ import { Types } from "mongoose";
 
 export type AddressType = "shipping" | "billing";
 
+export type AddressOwner =
+  | {
+      userId: string;
+      sessionId?: never;
+    }
+  | {
+      userId?: never;
+      sessionId: string;
+    };
+
 export interface IAddress {
-  user: Types.ObjectId;
+  user?: Types.ObjectId;
+  sessionId?: string;
+  full_name: string;
   street: string;
   city: string;
   postal_code: string;
@@ -12,6 +24,7 @@ export interface IAddress {
 }
 
 export interface CreateAddressData {
+  full_name: string;
   street: string;
   city: string;
   postal_code: string;
@@ -20,6 +33,7 @@ export interface CreateAddressData {
 }
 
 export interface UpdateAddressData {
+  full_name?: string;
   street?: string;
   city?: string;
   postal_code?: string;

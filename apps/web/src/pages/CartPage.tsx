@@ -140,6 +140,7 @@ const CartPage = () => {
             total={total}
             itemCount={itemCount}
             onContinueShopping={() => navigate("/")}
+            onCheckout={() => navigate("/checkout")}
           />
         </div>
       </div>

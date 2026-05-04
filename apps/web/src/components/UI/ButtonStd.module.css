@@ -1,5 +1,5 @@
 .btnBase {
-    height: var(--btn-height);
+    height: var(--button-height, var(--btn-height));
     /* min-width: 3.125rem; */
     min-width: var(--btn-height);
 
@@ -21,8 +21,7 @@
 }
 
 .fullWidth {
-  /* width: 100%; */
-  flex: 1;
+  width: 100%;
 }
 
 

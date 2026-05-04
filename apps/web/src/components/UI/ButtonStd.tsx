@@ -6,10 +6,11 @@ interface ButtonStdProps {
     variant?: "primary" | "secondary" | "ghost-dark" | "ghost-light"
     bold?: boolean
     fullWidth?: boolean
+    className?: string
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const ButtonStd: React.FC<ButtonStdProps> = ({children, variant = "secondary", bold = false, fullWidth = false, onClick}) => {
+const ButtonStd: React.FC<ButtonStdProps> = ({children, variant = "secondary", bold = false, fullWidth = false, className = "", onClick}) => {
 return (
     <button
       onClick={onClick}
@@ -18,6 +19,7 @@ return (
         ${Styles.btnBase} 
         ${Styles[variant]}
         ${fullWidth ? Styles.fullWidth : ""}
+        ${className}
       `}
     >
       {children}

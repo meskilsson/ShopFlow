@@ -6,7 +6,15 @@ const addressSchema = new Schema<IAddress>(
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
+        },
+        sessionId: {
+            type: String,
+            trim: true,
+        },
+        full_name: {
+            type: String,
             required: true,
+            trim: true,
         },
         street: {
             type: String,
@@ -38,6 +46,12 @@ const addressSchema = new Schema<IAddress>(
         timestamps: true,
     },
 );
+
+addressSchema.pre("validate", function validateAddressOwner() {
+    if (!this.user && !this.sessionId) {
+        this.invalidate("user", "An address must belong to a user or a session");
+    }
+});
 
 const Address = model<IAddress>("Address", addressSchema);
 export default Address;

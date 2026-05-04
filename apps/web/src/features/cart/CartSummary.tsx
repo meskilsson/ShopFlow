@@ -7,6 +7,7 @@ type CartSummaryProps = {
   total: number;
   itemCount: number;
   onContinueShopping?: () => void;
+  onCheckout?: () => void;
 };
 
 const CartSummary = ({
@@ -15,6 +16,7 @@ const CartSummary = ({
   total,
   itemCount,
   onContinueShopping,
+  onCheckout,
 }: CartSummaryProps) => {
   return (
     <aside className={styles.summary}>
@@ -39,7 +41,7 @@ const CartSummary = ({
         </div>
 
         <div className={styles.actions}>
-          <ButtonStd variant="primary" fullWidth>
+          <ButtonStd variant="primary" fullWidth onClick={onCheckout}>
             Checkout
           </ButtonStd>
           <ButtonStd
