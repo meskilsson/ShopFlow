@@ -1,4 +1,11 @@
-import { useContext, createContext, useState, useEffect, useMemo, type ReactNode } from "react";
+import {
+    useContext,
+    createContext,
+    useState,
+    useEffect,
+    useMemo,
+    type ReactNode,
+} from "react";
 
 type UserRole = "buyer" | "seller" | "admin";
 
@@ -17,6 +24,7 @@ type AuthContextValue = {
     isLoading: boolean;
     login: (token: string, user: AuthUser) => void;
     logout: () => void;
+    updateAuthUser: (updatedUser: AuthUser) => void;
 };
 
 type AuthProviderProps = {
@@ -39,19 +47,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         if (storedToken) {
             setToken(storedToken);
-        };
+        }
 
         if (storedUser) {
             try {
                 setUser(JSON.parse(storedUser) as AuthUser);
             } catch {
                 localStorage.removeItem(USER_STORAGE_KEY);
-            };
-        };
+            }
+        }
 
         setIsLoading(false);
     }, []);
-
 
     function login(newToken: string, newUser: AuthUser) {
         setToken(newToken);
@@ -67,8 +74,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         localStorage.removeItem(TOKEN_STORAGE_KEY);
         localStorage.removeItem(USER_STORAGE_KEY);
-    };
+    }
 
+    function updateAuthUser(updatedUser: AuthUser) {
+        setUser(updatedUser);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser));
+    }
 
     const value = useMemo<AuthContextValue>(
         () => ({
@@ -78,6 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             isLoading,
             login,
             logout,
+            updateAuthUser,
         }),
         [user, token, isLoading],
     );
@@ -94,6 +106,3 @@ export function useAuth() {
 
     return ctx;
 }
-
-
-

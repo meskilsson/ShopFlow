@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router";
 import LoginCard from "../UI/LoginCard";
 import styles from './Login.module.css';
+import { loginRequest } from "@/api/auth";
 
 
 export default function LoginForm() {
@@ -21,20 +22,11 @@ export default function LoginForm() {
         setIsLoading(true);
 
         try {
-            const response = await fetch("http://localhost:5000/api/v1/auth/login", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
+
+            const data = await loginRequest({
+                email,
+                password,
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Login failed");
-            }
 
             login(data.token, data.user);
             navigate("/");

@@ -1,42 +1,39 @@
-import User from "../models/User";
+import User, { UserRole } from "../models/User";
 import bcrypt from "bcrypt";
+import { createHttpError } from "../middleware/HttpError";
+
 
 interface CreateUserInput {
   name: string;
   email: string;
   username: string;
   password: string;
-  role?: "buyer" | "seller";
+  role?: UserRole;
+}
+
+interface UpdatedUserInput {
+  name?: string;
+  email?: string;
+  username?: string;
+  role?: UserRole;
 }
 
 export async function createUser(userData: CreateUserInput) {
   if (!userData?.name || !userData?.email || !userData?.username || !userData?.password) {
-    const error = new Error("Name, email, username, and password are required") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 400;
-    throw error;
+    throw createHttpError("Name, email, username and password are required", 400);
+
   }
 
   const name = userData.name.trim();
   const email = userData.email.trim().toLowerCase();
   const username = userData.username.trim().toLowerCase();
-  const normalizedRole = userData.role?.trim().toLowerCase();
-  const role =
-    normalizedRole === "buyer" || normalizedRole === "seller"
-      ? normalizedRole
-      : undefined;
 
   const existingUser = await User.findOne({
     $or: [{ email }, { username }],
   });
 
   if (existingUser) {
-    const error = new Error("Email or username already in use") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 409;
-    throw error;
+    throw createHttpError("Email or username already in use", 409);
   }
 
   const passwordHash = await bcrypt.hash(userData.password, 10);
@@ -46,7 +43,7 @@ export async function createUser(userData: CreateUserInput) {
     email,
     username,
     passwordHash,
-    ...(role ? { role } : {}),
+    ...(userData.role && { role: userData.role }),
   });
 
   const safeUser = await User.findOne({ email });
@@ -63,11 +60,134 @@ export async function getUserById(id: string) {
   const user = await User.findById(id);
 
   if (!user) {
-    const error = new Error("User not found") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 404;
-    throw error;
+    throw createHttpError("User not found", 404);
   }
   return user;
+}
+
+export async function deleteUser(id: string) {
+  const deletedUser = await User.findByIdAndDelete(id);
+
+  if (!deletedUser) {
+    throw createHttpError("User not found", 404);
+  }
+
+  return { message: "User deleted successfully" };
+}
+
+export async function updateUser(id: string, userData: UpdatedUserInput) {
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw createHttpError("User not found", 404);
+  }
+
+  const updateData: {
+    name?: string;
+    email?: string;
+    username?: string;
+    passwordHash?: string;
+    role?: UserRole;
+  } = {};
+
+  if (userData.name !== undefined) {
+    const name = userData.name.trim();
+
+    if (!name) {
+      throw createHttpError("Name cannot be empty", 400);
+    }
+
+    updateData.name = name;
+  }
+
+  if (userData.email !== undefined) {
+    const email = userData.email.trim().toLowerCase();
+
+    if (!email) {
+      throw createHttpError("Email cannot be empty", 400);
+    }
+
+    updateData.email = email;
+  }
+
+  if (userData.username !== undefined) {
+    const username = userData.username.trim().toLowerCase();
+
+    if (!username) {
+      throw createHttpError("Username cannot be empty", 400);
+    }
+
+    updateData.username = username;
+  }
+
+  if (userData.role !== undefined) {
+    updateData.role = userData.role;
+  }
+
+  const conflictConditions = [];
+
+  if (updateData.email) {
+    conflictConditions.push({ email: updateData.email });
+  }
+
+  if (updateData.username) {
+    conflictConditions.push({ username: updateData.username });
+  }
+
+  if (conflictConditions.length > 0) {
+    const existingUser = await User.findOne({
+      _id: { $ne: id },
+      $or: conflictConditions,
+    });
+
+    if (existingUser) {
+      throw createHttpError("Email or username already in use", 409);
+    }
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+    new: true,
+    runValidators: true,
+  });
+
+  return updatedUser;
+
+}
+
+export async function changePasswordService(
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+) {
+  const user = await User.findById(userId).select("+passwordHash");
+
+  if (!user) {
+    throw createHttpError("User not found", 404);
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(
+    currentPassword,
+    user.passwordHash
+  );
+
+  if (!isPasswordCorrect) {
+    throw createHttpError("Current password is incorrect", 400);
+  }
+
+  if (!newPassword) {
+    throw createHttpError("New password cannot be empty", 400);
+  }
+
+  if (newPassword.length < 6) {
+    throw createHttpError("New password must be at least 6 characters", 400);
+  }
+
+  user.passwordHash = await bcrypt.hash(newPassword, 10);
+
+  await user.save();
+
+  return {
+    message: "Password updated successfully",
+  };
 }

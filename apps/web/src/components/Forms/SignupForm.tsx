@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import styles from "../Forms/Signup.module.css";
 import SignupCard from "../UI/SignupCard";
+import { createUserRequest } from "@/api/user";
 
 type Role = "buyer" | "seller";
 
@@ -28,25 +29,13 @@ export default function SignupForm() {
         setIsLoading(true);
 
         try {
-            const response = await fetch("http://localhost:5000/api/v1/users", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    username,
-                    password,
-                    role,
-                }),
+            await createUserRequest({
+                name,
+                email,
+                username,
+                password,
+                role,
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Signup failed");
-            }
 
             navigate("/login");
         } catch (err) {
