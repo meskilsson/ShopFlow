@@ -8,6 +8,7 @@ import CartSummary from "../features/cart/CartSummary";
 import styles from "./OrderPage.module.css";
 import type { CartResponse } from "../features/cart/types";
 import type { Address } from "@/features/address/address.types";
+import ButtonStd from "@/components/UI/ButtonStd";
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -137,14 +138,14 @@ const OrderPage = () => {
 
             {error && <p className={styles.error}>{error}</p>}
 
-            {/* Complete your order button – moved to left column */}
-            <button
+            <ButtonStd
+              variant="primary"
+              fullWidth
               onClick={handleConfirmOrder}
               disabled={orderLoading || !hasItems}
-              className={styles.confirmButton}
             >
               {orderLoading ? "Creating order..." : "Complete your order"}
-            </button>
+            </ButtonStd>
 
             <p className={styles.terms}>
               By completing your purchase you agree to our terms and privacy
@@ -170,6 +171,7 @@ const OrderPage = () => {
                   shipping={49}
                   total={(cart.total || 0) + 49}
                   itemCount={cart.items.length}
+                  showActions={false}
                   onContinueShopping={undefined}
                   onCheckout={undefined}
                 />
