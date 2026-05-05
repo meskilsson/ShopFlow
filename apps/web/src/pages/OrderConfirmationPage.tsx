@@ -15,17 +15,15 @@ const OrderConfirmationPage = () => {
         </p>
 
         <p className={styles.message}>
-          Your order has been registered and is now being processed.
-          <br />
-          You will receive a confirmation email shortly.
+          Your order will be shipped within two working days.
         </p>
 
         <div className={styles.actions}>
           <Link to="/products" className={styles.buttonPrimary}>
             Continue shopping
           </Link>
-          <Link to="/profile" className={styles.buttonSecondary}>
-            My orders
+          <Link to="/profile/orders" className={styles.buttonSecondary}>
+            View my orders
           </Link>
         </div>
 

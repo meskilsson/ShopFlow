@@ -124,3 +124,19 @@ h1 {
 .subtitle:empty {
   margin-bottom: 0;
 }
+
+.disabledOption {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.disabledOption input {
+  cursor: not-allowed;
+}
+
+/* Make sure images in CartItems are half size on order page */
+.rightColumn .CartItemCard img {
+  width: 50% !important;
+  height: auto !important;
+}

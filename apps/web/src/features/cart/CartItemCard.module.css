@@ -1,113 +1,126 @@
 .card {
-    width: 100%;
-    background-color: var(--bg-secondary);
-    border-radius: var(--br);
-    padding: 1rem;
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 1rem;
-    align-items: center;
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border-radius: var(--br);
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  align-items: center;
 }
 
 .image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: var(--br);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--br);
 }
 
 .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .category {
-    font-size: 0.85rem;
-    color: var(--text-gray);
-    text-transform: capitalize;
+  font-size: 0.85rem;
+  color: var(--text-gray);
+  text-transform: capitalize;
 }
 
 .title {
-    font-size: 1.1rem;
-    font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .variant {
-    margin-top: 0.15rem;
-    color: var(--text-gray);
-    font-size: 0.9rem;
+  margin-top: 0.15rem;
+  color: var(--text-gray);
+  font-size: 0.9rem;
 }
 
 .total {
-    font-weight: 600;
-    white-space: nowrap;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .meta {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
-    color: var(--text-gray);
-    font-size: 0.9rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  color: var(--text-gray);
+  font-size: 0.9rem;
 }
 
 .quantityControls {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .quantityButton {
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 999px;
-    background: white;
-    color: inherit;
-    font-size: 1rem;
-    line-height: 1;
-    cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  background: white;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .quantityValue {
-    min-width: 1.5rem;
-    text-align: center;
-    font-weight: 600;
-    color: var(--text-primary);
+  min-width: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .removeButton {
-    border: 0;
-    background: transparent;
-    color: #b42318;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-left: auto;
-    cursor: pointer;
-    padding: 0;
+  border: 0;
+  background: transparent;
+  color: #b42318;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+  cursor: pointer;
+  padding: 0;
 }
 
 .removeIcon {
-    width: 1rem;
-    height: 1rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 @media (max-width: 640px) {
-    .card {
-        grid-template-columns: 1fr;
-    }
+  .card {
+    grid-template-columns: 1fr;
+  }
 
-    .header {
-        flex-direction: column;
-    }
+  .header {
+    flex-direction: column;
+  }
+}
+
+.imageReadonly {
+  width: 60px !important;
+  height: 60px !important;
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 640px) {
+  .imageReadonly {
+    width: 50px !important;
+    height: 50px !important;
+  }
 }
