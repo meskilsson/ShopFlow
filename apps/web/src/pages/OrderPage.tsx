@@ -9,6 +9,7 @@ import styles from "./OrderPage.module.css";
 import type { CartResponse } from "../features/cart/types";
 import type { Address } from "@/features/address/address.types";
 import ButtonStd from "@/components/UI/ButtonStd";
+import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react";
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -99,6 +100,20 @@ const OrderPage = () => {
               : "Your cart is empty. Add some products before continuing."}
           </p>
         </div>
+
+        <ButtonStd
+          variant="secondary"
+          fullWidth={false}
+          onClick={() => navigate(-1)}
+          style={{
+            width: "fit-content",
+            minWidth: "40px",
+            height: "40px",
+            padding: "8px",
+          }}
+        >
+          <BackIcon style={{ width: "22px", height: "22px" }} />
+        </ButtonStd>
 
         <div className={styles.content}>
           {/* LEFT COLUMN */}

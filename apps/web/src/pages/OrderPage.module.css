@@ -96,7 +96,7 @@
 }
 
 .header {
-  margin-bottom: 2.5rem;
+  /* margin-bottom: 2.5rem; */
 }
 
 .eyebrow {
@@ -118,7 +118,7 @@ h1 {
   color: var(--text-gray);
   font-size: 1.05rem;
   line-height: 1.5;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
 }
 
 .subtitle:empty {
