@@ -15,7 +15,6 @@ type CartItemCardProps = {
   onDecreaseQuantity: (productVariantId: string, quantity: number) => void;
   onIncreaseQuantity: (productVariantId: string, quantity: number) => void;
   onRemoveItem: (productVariantId: string) => void;
-  /** New: readonly mode used on OrderPage */
   readonly?: boolean;
 };
 
@@ -24,7 +23,6 @@ const CartItemCard = ({
   name,
   category,
   image,
-  color,
   size,
   quantity,
   unitPrice,
@@ -48,7 +46,7 @@ const CartItemCard = ({
             <p className={styles.category}>{category}</p>
             <h2 className={styles.title}>{name}</h2>
             <p className={styles.variant}>
-              {size} / {color}
+              {size} / {quantity} st
             </p>
           </div>
           <p className={styles.total}>{lineTotal} kr</p>

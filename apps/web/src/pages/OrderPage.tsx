@@ -170,7 +170,10 @@ const OrderPage = () => {
                   subtotal={cart.total || 0}
                   shipping={49}
                   total={(cart.total || 0) + 49}
-                  itemCount={cart.items.length}
+                  itemCount={cart.items.reduce(
+                    (sum, item) => sum + item.quantity,
+                    0,
+                  )}
                   showActions={false}
                   onContinueShopping={undefined}
                   onCheckout={undefined}
