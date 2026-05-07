@@ -1,17 +1,19 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Container from "@/components/containers/Container";
 import ButtonStd from "@/components/UI/ButtonStd";
-import { useNavigate } from "react-router-dom";
+
 import { getUserByIdRequest } from "@/api/user";
 import { useAuth } from "@/contexts/AuthContext";
 
 import type { User } from "@/types/userTypes";
 
-import { useState, useEffect } from "react";
 import styles from "./ProfilePage.module.css";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
-    const { user: authUser } = useAuth();
+    const { user: authUser, token } = useAuth();
 
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState("");
@@ -20,12 +22,16 @@ export default function ProfilePage() {
     useEffect(() => {
         async function getUser() {
             try {
-                if (!authUser?._id) {
+                setIsLoading(true);
+                setError("");
+
+                if (!authUser?._id || !token) {
+                    setUser(null);
                     setError("No logged in user found.");
                     return;
                 }
 
-                const userData = await getUserByIdRequest(authUser._id);
+                const userData = await getUserByIdRequest(authUser._id, token);
                 setUser(userData);
             } catch (error) {
                 if (error instanceof Error) {
@@ -39,7 +45,7 @@ export default function ProfilePage() {
         }
 
         getUser();
-    }, [authUser?._id]);
+    }, [authUser?._id, token]);
 
     if (isLoading) {
         return (
@@ -73,14 +79,14 @@ export default function ProfilePage() {
 
     return (
         <Container>
-            <div className={styles.profilePage}>
-                <div className={styles.header}>
+            <main className={styles.profilePage}>
+                <header className={styles.header}>
                     <p className={styles.kicker}>Profile</p>
                     <h1 className={styles.title}>Account overview</h1>
                     <p className={styles.subtitle}>
                         View your personal details and account information.
                     </p>
-                </div>
+                </header>
 
                 <section className={styles.summaryCard}>
                     <div>
@@ -124,9 +130,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </section>
-
-
-            </div>
+            </main>
         </Container>
     );
 }

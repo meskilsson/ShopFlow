@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Card from "@/components/UI/Card";
 import Container from "@/components/containers/Container";
 import { useAuth } from "@/contexts/AuthContext";
+import styles from "./OrdersPage.module.css";
 
 type OrderItem = {
     _id: string;
@@ -30,6 +31,21 @@ type Order = {
     items: OrderItem[];
 };
 
+function formatPrice(price: number) {
+    return new Intl.NumberFormat("sv-SE", {
+        style: "currency",
+        currency: "SEK",
+    }).format(price);
+}
+
+function formatDate(date: string) {
+    return new Intl.DateTimeFormat("sv-SE", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    }).format(new Date(date));
+}
+
 export default function OrdersPage() {
     const { user: authUser } = useAuth();
 
@@ -40,8 +56,12 @@ export default function OrdersPage() {
     useEffect(() => {
         async function getUserOrders() {
             try {
+                setIsLoading(true);
+                setError("");
+
                 if (!authUser?._id) {
-                    setError("No user found");
+                    setOrders([]);
+                    setError("You need to be logged in to view your orders.");
                     return;
                 }
 
@@ -49,14 +69,13 @@ export default function OrdersPage() {
                     `http://localhost:5000/api/v1/orders/user/${authUser._id}/with-items`
                 );
 
-                const data: Order[] = await response.json();
+                const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error("Could not fetch orders");
+                    throw new Error(data?.message || "Could not fetch orders");
                 }
 
                 setOrders(data);
-                console.log(data);
             } catch (error) {
                 if (error instanceof Error) {
                     setError(error.message);
@@ -71,36 +90,104 @@ export default function OrdersPage() {
         getUserOrders();
     }, [authUser?._id]);
 
-    if (isLoading) return <p>Loading orders...</p>;
-
-    if (error) return <p>{error}</p>;
-
     return (
         <Container>
             <Card>
-                <h1>My Orders</h1>
+                <section className={styles.ordersPage}>
+                    <div className={styles.header}>
+                        <div>
+                            <h1>My Orders</h1>
+                            <p className={styles.subtitle}>
+                                View your recent purchases and order status.
+                            </p>
+                        </div>
 
-                {orders.length === 0 ? (
-                    <p>No orders found.</p>
-                ) : (
-                    orders.map((order) => (
-                        <div key={order._id}>
-                            <h2>Order ID: {order._id}</h2>
-                            <p>Total: {order.totalPrice} kr</p>
-                            <p>Status: {order.status}</p>
-                            <p>Payment: {order.paymentStatus}</p>
+                        <span className={styles.orderCount}>
+                            {orders.length} {orders.length === 1 ? "order" : "orders"}
+                        </span>
+                    </div>
 
-                            <h3>Items</h3>
+                    {isLoading && (
+                        <div className={styles.stateBox}>
+                            <p>Loading orders...</p>
+                        </div>
+                    )}
 
-                            {order.items.map((item) => (
-                                <div key={item._id}>
-                                    <p>Quantity: {item.quantity}</p>
-                                    <p>Price: {item.priceAtPurchase} kr</p>
-                                </div>
+                    {!isLoading && error && (
+                        <div className={styles.errorBox}>
+                            <p>{error}</p>
+                        </div>
+                    )}
+
+                    {!isLoading && !error && orders.length === 0 && (
+                        <div className={styles.emptyBox}>
+                            <h2>No orders found</h2>
+                            <p>Your orders will appear here after you make a purchase.</p>
+                        </div>
+                    )}
+
+                    {!isLoading && !error && orders.length > 0 && (
+                        <div className={styles.ordersList}>
+                            {orders.map((order) => (
+                                <article key={order._id} className={styles.orderCard}>
+                                    <div className={styles.orderTop}>
+                                        <div>
+                                            <p className={styles.orderLabel}>Order</p>
+                                            <h2 className={styles.orderId}>#{order._id}</h2>
+                                            <p className={styles.orderDate}>
+                                                Placed on {formatDate(order.createdAt)}
+                                            </p>
+                                        </div>
+
+                                        <div className={styles.badges}>
+                                            <span className={`${styles.badge} ${styles[order.status]}`}>
+                                                {order.status}
+                                            </span>
+
+                                            <span
+                                                className={`${styles.badge} ${styles[`payment-${order.paymentStatus}`]
+                                                    }`}
+                                            >
+                                                {order.paymentStatus}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.summary}>
+                                        <div>
+                                            <span className={styles.summaryLabel}>Total</span>
+                                            <strong>{formatPrice(order.totalPrice)}</strong>
+                                        </div>
+
+                                        <div>
+                                            <span className={styles.summaryLabel}>Items</span>
+                                            <strong>{order.items.length}</strong>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.items}>
+                                        <h3>Items</h3>
+
+                                        {order.items.map((item) => (
+                                            <div key={item._id} className={styles.itemRow}>
+                                                <div>
+                                                    <p className={styles.itemName}>Order item</p>
+                                                    <p className={styles.itemMeta}>
+                                                        Quantity: {item.quantity}
+                                                    </p>
+                                                </div>
+
+                                                <p className={styles.itemPrice}>
+                                                    {formatPrice(item.priceAtPurchase)}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </article>
                             ))}
                         </div>
-                    ))
-                )}
+                    )}
+                </section>
             </Card>
         </Container>
     );
