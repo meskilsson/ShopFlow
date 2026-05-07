@@ -6,6 +6,7 @@ import {
   getOrdersByUser,
   updateOrderStatus,
   createOrderFromCart,
+  getOrdersWithItemsByUser
 } from "../controllers/orderController";
 import resolveCartOwner from "../middleware/resolveCartOwner";
 
@@ -24,7 +25,12 @@ orderRouter.get("/user/:userId", getOrdersByUser);
 // READ ONE - Get a specific order by ID
 orderRouter.get("/:id", getOrderById);
 
+// READ USERS ORDERS WITH ITEMS - Get all orders with items for a specific user
+orderRouter.get("/user/:userId/with-items", getOrdersWithItemsByUser);
+
 // UPDATE - Update order status (admin/seller)
 orderRouter.patch("/:id", updateOrderStatus);
+
+
 
 export default orderRouter;
