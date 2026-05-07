@@ -1,22 +1,11 @@
-import User, { UserRole } from "../models/User";
+import User from "../models/User";
 import bcrypt from "bcrypt";
 import { createHttpError } from "../middleware/HttpError";
+import type { UpdateUserInput, CreateUserInput } from "../schemas/userSchemas";
 
 
-interface CreateUserInput {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-  role?: UserRole;
-}
 
-interface UpdatedUserInput {
-  name?: string;
-  email?: string;
-  username?: string;
-  role?: UserRole;
-}
+
 
 export async function createUser(userData: CreateUserInput) {
   if (!userData?.name || !userData?.email || !userData?.username || !userData?.password) {
@@ -75,8 +64,7 @@ export async function deleteUser(id: string) {
   return { message: "User deleted successfully" };
 }
 
-export async function updateUser(id: string, userData: UpdatedUserInput) {
-
+export async function updateUser(id: string, userData: UpdateUserInput) {
   const user = await User.findById(id);
 
   if (!user) {
@@ -87,42 +75,18 @@ export async function updateUser(id: string, userData: UpdatedUserInput) {
     name?: string;
     email?: string;
     username?: string;
-    passwordHash?: string;
-    role?: UserRole;
   } = {};
 
   if (userData.name !== undefined) {
-    const name = userData.name.trim();
-
-    if (!name) {
-      throw createHttpError("Name cannot be empty", 400);
-    }
-
-    updateData.name = name;
+    updateData.name = userData.name;
   }
 
   if (userData.email !== undefined) {
-    const email = userData.email.trim().toLowerCase();
-
-    if (!email) {
-      throw createHttpError("Email cannot be empty", 400);
-    }
-
-    updateData.email = email;
+    updateData.email = userData.email;
   }
 
   if (userData.username !== undefined) {
-    const username = userData.username.trim().toLowerCase();
-
-    if (!username) {
-      throw createHttpError("Username cannot be empty", 400);
-    }
-
-    updateData.username = username;
-  }
-
-  if (userData.role !== undefined) {
-    updateData.role = userData.role;
+    updateData.username = userData.username;
   }
 
   const conflictConditions = [];
@@ -152,7 +116,6 @@ export async function updateUser(id: string, userData: UpdatedUserInput) {
   });
 
   return updatedUser;
-
 }
 
 export async function changePasswordService(
