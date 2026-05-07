@@ -2,10 +2,13 @@ import { Router } from "express";
 import { loginUser, getProfile } from "../controllers/authController";
 import authenticateToken from "../middleware/authenticateToken";
 import { authorizeRoles } from "../middleware/authorizeRoles";
+import { validateRequest } from "../middleware/validate";
+import { loginSchema } from "../schemas/userSchemas";
+
 
 const authRouter = Router();
 
-authRouter.post("/login", loginUser);
+authRouter.post("/login", validateRequest({ body: loginSchema }), loginUser);
 authRouter.get("/profile", authenticateToken, authorizeRoles("admin", "buyer", "seller"), getProfile);
 
 // TEST ROUTES!
