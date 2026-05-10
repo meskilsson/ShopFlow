@@ -48,7 +48,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(false);
       }
     }
-  });
+    loadUser();
+  }, []);
 
   function login(newUser: AuthUser) {
     setUser(newUser);

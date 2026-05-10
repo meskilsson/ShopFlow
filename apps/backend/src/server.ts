@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import express from "express";
 import cors from "cors";
-import session from "express-session";
+import cookieParser from "cookie-parser";
 import logger from "./middleware/logger";
 import notFound from "./middleware/notFound";
 import errorHandler from "./middleware/errorHandler";
@@ -26,20 +26,8 @@ app.use(
 );
 
 app.use(express.json());
-app.use(
-  session({
-    name: process.env.SESSION_COOKIE_NAME || "shopflow.sid",
-    secret: process.env.SESSION_SECRET || "development_session_secret",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    },
-  }),
-);
+app.use(cookieParser());
+
 app.use(logger);
 
 app.get("/", (_req, res) => {
