@@ -1,5 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import { UnauthorizedError, ValidationError } from "../errors/AppError";
 
 interface LoginUserInput {
   email: string;
@@ -8,11 +9,7 @@ interface LoginUserInput {
 
 export async function loginUser(loginData: LoginUserInput) {
   if (!loginData?.email || !loginData?.password) {
-    const error = new Error("Email and password are required") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 400;
-    throw error;
+    throw new ValidationError("Email and password are required");
   }
 
   const email = loginData.email.trim().toLowerCase();
@@ -20,11 +17,7 @@ export async function loginUser(loginData: LoginUserInput) {
   const user = await User.findOne({ email }).select("+passwordHash");
 
   if (!user) {
-    const error = new Error("Invalid email or password") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 401;
-    throw error;
+    throw new UnauthorizedError("Invalid email or password");
   }
 
   const isPasswordCorrect = await bcrypt.compare(
@@ -33,11 +26,7 @@ export async function loginUser(loginData: LoginUserInput) {
   );
 
   if (!isPasswordCorrect) {
-    const error = new Error("Invalid email or password") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 401;
-    throw error;
+    throw new UnauthorizedError("Invalid email or password");
   }
 
   const safeUser = await User.findById(user._id);
