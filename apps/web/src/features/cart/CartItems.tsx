@@ -7,6 +7,7 @@ type CartItemsProps = {
   onDecreaseQuantity: (productVariantId: string, quantity: number) => void;
   onIncreaseQuantity: (productVariantId: string, quantity: number) => void;
   onRemoveItem: (productVariantId: string) => void;
+  readonly?: boolean;
 };
 
 const CartItems = ({
@@ -14,6 +15,7 @@ const CartItems = ({
   onDecreaseQuantity,
   onIncreaseQuantity,
   onRemoveItem,
+  readonly = false,
 }: CartItemsProps) => {
   return (
     <section className={styles.list}>
@@ -32,6 +34,7 @@ const CartItems = ({
           onDecreaseQuantity={onDecreaseQuantity}
           onIncreaseQuantity={onIncreaseQuantity}
           onRemoveItem={onRemoveItem}
+          readonly={readonly} // <-- NYTT
         />
       ))}
     </section>

@@ -15,6 +15,7 @@ type CartItemCardProps = {
   onDecreaseQuantity: (productVariantId: string, quantity: number) => void;
   onIncreaseQuantity: (productVariantId: string, quantity: number) => void;
   onRemoveItem: (productVariantId: string) => void;
+  readonly?: boolean;
 };
 
 const CartItemCard = ({
@@ -22,7 +23,6 @@ const CartItemCard = ({
   name,
   category,
   image,
-  color,
   size,
   quantity,
   unitPrice,
@@ -30,13 +30,14 @@ const CartItemCard = ({
   onDecreaseQuantity,
   onIncreaseQuantity,
   onRemoveItem,
+  readonly = false,
 }: CartItemCardProps) => {
   return (
     <article className={styles.card}>
       <img
         src={image || FallbackProductImage}
         alt={name}
-        className={styles.image}
+        className={`${styles.image} ${readonly ? styles.imageReadonly : ""}`}
       />
 
       <div className={styles.content}>
@@ -45,41 +46,47 @@ const CartItemCard = ({
             <p className={styles.category}>{category}</p>
             <h2 className={styles.title}>{name}</h2>
             <p className={styles.variant}>
-              {size} / {color}
+              {size} / {quantity} st
             </p>
           </div>
           <p className={styles.total}>{lineTotal} kr</p>
         </div>
 
         <div className={styles.meta}>
-          <div className={styles.quantityControls}>
-            <button
-              type="button"
-              className={styles.quantityButton}
-              onClick={() => onDecreaseQuantity(productVariantId, quantity)}
-              aria-label={`Decrease quantity of ${name}`}
-            >
-              -
-            </button>
-            <span className={styles.quantityValue}>{quantity}</span>
-            <button
-              type="button"
-              className={styles.quantityButton}
-              onClick={() => onIncreaseQuantity(productVariantId, quantity)}
-              aria-label={`Increase quantity of ${name}`}
-            >
-              +
-            </button>
-          </div>
+          {!readonly && (
+            <div className={styles.quantityControls}>
+              <button
+                type="button"
+                className={styles.quantityButton}
+                onClick={() => onDecreaseQuantity(productVariantId, quantity)}
+                aria-label={`Decrease quantity of ${name}`}
+              >
+                -
+              </button>
+              <span className={styles.quantityValue}>{quantity}</span>
+              <button
+                type="button"
+                className={styles.quantityButton}
+                onClick={() => onIncreaseQuantity(productVariantId, quantity)}
+                aria-label={`Increase quantity of ${name}`}
+              >
+                +
+              </button>
+            </div>
+          )}
+
           <p>Price per item: {unitPrice} kr</p>
-          <button
-            type="button"
-            className={styles.removeButton}
-            aria-label={`Remove ${name} from cart`}
-            onClick={() => onRemoveItem(productVariantId)}
-          >
-            <Trash2 className={styles.removeIcon} aria-hidden="true" />
-          </button>
+
+          {!readonly && (
+            <button
+              type="button"
+              className={styles.removeButton}
+              aria-label={`Remove ${name} from cart`}
+              onClick={() => onRemoveItem(productVariantId)}
+            >
+              <Trash2 className={styles.removeIcon} aria-hidden="true" />
+            </button>
+          )}
         </div>
       </div>
     </article>

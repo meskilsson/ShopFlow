@@ -96,7 +96,7 @@
 }
 
 .header {
-  margin-bottom: 2.5rem;
+  /* margin-bottom: 2.5rem; */
 }
 
 .eyebrow {
@@ -118,9 +118,25 @@ h1 {
   color: var(--text-gray);
   font-size: 1.05rem;
   line-height: 1.5;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
 }
 
 .subtitle:empty {
   margin-bottom: 0;
+}
+
+.disabledOption {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.disabledOption input {
+  cursor: not-allowed;
+}
+
+/* Make sure images in CartItems are half size on order page */
+.rightColumn .CartItemCard img {
+  width: 50% !important;
+  height: auto !important;
 }
