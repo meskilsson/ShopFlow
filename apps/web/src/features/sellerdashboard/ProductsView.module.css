@@ -10,6 +10,10 @@
     border-radius: var(--br);
 }
 
+.icon {
+    height: 1.2rem;
+}
+
 .subHeader {
     font-size: 1.25rem;
     font-weight: 500;

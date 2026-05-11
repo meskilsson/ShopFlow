@@ -1,9 +1,33 @@
 .wrapper {
-    /* background-color: tomato; */
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     height: 4rem;    
+    gap: 1rem;
+    padding: 0.5rem;
+    border-radius: var(--br);
+}
+
+.wrapper:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.leftSide {
+    display: flex;
+    flex-direction: row;
+    height: 4rem;    
+    gap: 1rem;
+    height: 100%;
+}
+
+.rightSide {
+    display: flex;
+    flex-direction: row;
+    height: 4rem;    
+    gap: .5rem;
+    height: 100%;
+    align-items: center;
 }
 
 .infoContainer {
@@ -11,10 +35,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    width: 100%;
 }
 
-.activeButton {
+.infoContainer h3 {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.infoContainer p {
+    font-size: 0.875rem;
+    color: rgb(100, 100, 100);
+}
+
+.activeProduct {
     background-color: rgb(202, 255, 202);
     color: rgb(1, 139, 1);
     padding: 0.5rem 1rem;
@@ -23,4 +56,45 @@
     cursor: pointer;
     font-size: 0.875rem;
     font-weight: 500;
+    height: var(--btn-height);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 6rem;
+    
+}
+
+.disabledProduct {
+    background-color: rgb(255, 216, 202);
+    color: rgb(139, 1, 1);
+    padding: 0.5rem 1rem;
+    border-radius: var(--br);
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    height: var(--btn-height);
+    align-items: center;
+    display: flex;
+    width: 6rem;
+}
+
+.productImage {
+    aspect-ratio: 1/1;
+    height: 100%;
+    border-radius: var(--br);
+    object-fit: cover;
+    background-color: tomato;
+}
+
+.variants {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.variants p {
+    font-size: 0.875rem;
+    color: rgb(100, 100, 100);
 }
