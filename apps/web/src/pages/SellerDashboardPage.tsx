@@ -1,6 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import Styles from "./SellerDashboard.module.css"
+
 import ButtonStd from '@/components/UI/ButtonStd';
 import Container from '@/components/containers/Container';
 
@@ -13,6 +15,7 @@ const SellerDashboardPage = () => {
   return (
     <Container>
  
+        <h1>Seller Dashboard</h1>
         <Statistics/>
         <ProductsView/>
         

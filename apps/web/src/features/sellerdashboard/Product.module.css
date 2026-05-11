@@ -35,11 +35,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    min-width: 0;
 }
 
 .infoContainer h3 {
     font-size: 1rem;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 20ch;
 }
 
 .infoContainer p {

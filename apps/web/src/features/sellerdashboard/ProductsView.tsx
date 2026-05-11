@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Product from './Product'
 import styles from "./ProductsView.module.css"
 
 import ButtonStd from '@/components/UI/ButtonStd'
 import AddIcon from "@/assets/icons/plus-solid-full.svg?react"
+import AddProductModal from './AddProductModal'
 
 const ProductsView = () => {
+  const [showModal, setShowModal] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<{ name: string; active: boolean } | null>(null)
 
   const mockProducts = [
     {
@@ -33,7 +36,7 @@ const ProductsView = () => {
       active: true
     },
     {
-      name: "Wool Sweater",
+      name: "Wool Sweatersweatersweatersweatersweater",
       dateAdded: "2025-04-28",
       variants: 2,
       active: false
@@ -73,7 +76,7 @@ const ProductsView = () => {
   return (
     <>
         <h2 className={styles.subHeader}>Product Listings</h2>
-        <ButtonStd>Add Product</ButtonStd>
+        <ButtonStd onClick={() => setShowModal(true)}>Add Product</ButtonStd>
         <section className={styles.wrapper}>
             {mockProducts.map((product, index) => (
               <Product
@@ -82,9 +85,17 @@ const ProductsView = () => {
                 dateAdded={product.dateAdded}
                 variants={product.variants}
                 active={product.active}
+                onEdit={() => setEditingProduct({ name: product.name, active: product.active })}
               />
             ))}
         </section>
+        {showModal && <AddProductModal onClose={() => setShowModal(false)} />}
+        {editingProduct && (
+          <AddProductModal
+            initialData={editingProduct}
+            onClose={() => setEditingProduct(null)}
+          />
+        )}
     </>
   )
 }

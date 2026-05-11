@@ -6,13 +6,14 @@ import TrashIcon from "@/assets/icons/trash-can-solid-full.svg?react"
 import EditIcon from "@/assets/icons/pen-to-square-solid-full.svg?react"
 
 type ProductProps = {
-  name: String,
-  dateAdded: String,
-  variants: Number,
-  active: Boolean
+  name: string,
+  dateAdded: string,
+  variants: number,
+  active: boolean,
+  onEdit?: () => void
 }
 
-const Product = ({name, dateAdded, variants, active}:ProductProps) => {
+const Product = ({name, dateAdded, variants, active, onEdit}:ProductProps) => {
 
   return (
     <div className={styles.wrapper}>
@@ -32,7 +33,7 @@ const Product = ({name, dateAdded, variants, active}:ProductProps) => {
           <div className={active ? styles.activeProduct : styles.disabledProduct}>
             {active ? "Active" : "Disabled"}
           </div>
-          <ButtonStd variant='ghost-dark'><EditIcon/></ButtonStd>
+          <ButtonStd variant='ghost-dark' onClick={onEdit}><EditIcon/></ButtonStd>
           <ButtonStd variant='ghost-dark'><TrashIcon/></ButtonStd>
       </div>
     </div>
