@@ -10,7 +10,7 @@ import type {
 export async function createUser(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     const body = req.validatedBody as CreateUserInput;
@@ -26,7 +26,7 @@ export async function createUser(
 export async function getAllUsers(
   _req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     const users = await userService.getAllUsers();
@@ -39,7 +39,7 @@ export async function getAllUsers(
 export async function getUserById(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     const params = req.validatedParams as UserIdParams;
@@ -55,7 +55,7 @@ export async function getUserById(
 export async function updateUser(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     const params = req.validatedParams as UserIdParams;
@@ -72,7 +72,7 @@ export async function updateUser(
 export async function deleteUser(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     const params = req.validatedParams as UserIdParams;
@@ -88,7 +88,7 @@ export async function deleteUser(
 export async function changePassword(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     const params = req.validatedParams as UserIdParams;
@@ -97,7 +97,7 @@ export async function changePassword(
     const result = await userService.changePasswordService(
       params.id,
       body.currentPassword,
-      body.newPassword
+      body.newPassword,
     );
 
     res.status(200).json(result);
