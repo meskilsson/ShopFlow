@@ -1,26 +1,15 @@
-import User, { UserRole } from "../models/User";
+import User from "../models/User";
 import bcrypt from "bcrypt";
-import { createHttpError } from "../middleware/HttpError";
+import { ValidationError, ConflictError, NotFoundError } from "../errors/AppError";
+import type { UpdateUserInput, CreateUserInput } from "../schemas/userSchemas";
 
 
-interface CreateUserInput {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-  role?: UserRole;
-}
 
-interface UpdatedUserInput {
-  name?: string;
-  email?: string;
-  username?: string;
-  role?: UserRole;
-}
+
 
 export async function createUser(userData: CreateUserInput) {
   if (!userData?.name || !userData?.email || !userData?.username || !userData?.password) {
-    throw createHttpError("Name, email, username and password are required", 400);
+    throw new ValidationError("Name, email, username and password are required");
 
   }
 
@@ -33,7 +22,7 @@ export async function createUser(userData: CreateUserInput) {
   });
 
   if (existingUser) {
-    throw createHttpError("Email or username already in use", 409);
+    throw new ConflictError("Email or username already in use");
   }
 
   const passwordHash = await bcrypt.hash(userData.password, 10);
@@ -60,7 +49,7 @@ export async function getUserById(id: string) {
   const user = await User.findById(id);
 
   if (!user) {
-    throw createHttpError("User not found", 404);
+    throw new NotFoundError("User not found");
   }
   return user;
 }
@@ -69,60 +58,35 @@ export async function deleteUser(id: string) {
   const deletedUser = await User.findByIdAndDelete(id);
 
   if (!deletedUser) {
-    throw createHttpError("User not found", 404);
+    throw new NotFoundError("User not found");
   }
 
   return { message: "User deleted successfully" };
 }
 
-export async function updateUser(id: string, userData: UpdatedUserInput) {
-
+export async function updateUser(id: string, userData: UpdateUserInput) {
   const user = await User.findById(id);
 
   if (!user) {
-    throw createHttpError("User not found", 404);
+    throw new NotFoundError("User not found");
   }
 
   const updateData: {
     name?: string;
     email?: string;
     username?: string;
-    passwordHash?: string;
-    role?: UserRole;
   } = {};
 
   if (userData.name !== undefined) {
-    const name = userData.name.trim();
-
-    if (!name) {
-      throw createHttpError("Name cannot be empty", 400);
-    }
-
-    updateData.name = name;
+    updateData.name = userData.name;
   }
 
   if (userData.email !== undefined) {
-    const email = userData.email.trim().toLowerCase();
-
-    if (!email) {
-      throw createHttpError("Email cannot be empty", 400);
-    }
-
-    updateData.email = email;
+    updateData.email = userData.email;
   }
 
   if (userData.username !== undefined) {
-    const username = userData.username.trim().toLowerCase();
-
-    if (!username) {
-      throw createHttpError("Username cannot be empty", 400);
-    }
-
-    updateData.username = username;
-  }
-
-  if (userData.role !== undefined) {
-    updateData.role = userData.role;
+    updateData.username = userData.username;
   }
 
   const conflictConditions = [];
@@ -142,7 +106,7 @@ export async function updateUser(id: string, userData: UpdatedUserInput) {
     });
 
     if (existingUser) {
-      throw createHttpError("Email or username already in use", 409);
+      throw new ConflictError("Email or username already in use");
     }
   }
 
@@ -152,7 +116,6 @@ export async function updateUser(id: string, userData: UpdatedUserInput) {
   });
 
   return updatedUser;
-
 }
 
 export async function changePasswordService(
@@ -163,7 +126,7 @@ export async function changePasswordService(
   const user = await User.findById(userId).select("+passwordHash");
 
   if (!user) {
-    throw createHttpError("User not found", 404);
+    throw new NotFoundError("User not found");
   }
 
   const isPasswordCorrect = await bcrypt.compare(
@@ -172,15 +135,15 @@ export async function changePasswordService(
   );
 
   if (!isPasswordCorrect) {
-    throw createHttpError("Current password is incorrect", 400);
+    throw new ValidationError("Current password is incorrect");
   }
 
   if (!newPassword) {
-    throw createHttpError("New password cannot be empty", 400);
+    throw new ValidationError("New password cannot be empty");
   }
 
   if (newPassword.length < 6) {
-    throw createHttpError("New password must be at least 6 characters", 400);
+    throw new ValidationError("New password must be at least 6 characters");
   }
 
   user.passwordHash = await bcrypt.hash(newPassword, 10);

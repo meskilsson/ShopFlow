@@ -1,23 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import * as userService from "../services/userService";
-import type { UserRole } from "../models/User";
-import { createHttpError } from "../middleware/HttpError";
-
-type UserIdParams = {
-  id: string;
-};
-
-interface UpdateUserBody {
-  name?: string;
-  email?: string;
-  username?: string;
-  role?: UserRole;
-}
-
-interface ChangePasswordBody {
-  currentPassword: string;
-  newPassword: string;
-}
+import type {
+  UserIdParams,
+  CreateUserInput,
+  UpdateUserInput,
+  ChangePasswordInput,
+} from "../schemas/userSchemas";
 
 export async function createUser(
   req: Request,
@@ -25,7 +13,10 @@ export async function createUser(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const user = await userService.createUser(req.body);
+    const body = req.validatedBody as CreateUserInput;
+
+    const user = await userService.createUser(body);
+
     res.status(201).json(user);
   } catch (error) {
     next(error);
@@ -46,12 +37,15 @@ export async function getAllUsers(
 }
 
 export async function getUserById(
-  req: Request<UserIdParams>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const user = await userService.getUserById(req.params.id);
+    const params = req.validatedParams as UserIdParams;
+
+    const user = await userService.getUserById(params.id);
+
     res.status(200).json(user);
   } catch (error) {
     next(error);
@@ -59,12 +53,15 @@ export async function getUserById(
 }
 
 export async function updateUser(
-  req: Request<UserIdParams, unknown, UpdateUserBody>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const updatedUser = await userService.updateUser(req.params.id, req.body);
+    const params = req.validatedParams as UserIdParams;
+    const body = req.validatedBody as UpdateUserInput;
+
+    const updatedUser = await userService.updateUser(params.id, body);
 
     res.status(200).json(updatedUser);
   } catch (error) {
@@ -73,39 +70,34 @@ export async function updateUser(
 }
 
 export async function deleteUser(
-  req: Request<UserIdParams>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const deletedUser = await userService.deleteUser(req.params.id);
-    res.status(200).json(deletedUser);
+    const params = req.validatedParams as UserIdParams;
 
+    const deletedUser = await userService.deleteUser(params.id);
+
+    res.status(200).json(deletedUser);
   } catch (error) {
     next(error);
   }
 }
 
 export async function changePassword(
-  req: Request<UserIdParams, unknown, ChangePasswordBody>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const { id } = req.params;
-    const { currentPassword, newPassword } = req.body;
-
-    if (!currentPassword || !newPassword) {
-      throw createHttpError(
-        "Current password and new password are required",
-        400
-      );
-    }
+    const params = req.validatedParams as UserIdParams;
+    const body = req.validatedBody as ChangePasswordInput;
 
     const result = await userService.changePasswordService(
-      id,
-      currentPassword,
-      newPassword
+      params.id,
+      body.currentPassword,
+      body.newPassword,
     );
 
     res.status(200).json(result);

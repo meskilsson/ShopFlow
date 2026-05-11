@@ -1,12 +1,14 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Container from "@/components/containers/Container";
 import ButtonStd from "@/components/UI/ButtonStd";
-import { useNavigate } from "react-router-dom";
+
 import { getUserByIdRequest } from "@/api/user";
 import { useAuth } from "@/contexts/AuthContext";
 
 import type { User } from "@/types/userTypes";
 
-import { useState, useEffect } from "react";
 import styles from "./ProfilePage.module.css";
 
 export default function ProfilePage() {
@@ -20,7 +22,11 @@ export default function ProfilePage() {
     useEffect(() => {
         async function getUser() {
             try {
+                setIsLoading(true);
+                setError("");
+
                 if (!authUser?._id) {
+                    setUser(null);
                     setError("No logged in user found.");
                     return;
                 }
@@ -73,14 +79,14 @@ export default function ProfilePage() {
 
     return (
         <Container>
-            <div className={styles.profilePage}>
-                <div className={styles.header}>
+            <main className={styles.profilePage}>
+                <header className={styles.header}>
                     <p className={styles.kicker}>Profile</p>
                     <h1 className={styles.title}>Account overview</h1>
                     <p className={styles.subtitle}>
                         View your personal details and account information.
                     </p>
-                </div>
+                </header>
 
                 <section className={styles.summaryCard}>
                     <div>
@@ -124,9 +130,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </section>
-
-
-            </div>
+            </main>
         </Container>
     );
 }

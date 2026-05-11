@@ -1,27 +1,41 @@
 import { deleteUserRequest } from "@/api/user";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Container from "@/components/containers/Container";
 import ButtonStd from "@/components/UI/ButtonStd";
-import { useAuth } from "@/contexts/AuthContext";
 import Modal from "@/components/UI/Modal/Modal";
 import ChangePasswordForm from "@/components/Forms/ChangePasswordForm";
 import UpdateAccountForm from "@/components/Forms/UpdateAccountForm";
+
+import { useAuth } from "@/contexts/AuthContext";
 import styles from "./SettingsPage.module.css";
 
 export default function SettingsPage() {
     const navigate = useNavigate();
     const { user: authUser, logout } = useAuth();
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [error, setError] = useState("");
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [deleteError, setDeleteError] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
 
+    function openDeleteModal() {
+        setDeleteError("");
+        setIsDeleteModalOpen(true);
+    }
+
+    function closeDeleteModal() {
+        if (isDeleting) return;
+
+        setDeleteError("");
+        setIsDeleteModalOpen(false);
+    }
+
     async function handleDeleteAccount() {
-        setError("");
+        setDeleteError("");
 
         if (!authUser?._id) {
-            setError("No logged in user found.");
+            setDeleteError("No logged in user found.");
             return;
         }
 
@@ -30,15 +44,14 @@ export default function SettingsPage() {
         try {
             await deleteUserRequest(authUser._id);
 
-            setIsOpen(false);
-
+            setIsDeleteModalOpen(false);
             logout();
             navigate("/home");
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message);
+                setDeleteError(error.message);
             } else {
-                setError("Something went wrong.");
+                setDeleteError("Something went wrong.");
             }
         } finally {
             setIsDeleting(false);
@@ -47,46 +60,46 @@ export default function SettingsPage() {
 
     return (
         <Container>
-            <div className={styles.settingsPage}>
-                <div className={styles.header}>
+            <main className={styles.settingsPage}>
+                <header className={styles.header}>
                     <p className={styles.kicker}>Settings</p>
                     <h1 className={styles.title}>Account settings</h1>
                     <p className={styles.subtitle}>
                         Manage your account details, password, and account deletion.
                     </p>
-                </div>
+                </header>
 
                 <div className={styles.sections}>
                     <UpdateAccountForm />
+
                     <ChangePasswordForm />
 
                     <section className={`${styles.section} ${styles.dangerZone}`}>
                         <div>
                             <h2>Delete account</h2>
                             <p>
-                                Permanently delete your account and all account data.
+                                Permanently delete your account and all account data. This
+                                action cannot be undone.
                             </p>
                         </div>
 
-                        <ButtonStd
-                            variant="ghost-dark"
-                            onClick={() => setIsOpen(true)}
-                        >
-                            Delete Account
+                        <ButtonStd variant="ghost-dark" onClick={openDeleteModal}>
+                            Delete account
                         </ButtonStd>
                     </section>
                 </div>
-            </div>
+            </main>
 
             <Modal
                 title="Delete account?"
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
+                isOpen={isDeleteModalOpen}
+                onClose={closeDeleteModal}
                 actions={
                     <>
                         <ButtonStd
                             variant="secondary"
-                            onClick={() => setIsOpen(false)}
+                            onClick={closeDeleteModal}
+                            disabled={isDeleting}
                         >
                             Cancel
                         </ButtonStd>
@@ -103,11 +116,9 @@ export default function SettingsPage() {
             >
                 <p>This will permanently delete your account.</p>
 
-                <p className={styles.warning}>
-                    This action cannot be undone.
-                </p>
+                <p className={styles.warning}>This action cannot be undone.</p>
 
-                {error && <p className={styles.error}>{error}</p>}
+                {deleteError && <p className={styles.error}>{deleteError}</p>}
             </Modal>
         </Container>
     );

@@ -201,7 +201,7 @@ const OrderPage = () => {
         </div>
       </div>
     </div>
-  );
+);
 };
 
 export default OrderPage;
