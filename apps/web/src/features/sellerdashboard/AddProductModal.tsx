@@ -135,7 +135,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onClose, initialData 
 
         <div className={styles.footer}>
           <ButtonStd variant="ghost-dark" onClick={onClose}>Cancel</ButtonStd>
-          <ButtonStd variant="primary">Add Product</ButtonStd>
+          <ButtonStd variant="primary">{initialData ? 'Save' : 'Add Product'}</ButtonStd>
         </div>
       </div>
     </div>
