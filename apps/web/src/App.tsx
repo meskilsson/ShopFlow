@@ -15,6 +15,7 @@ import OrdersPage from "./pages/OrdersPage/OrdersPage";
 import AddressPage from "./pages/AddressPage/AddressPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderPage from "./pages/OrderPage";
+import SellerDashboardPage from "./pages/SellerDashboardPage"
 
 
 import NavBar from "@/features/navbar/NavBar";
@@ -56,6 +57,7 @@ function App() {
                 <Route path="orders" element={<OrdersPage />} />
                 <Route path="returns" element={<ReturnsPage />} />
               </Route>
+              <Route path="/sellerdashboard" element={<SellerDashboardPage/>}/>
 
             </Routes>
           </ContentWrapper>

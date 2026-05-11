@@ -54,6 +54,27 @@ export async function getOrdersByUser(userId: string) {
     .sort({ createdAt: -1 });
 }
 
+export async function getOrdersWithItemsByUser(userId: string) {
+  const orders = await Order.find({ user: userId })
+    .populate("user", "name email role")
+    .sort({ createdAt: -1 });
+
+  const ordersWithItems = await Promise.all(
+    orders.map(async (order) => {
+      const items = await OrderItem.find({ order: order._id }).populate(
+        "productVariant"
+      );
+
+      return {
+        ...order.toObject(),
+        items,
+      };
+    })
+  );
+
+  return ordersWithItems;
+}
+
 export async function updateOrderStatus(
   id: string,
   status: IOrder["status"],

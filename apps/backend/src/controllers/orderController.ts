@@ -101,3 +101,19 @@ export async function createOrderFromCart(
     next(error);
   }
 }
+
+export async function getOrdersWithItemsByUser(
+  req: Request<OrderIdParams>,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const orders = await orderService.getOrdersWithItemsByUser(
+      req.params.id
+    );
+
+    res.status(200).json(orders);
+  } catch (error) {
+    next(error);
+  }
+}
