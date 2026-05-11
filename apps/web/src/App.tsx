@@ -17,12 +17,12 @@ import CheckoutPage from "./pages/CheckoutPage";
 import OrderPage from "./pages/OrderPage";
 import SellerDashboardPage from "./pages/SellerDashboardPage"
 
-import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 import NavBar from "@/features/navbar/NavBar";
 import ContentWrapper from "@/components/ContentWrapper";
 import Footer from "./features/footer/Footer";
 import AccountLayout from "./pages/AccountLayout/AccountLayout";
+
 
 function App() {
   const location = useLocation();
@@ -50,10 +50,6 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order" element={<OrderPage />} />
-              <Route
-                path="/order-confirmation/:orderId"
-                element={<OrderConfirmationPage />}
-              />
               <Route path="/profile" element={<AccountLayout />}>
                 <Route index element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />

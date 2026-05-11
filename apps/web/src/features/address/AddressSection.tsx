@@ -59,9 +59,7 @@ export default function AddressSection() {
 
       setShippingAddress(savedAddress);
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Could not save address",
-      );
+      setError(error instanceof Error ? error.message : "Could not save address");
     } finally {
       setSaving(false);
     }
@@ -79,9 +77,7 @@ export default function AddressSection() {
       await deleteAddress(shippingAddress._id);
       setShippingAddress(null);
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Could not remove address",
-      );
+      setError(error instanceof Error ? error.message : "Could not remove address");
     } finally {
       setSaving(false);
     }
@@ -117,11 +113,7 @@ export default function AddressSection() {
           <ButtonStd
             variant="primary"
             fullWidth
-            onClick={() =>
-              navigate("/order", {
-                state: { selectedAddress: shippingAddress },
-              })
-            }
+            onClick={() => navigate("/order")}
           >
             Continue to order
           </ButtonStd>

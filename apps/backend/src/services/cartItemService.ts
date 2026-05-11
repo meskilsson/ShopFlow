@@ -29,6 +29,14 @@ export async function addItemToCart(
   owner: CartOwner,
   item: CreateCartItemInput,
 ) {
+  if (!Types.ObjectId.isValid(item.productVariantId)) {
+    throw createHttpError("Product variant id is invalid", 400);
+  }
+
+  if (!Number.isInteger(item.quantity) || item.quantity < 1) {
+    throw createHttpError("Quantity must be at least 1", 400);
+  }
+
   const cart = await getOrCreateCart(owner);
   const productVariant = await ProductVariant.findById(
     item.productVariantId,
@@ -42,9 +50,7 @@ export async function addItemToCart(
     throw createHttpError("Product variant is out of stock", 400);
   }
 
-  const product = productVariant.product as unknown as {
-    price?: unknown;
-  } | null;
+  const product = productVariant.product as unknown as { price?: unknown } | null;
 
   if (!product || typeof product.price !== "number") {
     throw createHttpError("Product for variant not found", 404);

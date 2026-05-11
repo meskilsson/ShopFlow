@@ -2,17 +2,25 @@ import type { CreateUserData, UpdateUserData } from "@/types/userTypes";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api/v1";
 
-function getJsonHeaders(): HeadersInit {
+function getAuthHeaders(token: string): HeadersInit {
+    return {
+        Authorization: `Bearer ${token}`,
+    };
+}
+
+function getJsonAuthHeaders(token: string): HeadersInit {
     return {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
     };
 }
 
 export async function createUserRequest(userData: CreateUserData) {
     const response = await fetch(`${API_URL}/users`, {
         method: "POST",
-        headers: getJsonHeaders(),
-        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(userData),
     });
 
@@ -25,9 +33,9 @@ export async function createUserRequest(userData: CreateUserData) {
     return data;
 }
 
-export async function getAllUsersRequest() {
+export async function getAllUsersRequest(token: string) {
     const response = await fetch(`${API_URL}/users`, {
-        credentials: "include",
+        headers: getAuthHeaders(token),
     });
 
     const data = await response.json();
@@ -39,9 +47,9 @@ export async function getAllUsersRequest() {
     return data;
 }
 
-export async function getUserByIdRequest(id: string) {
+export async function getUserByIdRequest(id: string, token: string) {
     const response = await fetch(`${API_URL}/users/${id}`, {
-        credentials: "include",
+        headers: getAuthHeaders(token),
     });
 
     const data = await response.json();
@@ -53,10 +61,10 @@ export async function getUserByIdRequest(id: string) {
     return data;
 }
 
-export async function deleteUserRequest(id: string) {
+export async function deleteUserRequest(id: string, token: string) {
     const response = await fetch(`${API_URL}/users/${id}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: getAuthHeaders(token),
     });
 
     const data = await response.json();
@@ -70,12 +78,12 @@ export async function deleteUserRequest(id: string) {
 
 export async function updateUserRequest(
     id: string,
-    userData: UpdateUserData
+    userData: UpdateUserData,
+    token: string
 ) {
     const response = await fetch(`${API_URL}/users/${id}`, {
         method: "PATCH",
-        headers: getJsonHeaders(),
-        credentials: "include",
+        headers: getJsonAuthHeaders(token),
         body: JSON.stringify(userData),
     });
 
@@ -93,12 +101,12 @@ export async function changePasswordRequest(
     passwordData: {
         currentPassword: string;
         newPassword: string;
-    }
+    },
+    token: string
 ) {
     const response = await fetch(`${API_URL}/users/${id}/password`, {
         method: "PATCH",
-        headers: getJsonHeaders(),
-        credentials: "include",
+        headers: getJsonAuthHeaders(token),
         body: JSON.stringify(passwordData),
     });
 

@@ -23,7 +23,7 @@ const usernameSchema = z
         "Username can only contain letters, numbers, and underscores"
     );
 
-const passwordSchema = z.string().min(8).max(100);
+const passwordSchema = z.string().min(6).max(100);
 
 export const createUserSchema = z.strictObject({
     name: nameSchema,
@@ -44,9 +44,6 @@ export const updateUserSchema = z
         email: emailSchema.optional(),
         username: usernameSchema.optional(),
     })
-
-    //if key === pass
-    // else ===  message
     .refine((data) => Object.keys(data).length > 0, {
         message: "Send at least one field to update",
     });
