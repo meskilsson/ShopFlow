@@ -153,7 +153,7 @@ const OrderPage = () => {
               onClick={handleConfirmOrder}
               disabled={orderLoading || !hasItems}
               className={styles.confirmButton}
-            >
+              >
               {orderLoading ? "Creating order..." : "Complete purchase"}
             </button>
 
@@ -165,7 +165,7 @@ const OrderPage = () => {
         </div>
       </div>
     </div>
-  );
+);
 };
 
 export default OrderPage;
