@@ -1,0 +1,22 @@
+.wrapper {
+    background-color: var(--bg-secondary);
+    width: var(--max-width);
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    justify-content: flex-start;
+    align-items: center;
+    padding: .5rem;
+    border-radius: var(--br);
+}
+
+.icon {
+    height: 1.2rem;
+}
+
+.subHeader {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-top: 1rem;
+}
