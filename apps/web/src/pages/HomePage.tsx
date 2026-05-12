@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
+import kattarpImage from '@/assets/images/kattarp/16_cowboy.png';
 
 import ProductCategories from "@/features/products/ProductCategories";
 import ButtonStd from '@/components/UI/ButtonStd';
@@ -81,9 +82,12 @@ const HomePage = () => {
 
         </div>
 
-        <Hero title="KATTARP" subtitle="Have you tried the new Kattarp-collection?" image='https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'>
+        <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
+
+This isn’t just clothing.
+It’s an identity crisis with premium materials.'>
             <div style={{marginTop: "1rem"}}></div>
-            <ButtonStd variant='ghost-light'>Check it out now</ButtonStd>
+            <ButtonStd variant='ghost-dark'>Check it out now</ButtonStd>
         </Hero>
         
       </Container>

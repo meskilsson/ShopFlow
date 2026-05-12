@@ -52,3 +52,91 @@
 .halfSize {
   width: 50%;
 }
+
+.squareSize {
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
+
+.textBesideImage {
+  display: grid;
+  grid-template-columns: minmax(10rem, 15rem) 1fr;
+  gap: 2rem;
+  align-items: stretch;
+  padding: 0.875rem;
+  height: auto;
+  min-height: auto;
+  max-width: var(--max-width);
+  background-color: white;
+  background-image: none;
+  background-size: auto;
+  box-shadow: none;
+}
+
+.textBesideImage:hover {
+  background-size: auto;
+}
+
+.sideImage {
+  width: 100%;
+  min-height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: var(--br);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.textBesideImage .overlay {
+  position: static;
+  inset: auto;
+  align-items: flex-start;
+  color: inherit;
+}
+
+.textBesideImage .overlay h1,
+.textBesideImage .overlay p {
+  color: inherit;
+}
+
+.textBesideImage .overlay h1 {
+  font-size: 2.35rem;
+}
+
+.textBesideImage .overlay p {
+  font-size: 1rem;
+}
+
+.description {
+  max-width: 42rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.68);
+}
+
+.overlay .description {
+  color: rgba(0, 0, 0, 0.68);
+}
+
+.textBesideImage .description {
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  color: rgba(0, 0, 0, 0.68);
+}
+
+@media (max-width: 700px) {
+  .textBesideImage {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sideImage {
+    aspect-ratio: 1 / 1;
+    min-height: auto;
+  }
+}
