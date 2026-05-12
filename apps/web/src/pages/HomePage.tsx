@@ -1,7 +1,9 @@
 import React from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import kattarpImage from '@/assets/images/kattarp/16_cowboy.png';
+import kattarpImage1 from '@/assets/images/kattarp/16_cowboy.png';
+import kattarpImage2 from '@/assets/images/kattarp/09_surfer.png';
+import kattarpImage3 from '@/assets/images/kattarp/03_golf_a.png';
 
 import ProductCategories from "@/features/products/ProductCategories";
 import ButtonStd from '@/components/UI/ButtonStd';
@@ -82,7 +84,7 @@ const HomePage = () => {
 
         </div>
 
-        <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
+        <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage1} image2={kattarpImage2} image3={kattarpImage3} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
 
 This isn’t just clothing.
 It’s an identity crisis with premium materials.'>

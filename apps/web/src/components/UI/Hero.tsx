@@ -3,6 +3,8 @@ import styles from "./Hero.module.css"
 
 interface HeroProps {
   image: string
+  image2?: string
+  image3?: string
   title?: string
   subtitle?: string
   description?: string
@@ -15,6 +17,8 @@ interface HeroProps {
 
 const Hero = ({
   image,
+  image2,
+  image3,
   title,
   subtitle,
   description,
@@ -24,17 +28,37 @@ const Hero = ({
   squareSize = false,
   textBesideImage = false,
 }: HeroProps) => {
+  const providedImages = [image, image2, image3].filter(Boolean) as string[]
+  const images = providedImages.length === 2
+    ? [providedImages[0], providedImages[1], providedImages[0]]
+    : providedImages
+  const hasSlideshow = providedImages.length > 1
+
+  const slideshow = (
+    <div className={`${styles.slideshow} ${hasSlideshow ? styles.isAnimated : ""}`} aria-hidden="true">
+      {images.map((heroImage, index) => (
+        <div
+          key={`${heroImage}-${index}`}
+          className={styles.slide}
+          style={{
+            backgroundImage: `url(${heroImage})`,
+            animationDelay: hasSlideshow ? `${index * 4}s` : undefined,
+          }}
+        />
+      ))}
+    </div>
+  )
+
   return (
   <div
     className={`${styles.hero} ${fullWidth ? styles.fullWidth : ""} ${halfSize ? styles.halfSize : ""} ${squareSize ? styles.squareSize : ""} ${textBesideImage ? styles.textBesideImage : ""}`}
-    style={textBesideImage ? undefined : { backgroundImage: `url(${image})` }}
   >
     {textBesideImage && (
-      <div
-        className={styles.sideImage}
-        style={{ backgroundImage: `url(${image})` }}
-      />
+      <div className={styles.sideImage}>
+        {slideshow}
+      </div>
     )}
+    {!textBesideImage && slideshow}
     <div className={styles.overlay}>
       {title && <h1>{title}</h1>}
       {subtitle && <p>{subtitle}</p>}
