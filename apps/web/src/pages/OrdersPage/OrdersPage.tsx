@@ -4,10 +4,28 @@ import Container from "@/components/containers/Container";
 import { useAuth } from "@/contexts/AuthContext";
 import styles from "./OrdersPage.module.css";
 
+type Product = {
+    _id: string;
+    name: string;
+    category: string;
+    price: number;
+    variants: number;
+    ProductImage?: string;
+};
+
+type ProductVariant = {
+    _id: string;
+    product: Product;
+    color: string;
+    size: string;
+    inStock?: boolean;
+    sku?: string;
+};
+
 type OrderItem = {
     _id: string;
     order: string;
-    productVariant: unknown;
+    productVariant: ProductVariant;
     quantity: number;
     priceAtPurchase: number;
     createdAt: string;
@@ -77,6 +95,11 @@ export default function OrdersPage() {
                 }
 
                 setOrders(data);
+
+                console.log(data);
+                console.log(data?.[0]?.items?.[0]);
+                console.log(data?.[0]?.items?.[0]?.productVariant);
+                console.log(data?.[0]?.items?.[0]?.productVariant?.product);
             } catch (error) {
                 if (error instanceof Error) {
                     setError(error.message);
@@ -134,25 +157,14 @@ export default function OrdersPage() {
                                     <div className={styles.orderTop}>
                                         <div>
                                             <p className={styles.orderLabel}>Order</p>
-                                            <h2 className={styles.orderId}>#{order._id}</h2>
                                             <p className={styles.orderDate}>
                                                 Placed on {formatDate(order.createdAt)}
                                             </p>
+
+
                                         </div>
 
-                                        <div className={styles.badges}>
-                                            <span className={`${styles.badge} ${styles[order.status]}`}>
-                                                {order.status}
-                                            </span>
 
-                                            <span
-                                                className={`${styles.badge} ${styles[`payment-${order.paymentStatus}`]
-                                                    }`}
-                                            >
-
-                                                {order.paymentStatus}
-                                            </span>
-                                        </div>
                                     </div>
 
                                     <div className={styles.summary}>
@@ -170,20 +182,38 @@ export default function OrdersPage() {
                                     <div className={styles.items}>
                                         <h3>Items</h3>
 
-                                        {order.items.map((item) => (
-                                            <div key={item._id} className={styles.itemRow}>
-                                                <div>
-                                                    <p className={styles.itemName}>Order item</p>
-                                                    <p className={styles.itemMeta}>
-                                                        Quantity: {item.quantity}
+                                        {order.items.map((item) => {
+                                            const variant = item.productVariant;
+                                            const product = variant.product;
+
+                                            return (
+                                                <div key={item._id} className={styles.itemRow}>
+                                                    {product.ProductImage && (
+                                                        <img
+                                                            src={product.ProductImage}
+                                                            alt={product.name}
+                                                            className={styles.productImage}
+                                                        />
+                                                    )}
+
+                                                    <div>
+                                                        <p className={styles.itemName}>
+                                                            {product.name}
+                                                        </p>
+
+                                                        <p className={styles.itemMeta}>
+                                                            Size: {variant.size}
+                                                            {variant.color && ` · Color: ${variant.color}`}
+                                                        </p>
+
+                                                    </div>
+
+                                                    <p className={styles.itemPrice}>
+                                                        {formatPrice(item.priceAtPurchase)}
                                                     </p>
                                                 </div>
-
-                                                <p className={styles.itemPrice}>
-                                                    {formatPrice(item.priceAtPurchase)}
-                                                </p>
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                 </article>
                             ))}

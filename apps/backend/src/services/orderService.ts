@@ -63,8 +63,12 @@ export async function getOrdersWithItemsByUser(userId: string) {
 
   const ordersWithItems = await Promise.all(
     orders.map(async (order) => {
-      const items = await OrderItem.find({ order: order._id }).populate(
-        "productVariant"
+      const items = await OrderItem.find({ order: order._id }).populate({
+        path: "productVariant",
+        populate: {
+          path: "product",
+        },
+      }
       );
 
       return {
