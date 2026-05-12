@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyAccessToken } from "../utils/jwt";
+import { getGuestId } from "../utils/guestCookie";
 
 export default function resolveAddressOwner(
   req: Request,
@@ -9,7 +10,7 @@ export default function resolveAddressOwner(
   const token = req.cookies?.token;
 
   if (!token) {
-    res.locals.addressOwner = { sessionId: req.sessionID };
+    res.locals.addressOwner = { sessionId: getGuestId(req, res) };
     next();
     return;
   }

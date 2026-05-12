@@ -10,10 +10,10 @@ type AddressFormProps = {
 };
 
 const emptyForm: CreateAddressData = {
-  full_name: "",
+  fullName: "",
   street: "",
   city: "",
-  postal_code: "",
+  postalCode: "",
   country: "",
   type: "shipping",
 };
@@ -32,10 +32,10 @@ export default function AddressForm({
     }
 
     setFormData({
-      full_name: address.full_name ?? "",
+      fullName: address.fullName ?? "",
       street: address.street,
       city: address.city,
-      postal_code: address.postal_code,
+      postalCode: address.postalCode,
       country: address.country,
       type: address.type,
     });
@@ -56,11 +56,11 @@ export default function AddressForm({
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.field}>
-        <label htmlFor="full_name">Full name</label>
+        <label htmlFor="fullName">Full name</label>
         <input
-          id="full_name"
-          value={formData.full_name}
-          onChange={(event) => updateField("full_name", event.target.value)}
+          id="fullName"
+          value={formData.fullName}
+          onChange={(event) => updateField("fullName", event.target.value)}
           required
         />
       </div>
@@ -77,12 +77,12 @@ export default function AddressForm({
 
       <div className={styles.grid}>
         <div className={styles.field}>
-          <label htmlFor="postal_code">Postal code</label>
+          <label htmlFor="postalCode">Postal code</label>
           <input
-            id="postal_code"
-            value={formData.postal_code}
+            id="postalCode"
+            value={formData.postalCode}
             onChange={(event) =>
-              updateField("postal_code", event.target.value)
+              updateField("postalCode", event.target.value)
             }
             required
           />

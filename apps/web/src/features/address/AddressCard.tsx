@@ -25,10 +25,10 @@ export default function AddressCard({
         <X className={styles.removeIcon} aria-hidden="true" />
       </button>
       <p className={styles.label}>Saved shipping address</p>
-      {address.full_name ? <p>{address.full_name}</p> : null}
+      {address.fullName ? <p>{address.fullName}</p> : null}
       <p>{address.street}</p>
       <p>
-        {address.postal_code} {address.city}
+        {address.postalCode} {address.city}
       </p>
       <p>{address.country}</p>
     </div>

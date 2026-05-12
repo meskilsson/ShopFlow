@@ -100,7 +100,7 @@ export default function AddressPage() {
                                         <div className={styles.addressDetails}>
                                             <p>{address.street}</p>
                                             <p>
-                                                {address.postal_code} {address.city}
+                                                {address.postalCode} {address.city}
                                             </p>
                                             <p>{address.country}</p>
                                         </div>

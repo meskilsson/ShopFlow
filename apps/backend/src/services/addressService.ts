@@ -1,10 +1,11 @@
 import { createHttpError } from "../middleware/HttpError";
 import Address from "../models/Address";
+import type { AddressOwner } from "../types/address.types";
+
 import type {
-  AddressOwner,
   CreateAddressData,
   UpdateAddressData,
-} from "../types/address.types";
+} from "../schemas/adressValidation";
 
 function getAddressQuery(owner: AddressOwner) {
   return "userId" in owner
@@ -51,7 +52,7 @@ export async function updateAddresses(
   const result = await Address.findOneAndUpdate(
     { ...getAddressQuery(owner), _id: addressId },
     { $set: updateData },
-    { new: true },
+    { new: true, runValidators: true },
   );
 
   if (!result) {

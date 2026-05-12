@@ -3,10 +3,10 @@ export type AddressType = "shipping" | "billing";
 export type Address = {
   _id: string;
   user: string;
-  full_name: string;
+  fullName: string;
   street: string;
   city: string;
-  postal_code: string;
+  postalCode: string;
   country: string;
   type: AddressType;
   createdAt?: string;
@@ -14,10 +14,10 @@ export type Address = {
 };
 
 export type CreateAddressData = {
-  full_name: string;
+  fullName: string;
   street: string;
   city: string;
-  postal_code: string;
+  postalCode: string;
   country: string;
   type: AddressType;
 };
@@ -25,6 +25,6 @@ export type CreateAddressData = {
 export type UpdateAddressData = Partial<
   Pick<
     CreateAddressData,
-    "full_name" | "street" | "city" | "postal_code" | "country"
+    "fullName" | "street" | "city" | "postalCode" | "country"
   >
 >;

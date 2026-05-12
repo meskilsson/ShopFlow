@@ -11,7 +11,7 @@ const addressSchema = new Schema<IAddress>(
             type: String,
             trim: true,
         },
-        full_name: {
+        fullName: {
             type: String,
             required: true,
             trim: true,
@@ -26,7 +26,7 @@ const addressSchema = new Schema<IAddress>(
             required: true,
             trim: true,
         },
-        postal_code: {
+        postalCode: {
             type: String,
             required: true,
             trim: true,

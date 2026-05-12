@@ -122,10 +122,10 @@ const OrderPage = () => {
               <h2>Delivery Address</h2>
               {selectedAddress ? (
                 <>
-                  <p>{selectedAddress.full_name}</p>
+                  <p>{selectedAddress.fullName}</p>
                   <p>{selectedAddress.street}</p>
                   <p>
-                    {selectedAddress.postal_code} {selectedAddress.city}
+                    {selectedAddress.postalCode} {selectedAddress.city}
                   </p>
                   {selectedAddress.country && <p>{selectedAddress.country}</p>}
                 </>

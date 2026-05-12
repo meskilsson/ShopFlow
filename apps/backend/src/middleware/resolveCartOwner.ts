@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyAccessToken } from "../utils/jwt";
 import { mergeCartOwners } from "../services/cartService";
+import { getGuestId } from "../utils/guestCookie";
 
 async function resolveCartOwner(
   req: Request,
@@ -10,7 +11,7 @@ async function resolveCartOwner(
   const token = req.cookies?.token;
 
   if (!token) {
-    res.locals.cartOwner = { sessionId: req.sessionID };
+    res.locals.cartOwner = { sessionId: getGuestId(req, res) };
     next();
     return;
   }
@@ -22,7 +23,11 @@ async function resolveCartOwner(
       userId: payload.id,
     } as const;
 
-    await mergeCartOwners({ sessionId: req.sessionID }, userOwner);
+    const guestId = getGuestId(req, res, { create: false });
+
+    if (guestId) {
+      await mergeCartOwners({ sessionId: guestId }, userOwner);
+    }
 
     res.locals.cartOwner = userOwner;
     next();

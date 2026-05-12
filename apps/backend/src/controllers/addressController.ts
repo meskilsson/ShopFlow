@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import * as addressService from "../services/addressService";
-import { UpdateAddressData, CreateAddressData } from "../types/address.types";
 import { getAddressOwner } from "../utils/getAddressOwner";
+import type {
+  AddressIdParam,
+  CreateAddressData,
+  UpdateAddressData,
+} from "../schemas/adressValidation";
 
 export async function createAddress(
   req: Request,
@@ -9,11 +13,11 @@ export async function createAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const addressData: CreateAddressData = req.body;
+    const body = req.validatedBody as CreateAddressData;
 
     const address = await addressService.createAddress(
       getAddressOwner(res),
-      addressData,
+      body,
     );
 
     res.status(201).json(address);
@@ -41,13 +45,12 @@ export async function updateAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const addressId =
-      typeof req.params.id === "string" ? req.params.id : undefined;
-    const updateData: UpdateAddressData = req.body;
+    const params = req.validatedParams as AddressIdParam;
+    const updateData = req.validatedBody as UpdateAddressData;
 
     const address = await addressService.updateAddresses(
       getAddressOwner(res),
-      addressId,
+      params.id,
       updateData,
     );
 
@@ -62,11 +65,10 @@ export async function deleteAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const addressId =
-      typeof req.params.id === "string" ? req.params.id : undefined;
+    const params = req.validatedParams as AddressIdParam;
     const address = await addressService.deleteAddress(
       getAddressOwner(res),
-      addressId,
+      params.id,
     );
 
     res.status(200).json(address);

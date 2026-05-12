@@ -15,27 +15,27 @@ export type AddressOwner =
 export interface IAddress {
   user?: Types.ObjectId;
   sessionId?: string;
-  full_name: string;
+  fullName: string;
   street: string;
   city: string;
-  postal_code: string;
+  postalCode: string;
   country: string;
   type: AddressType;
 }
 
 export interface CreateAddressData {
-  full_name: string;
+  fullName: string;
   street: string;
   city: string;
-  postal_code: string;
+  postalCode: string;
   country: string;
   type: AddressType;
 }
 
 export interface UpdateAddressData {
-  full_name?: string;
+  fullName?: string;
   street?: string;
   city?: string;
-  postal_code?: string;
+  postalCode?: string;
   country?: string;
 };
