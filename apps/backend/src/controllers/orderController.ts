@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import * as orderService from "../services/orderService";
+import { getCartOwner } from "../utils/getCartOwner";
 
 type OrderIdParams = {
   id: string;
@@ -83,6 +84,35 @@ export async function updateOrderStatus(
       paymentStatus,
     );
     res.status(200).json(updatedOrder);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function createOrderFromCart(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const order = await orderService.createOrderFromCart(getCartOwner(res));
+    res.status(201).json(order);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getOrdersWithItemsByUser(
+  req: Request<UserIdParams>,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const orders = await orderService.getOrdersWithItemsByUser(
+      req.params.userId
+    );
+
+    res.status(200).json(orders);
   } catch (error) {
     next(error);
   }

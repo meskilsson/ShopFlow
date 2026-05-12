@@ -15,6 +15,15 @@ interface HeroProps {
   fullWidth?: boolean
 }
 
+const categories = [
+    { label: "T-Shirts", value: "T-shirts" },
+    { label: "Shoes", value: "Shoes" },
+    { label: "Pants", value: "Pants" },
+    { label: "Shirts", value: "Shirts" },
+    { label: "Jackets", value: "Jackets" },
+    { label: "Accessories", value: "Accessories" },
+]
+
 const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps) => {
     const navigate = useNavigate()
   return (
@@ -29,12 +38,15 @@ const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps
                 <div className={styles.container}>
                     <ButtonStd variant="ghost-light" bold onClick={() => navigate("/products")}>All Products</ButtonStd>
                     <NavSpacer size={"0.5rem"}/>
-                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>T-Shirts</ButtonStd>
-                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Shoes</ButtonStd>
-                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Pants</ButtonStd>
-                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Shirts</ButtonStd>
-                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Jackets</ButtonStd>
-                    <ButtonStd variant="ghost-light" onClick={() => navigate("/products")}>Accessories</ButtonStd>
+
+                    {categories.map((category) => (
+                        <ButtonStd
+                            key={category.value}
+                            variant="ghost-light"
+                            onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} > 
+                            {category.label}
+                        </ButtonStd>
+                    ))}
                 </div>
                 <div className={styles.container}>
                     <SearchBar/>

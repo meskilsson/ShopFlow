@@ -1,87 +1,82 @@
-import { createHttpError } from "../middleware/HttpError";
 import Address from "../models/Address";
-import { CreateAddressData, UpdateAddressData } from "../types/address.types";
+import type { AddressOwner } from "../types/address.types";
+import { ValidationError, NotFoundError, ConflictError } from "../errors/AppError";
+
+import type {
+  CreateAddressData,
+  UpdateAddressData,
+} from "../schemas/adressValidation";
+
+function getAddressQuery(owner: AddressOwner) {
+  return "userId" in owner
+    ? { user: owner.userId }
+    : { sessionId: owner.sessionId };
+}
 
 export async function createAddress(
-  userId: string | undefined,
+  owner: AddressOwner,
   addressData: CreateAddressData,
 ) {
-  if (!userId) {
-    throw createHttpError("User must be logged in", 401);
-  }
-
   const existingAddress = await Address.findOne({
-    user: userId,
+    ...getAddressQuery(owner),
     type: addressData.type,
   });
 
   if (existingAddress) {
-    throw createHttpError("Address already exists", 409);
+    throw new ConflictError("Address already exists");
   }
 
   const address = await Address.create({
     ...addressData,
-    user: userId,
+    ...getAddressQuery(owner),
   });
 
   return address;
 }
 
-export async function getAddressesByUser(userId: string | undefined) {
-  if (!userId) {
-    throw createHttpError("User must be logged in", 401);
-  }
-
-  const userAddresses = await Address.find({ user: userId });
+export async function getAddressesByOwner(owner: AddressOwner) {
+  const userAddresses = await Address.find(getAddressQuery(owner));
 
   return userAddresses;
 }
 
 export async function updateAddresses(
-  userId: string | undefined,
+  owner: AddressOwner,
   addressId: string | undefined,
   updateData: UpdateAddressData,
 ) {
-  if (!userId) {
-    throw createHttpError("User must be logged in", 401);
-  }
-
   if (!addressId) {
-    throw createHttpError("Address id is required", 400);
+    throw new ValidationError("Address id is required");
   }
 
   const result = await Address.findOneAndUpdate(
-    { user: userId, _id: addressId },
+    { ...getAddressQuery(owner), _id: addressId },
     { $set: updateData },
-    { new: true },
+    { new: true, runValidators: true },
   );
 
   if (!result) {
-    throw createHttpError("Address not found", 404);
+    throw new NotFoundError("Address not found");
   }
 
   return result;
 }
 
 export async function deleteAddress(
-  userId: string | undefined,
+  owner: AddressOwner,
   addressId: string | undefined,
 ) {
-  if (!userId) {
-    throw createHttpError("User must be logged in", 401);
-  }
-
   if (!addressId) {
-    throw createHttpError("Address id is required", 400);
+    throw new ValidationError("Address id is required");
   }
 
   const deletedAddress = await Address.findOneAndDelete({
     _id: addressId,
-    user: userId,
+    ...getAddressQuery(owner),
   });
 
   if (!deletedAddress) {
-    throw createHttpError("Address not found", 404);
+    throw new NotFoundError("Address not found");
   }
 
   return deletedAddress;

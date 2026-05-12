@@ -6,6 +6,7 @@ import {
     updateProduct,
     deleteProduct,
     createProductVariant,
+    getProductVariants,
     getVariantById,
     deleteVariant,
     updateVariant
@@ -16,13 +17,14 @@ const productRouter = Router();
 productRouter.get("/", getAllProducts),
 productRouter.get("/:id", getProductById),
 productRouter.post("/", createProduct),
-productRouter.put("/:id", updateProduct),
+productRouter.patch("/:id", updateProduct),
 productRouter.delete("/:id", deleteProduct)
 
 // ===== VARIANT ===== //
+productRouter.get("/:id/variants", getProductVariants)
 productRouter.get("/variants/:variantId", getVariantById),
 productRouter.post("/:id/variants", createProductVariant)
-productRouter.put("/variants/:variantId", updateVariant),
+productRouter.patch("/variants/:variantId", updateVariant),
 productRouter.delete("/variants/:variantId", deleteVariant)
 
 

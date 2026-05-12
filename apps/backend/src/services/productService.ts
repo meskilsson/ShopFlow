@@ -10,7 +10,19 @@ type ProductFilters = {
     limit: number;
 }
 
+const SIZE_ORDER = ["xs", "s", "m", "l", "xl"];
 
+function sortBySizeOrder(variants: IProductVariant[]) {
+    return variants.sort((a, b) => {
+        const aIndex = SIZE_ORDER.indexOf(a.size.toLowerCase());
+        const bIndex = SIZE_ORDER.indexOf(b.size.toLowerCase());
+
+        const safeAIndex = aIndex === -1 ? SIZE_ORDER.length : aIndex;
+        const safeBIndex = bIndex === -1 ? SIZE_ORDER.length : bIndex;
+
+        return safeAIndex - safeBIndex;
+    });
+}
 
 // ===== CREATE ===== //
 export async function createProduct(productData: IProduct) {
@@ -48,10 +60,21 @@ export async function getAllProducts(filters: ProductFilters) {
         .skip((filters.page -1) * filters.limit)
         .limit(filters.limit);
 
+    const productsWithVariants = await Promise.all(
+        products.map(async (product) => {
+            const variants = await ProductVariant.countDocuments({ product: product._id });
+
+            return {
+                ...product.toObject(),
+                variants,
+            };
+        }),
+    );
+
     const total = await Product.countDocuments(query);
 
     return {
-        data: products,
+        data: productsWithVariants,
         meta: {
             page: filters.page,
             limit: filters.limit,
@@ -68,8 +91,18 @@ export async function getProductById(id: string) {
 
     const variants = await ProductVariant.find({ product: id });
     return {
-        product: foundProduct, variants,
+        product: foundProduct,
+        variants: sortBySizeOrder(variants),
     };
+}
+
+// ===== GET PRODUCT VARIANTS ===== //
+export async function getProductVariants(productId: string) {
+    const product = await Product.findById(productId);
+    handlerNotFound(product, "Product not found");
+
+    const variants = await ProductVariant.find({ product: productId });
+    return sortBySizeOrder(variants);
 }
 
 // ===== GET VARIANTID ===== //

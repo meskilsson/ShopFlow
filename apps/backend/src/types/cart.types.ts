@@ -1,5 +1,5 @@
 export interface AddCartItemInput {
-  productId: string;
+  productVariantId: string;
   name: string;
   price: number;
   quantity: number;

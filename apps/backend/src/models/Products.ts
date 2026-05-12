@@ -1,9 +1,18 @@
 import { Schema, model } from "mongoose";
 
+export type ProductCategory = 
+    | "T-Shirts" 
+    | "Shoes" 
+    | "Pants" 
+    | "Shirts" 
+    | "Jackets" 
+    | "Accessories"; 
+
 export interface IProduct {
     name: string;
     price: number;
-    category: string;
+    category: ProductCategory;
+    ProductImage?: string;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -26,10 +35,19 @@ const productSchema = new Schema<IProduct>(
             type: String,
             required: [true, "Category is required"],
             trim: true,
-            set: (value: string) => {
-                if (!value) return value;
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            },    
+            enum: [
+                "T-shirts",
+                "Shoes",
+                "Pants",
+                "Shirts",
+                "Jackets",
+                "Accessories",
+            ],   
+        },
+
+        ProductImage: {
+            type: String,
+            trim: true,
         }
     },  
     {

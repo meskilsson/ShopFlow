@@ -1,4 +1,4 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, Types, model, type HydratedDocument, type Model } from "mongoose";
 
 export interface ICart {
   user?: Types.ObjectId;
@@ -7,7 +7,10 @@ export interface ICart {
   updatedAt?: Date;
 }
 
-const cartSchema = new Schema<ICart>(
+export type CartDocument = HydratedDocument<ICart>;
+type CartModel = Model<ICart, {}, {}, {}, CartDocument>;
+
+const cartSchema = new Schema<ICart, CartModel>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -33,6 +36,6 @@ cartSchema.pre("validate", function validateCartOwner() {
   }
 });
 
-const Cart = model<ICart>("Cart", cartSchema);
+const Cart = model<ICart, CartModel>("Cart", cartSchema);
 
 export default Cart;

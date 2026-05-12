@@ -48,6 +48,11 @@
   gap: 1rem;
 }
 
+.productInfo {
+  display: flex;
+  flex-direction: column;
+}
+
 .productBrand {
   font-weight: 400;
   font-size: 1.25rem;
@@ -134,17 +139,42 @@
   padding-left: .2rem;
 }
 
-.variantBtn {
-  display: flex;
+.variantDiv {
   margin-top: 1rem;
-  padding: 0.1rem
 }
 
-.greenDot {
-  height: 7px;
-  width: 7px;
-  background-color: #198b19; 
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
+.variantList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.variantMeta {
+  margin-top: 0.65rem;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+}
+
+.cartMessage {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  background: var(--btn-primary);
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  z-index: 1000;
+}
+
+
+.borderSelected{
+  color: var(--btn-primary-text);
+  background-color: var(--btn-primary-hover);
+}
+
+.disabledIcon {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  opacity: 50%;
+  pointer-events: none;
 }

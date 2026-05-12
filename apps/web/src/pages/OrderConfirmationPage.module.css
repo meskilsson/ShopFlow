@@ -1,0 +1,117 @@
+.container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--br);
+  padding: 3.5rem 2.5rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.icon {
+  font-size: 5.5rem;
+  margin-bottom: 1.5rem;
+  animation: bounce 1.5s ease;
+}
+
+@keyframes bounce {
+  0%,
+  20% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  70% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+h1 {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.orderNumber {
+  font-size: 1.25rem;
+  color: var(--text-gray);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.message {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--text-gray);
+  margin-bottom: 1.5rem;
+}
+
+.shippingInfo {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-bottom: 2.5rem;
+  padding: 1rem;
+  background-color: #f0f7f0;
+  border-radius: var(--br);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.buttonPrimary,
+.buttonSecondary {
+  padding: 1rem 2rem;
+  border-radius: var(--br);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  min-width: 180px;
+}
+
+.buttonPrimary {
+  background-color: var(--accent);
+  color: white;
+}
+
+.buttonPrimary:hover {
+  background-color: #e67e22;
+  transform: translateY(-2px);
+}
+
+.buttonSecondary {
+  background-color: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+.buttonSecondary:hover {
+  background-color: var(--accent);
+  color: white;
+}
+
+.note {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+}
+
+.note a {
+  color: var(--accent);
+  text-decoration: underline;
+}

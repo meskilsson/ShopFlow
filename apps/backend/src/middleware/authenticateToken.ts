@@ -1,28 +1,27 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import type { AuthTokenPayload } from "../types/authTypes";
-
-const JWT_SECRET = process.env.JWT_SECRET || "server_jwt_token";
+import { verifyAccessToken } from "../utils/jwt";
 
 export default function authenticateToken(
     req: Request,
     res: Response,
     next: NextFunction,
 ): void {
-    const authHeader = req.headers.authorization;
-
-    const token = authHeader?.startsWith("Bearer ")
-        ? authHeader.split(" ")[1]
-        : null;
+    const token = req.cookies?.token;
 
     if (!token) {
-        res.status(401).json({ error: "No token in header" });
+        res.status(401).json({ error: "No token in cookie" });
         return;
     }
 
     try {
-        const payload = jwt.verify(token, JWT_SECRET) as AuthTokenPayload;
-        req.user = payload;
+        const payload = verifyAccessToken(token);
+
+        req.user = {
+            id: payload.id,
+            email: payload.email,
+            role: payload.role,
+        };
+
         next();
     } catch {
         res.status(403).json({ error: "Unauthorized or expired token" });

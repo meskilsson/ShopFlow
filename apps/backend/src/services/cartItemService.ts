@@ -1,16 +1,16 @@
 import CartItem from "../models/CartItem";
-import Product from "../models/Products";
+import ProductVariant from "../models/ProductVariant";
 import type { CartOwner } from "../types/cart.types";
-import { createHttpError } from "../middleware/HttpError";
 import {
   findCartByOwner,
   formatCartResponse,
   getCartPayload,
 } from "./cartService";
 import Cart from "../models/Cart";
+import { NotFoundError, ValidationError } from "../errors/AppError";
 
 export type CreateCartItemInput = {
-  productId: string;
+  productVariantId: string;
   quantity: number;
 };
 
@@ -28,19 +28,30 @@ export async function addItemToCart(
   owner: CartOwner,
   item: CreateCartItemInput,
 ) {
-  if (item.quantity < 1) {
-    throw createHttpError("Quantity must be at least 1", 400);
-  }
   const cart = await getOrCreateCart(owner);
-  const product = await Product.findById(item.productId);
+  const productVariant = await ProductVariant.findById(
+    item.productVariantId,
+  ).populate("product", "price");
 
-  if (!product) {
-    throw createHttpError("Product not found", 404);
+  if (!productVariant) {
+    throw new NotFoundError("Product variant not found");
+  }
+
+  if (productVariant.inStock === false) {
+    throw new ValidationError("Product variant is out of stock");
+  }
+
+  const product = productVariant.product as unknown as {
+    price?: unknown;
+  } | null;
+
+  if (!product || typeof product.price !== "number") {
+    throw new NotFoundError("Product for variant not found");
   }
 
   const existingItem = await CartItem.findOne({
     cart: cart._id,
-    productId: item.productId,
+    productVariant: item.productVariantId,
   });
 
   if (existingItem) {
@@ -49,7 +60,7 @@ export async function addItemToCart(
   } else {
     await CartItem.create({
       cart: cart._id,
-      productId: item.productId,
+      productVariant: item.productVariantId,
       quantity: item.quantity,
       unitPrice: product.price,
     });
@@ -60,22 +71,22 @@ export async function addItemToCart(
 
 export async function updateCartItemQuantity(
   owner: CartOwner,
-  productId: string,
+  productVariantId: string,
   quantity: number,
 ) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   const existingItem = await CartItem.findOne({
     cart: cart._id,
-    productId,
+    productVariant: productVariantId,
   });
 
   if (!existingItem) {
-    throw createHttpError("Cart item not found", 404);
+    throw new NotFoundError("Cart item not found");
   }
 
   if (quantity <= 0) {
@@ -89,20 +100,23 @@ export async function updateCartItemQuantity(
   return formatCartResponse(String(cart._id));
 }
 
-export async function removeCartItem(owner: CartOwner, productId: string) {
+export async function removeCartItem(
+  owner: CartOwner,
+  productVariantId: string,
+) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   const deletedItem = await CartItem.findOneAndDelete({
     cart: cart._id,
-    productId,
+    productVariant: productVariantId,
   });
 
   if (!deletedItem) {
-    throw createHttpError("Cart item not found", 404);
+    throw new NotFoundError("Cart item not found");
   }
 
   return formatCartResponse(String(cart._id));

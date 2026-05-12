@@ -1,0 +1,47 @@
+.card {
+    position: relative;
+    border: 1px solid #e5e5e5;
+    border-radius: var(--br);
+    padding: 1rem;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.removeButton {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #c62828;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.removeIcon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.removeButton:hover {
+    background-color: #fdeaea;
+    color: #9f1f1f;
+}
+
+.removeButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.label {
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}

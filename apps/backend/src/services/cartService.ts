@@ -1,14 +1,13 @@
 import Cart from "../models/Cart";
 import CartItem from "../models/CartItem";
 import type { CartOwner } from "../types/cart.types";
-import { createHttpError } from "../middleware/HttpError";
-
+import { NotFoundError, ConflictError } from "../errors/AppError";
 export function getCartQuery(owner: CartOwner) {
-  return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
+  return "userId" in owner ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
 export function getCartPayload(owner: CartOwner) {
-  return owner.userId ? { user: owner.userId } : { sessionId: owner.sessionId };
+  return "userId" in owner ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
 
 export async function findCartByOwner(owner: CartOwner) {
@@ -47,7 +46,7 @@ export async function mergeCartOwners(
   for (const sourceItem of sourceItems) {
     const existingTargetItem = await CartItem.findOne({
       cart: targetCart._id,
-      productId: sourceItem.productId,
+      productVariant: sourceItem.productVariant,
     });
 
     if (existingTargetItem) {
@@ -70,23 +69,52 @@ export async function formatCartResponse(cartId: string) {
   const cart = await Cart.findById(cartId).select("-__v").lean();
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   const items = await CartItem.find({ cart: cart._id })
     .select("-cart -__v")
-    .populate("productId", "name price category")
+    .populate({
+      path: "productVariant",
+      select: "product color size inStock sku",
+      populate: {
+        path: "product",
+        select: "name price category ProductImage",
+      },
+    })
     .lean();
 
-  const formattedItems = items.map((item) => ({
-    _id: item._id,
-    product: item.productId,
-    quantity: item.quantity,
-    unitPrice: item.unitPrice,
-    lineTotal: item.unitPrice * item.quantity,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-  }));
+  const formattedItems = items.flatMap((item) => {
+    const productVariant = item.productVariant as unknown as {
+      _id?: unknown;
+      color?: string;
+      size?: string;
+      inStock?: boolean;
+      sku?: string;
+      product?: unknown;
+    } | null;
+
+    if (!productVariant?._id || !productVariant.product) {
+      return [];
+    }
+
+    return [{
+      _id: item._id,
+      productVariant: {
+        _id: productVariant._id,
+        color: productVariant.color,
+        size: productVariant.size,
+        inStock: productVariant.inStock,
+        sku: productVariant.sku,
+      },
+      product: productVariant.product,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+      lineTotal: item.unitPrice * item.quantity,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    }];
+  });
 
   const total = formattedItems.reduce((sum, item) => sum + item.lineTotal, 0);
 
@@ -101,7 +129,7 @@ export async function getCartByOwner(owner: CartOwner) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   return formatCartResponse(String(cart._id));
@@ -111,7 +139,7 @@ export async function createCart(owner: CartOwner) {
   const existingCart = await findCartByOwner(owner);
 
   if (existingCart) {
-    throw createHttpError("Cart already exists for this owner", 409);
+    throw new ConflictError("Cart already exists for this owner");
   }
 
   const cart = await Cart.create(getCartPayload(owner));
@@ -122,7 +150,7 @@ export async function clearCart(owner: CartOwner) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   await CartItem.deleteMany({ cart: cart._id });

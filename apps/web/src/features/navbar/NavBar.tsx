@@ -28,8 +28,12 @@ const NavBar = () => {
             </Dropdown.Trigger>
 
             <Dropdown.Content>
-              <button>Profile</button>
-              <button>Settings</button>
+              <button
+                onClick={() => navigate("/profile")}
+              >Profile</button>
+              <button
+                onClick={() => navigate("/profile/settings")}
+              >Settings</button>
               <button onClick={logout}>Log out</button>
             </Dropdown.Content>
           </Dropdown>

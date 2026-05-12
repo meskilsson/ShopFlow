@@ -1,0 +1,41 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.field label {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.field input {
+    width: 100%;
+    border: 1px solid #d8d8d8;
+    border-radius: var(--br);
+    padding: 0.85rem 1rem;
+    font: inherit;
+    background-color: white;
+}
+
+.submitBtn {
+    --button-height: 3.5rem;
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

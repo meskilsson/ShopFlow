@@ -1,31 +1,30 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCart } from "@/api/cart";
+import {
+  getCart,
+  removeCartItem,
+  updateCartItemQuantity,
+} from "@/api/cart";
 import Container from "@/components/containers/Container";
 import ButtonStd from "@/components/UI/ButtonStd";
 import CartItems from "@/features/cart/CartItems";
 import CartSummary from "@/features/cart/CartSummary";
 import type { CartItem, CartResponse } from "@/features/cart/types";
 import styles from "./CartPage.module.css";
-
-const mockCartItems: CartItem[] = [
-  {
-    _id: "mock-cart-item-1",
-    product: {
-      _id: "mock-product-1",
-      name: "DUNK LOW RETRO",
-      price: 1200,
-      category: "Shoes",
-    },
-    quantity: 1,
-    unitPrice: 1200,
-    lineTotal: 1200,
-  },
-];
+import type { Dispatch, SetStateAction } from "react";
 
 type ApiError = Error & {
   status?: number;
 };
+
+function applyCartResponse(
+  data: CartResponse,
+  setCartItems: Dispatch<SetStateAction<CartItem[]>>,
+  setCartTotal: Dispatch<SetStateAction<number>>,
+) {
+  setCartItems(data.items);
+  setCartTotal(data.total);
+}
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -36,8 +35,7 @@ const CartPage = () => {
   useEffect(() => {
     getCart()
       .then((data: CartResponse) => {
-        setCartItems(data.items);
-        setCartTotal(data.total);
+        applyCartResponse(data, setCartItems, setCartTotal);
       })
       .catch((error: ApiError) => {
         if (error.status === 404) {
@@ -53,18 +51,50 @@ const CartPage = () => {
       });
   }, []);
 
+  async function handleDecreaseQuantity(
+    productVariantId: string,
+    quantity: number,
+  ) {
+    try {
+      const updatedCart = await updateCartItemQuantity(
+        productVariantId,
+        quantity - 1,
+      );
+      applyCartResponse(updatedCart, setCartItems, setCartTotal);
+    } catch (error) {
+      console.error("Failed to decrease quantity:", error);
+    }
+  }
+
+  async function handleIncreaseQuantity(
+    productVariantId: string,
+    quantity: number,
+  ) {
+    try {
+      const updatedCart = await updateCartItemQuantity(
+        productVariantId,
+        quantity + 1,
+      );
+      applyCartResponse(updatedCart, setCartItems, setCartTotal);
+    } catch (error) {
+      console.error("Failed to increase quantity:", error);
+    }
+  }
+
+  async function handleRemoveItem(productVariantId: string) {
+    try {
+      const updatedCart = await removeCartItem(productVariantId);
+      applyCartResponse(updatedCart, setCartItems, setCartTotal);
+    } catch (error) {
+      console.error("Failed to remove item:", error);
+    }
+  }
+
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartTotal;
   const shipping = cartItems.length > 0 ? 49 : 0;
   const total = subtotal + shipping;
-  const hasRealItems = cartItems.length > 0;
-  const previewItems = hasRealItems ? cartItems : mockCartItems;
-  const previewSubtotal = hasRealItems ? subtotal : mockCartItems[0].lineTotal;
-  const previewShipping = 49;
-  const previewTotal = previewSubtotal + previewShipping;
-  const previewItemCount = hasRealItems
-    ? itemCount
-    : mockCartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const hasItems = cartItems.length > 0;
 
   if (loading) {
     return (
@@ -73,7 +103,9 @@ const CartPage = () => {
           <div className={styles.header}>
             <p className={styles.eyebrow}>Cart</p>
             <h1>Your cart</h1>
-            <p className={styles.subtitle}>Review your items before checkout.</p>
+            <p className={styles.subtitle}>
+              Review your items before checkout.
+            </p>
           </div>
 
           <div className={styles.loading}>Loading cart...</div>
@@ -88,40 +120,41 @@ const CartPage = () => {
         <div className={styles.header}>
           <p className={styles.eyebrow}>Cart</p>
           <h1>Your cart</h1>
-          <p className={styles.subtitle}>
-            {hasRealItems
-              ? "Review your items before checkout."
-              : "Previewing the cart layout with a mock product until real items are added."}
-          </p>
+          <p className={styles.subtitle}>Review your items before checkout.</p>
         </div>
 
         <div className={styles.layout}>
           <div className={styles.main}>
-            {!hasRealItems ? (
+            {!hasItems ? (
               <div className={styles.empty}>
-                <h2>No real cart items yet</h2>
+                <h2>Your cart is empty</h2>
                 <p className={styles.emptyText}>
-                  This preview uses one mock product so you can style the cart
-                  page before the products flow is connected.
+                  Add a product to your cart and it will show up here.
                 </p>
                 <ButtonStd variant="primary" onClick={() => navigate("/")}>
                   Continue shopping
                 </ButtonStd>
               </div>
-            ) : null}
-
-            <section className={styles.surface}>
-              <h2 className={styles.sectionTitle}>Items in your cart</h2>
-              <CartItems items={previewItems} />
-            </section>
+            ) : (
+              <section className={styles.surface}>
+                <h2 className={styles.sectionTitle}>Items in your cart</h2>
+                <CartItems
+                  items={cartItems}
+                  onDecreaseQuantity={handleDecreaseQuantity}
+                  onIncreaseQuantity={handleIncreaseQuantity}
+                  onRemoveItem={handleRemoveItem}
+                />
+              </section>
+            )}
           </div>
 
           <CartSummary
-            subtotal={previewSubtotal}
-            shipping={previewShipping}
-            total={previewTotal}
-            itemCount={previewItemCount}
+            subtotal={subtotal}
+            shipping={shipping}
+            total={total}
+            itemCount={itemCount}
             onContinueShopping={() => navigate("/")}
+            onCheckout={() => navigate("/checkout")}
           />
         </div>
       </div>

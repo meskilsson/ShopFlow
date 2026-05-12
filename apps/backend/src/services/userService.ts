@@ -1,38 +1,28 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import { ValidationError, ConflictError, NotFoundError } from "../errors/AppError";
+import type { UpdateUserInput, CreateUserInput } from "../schemas/userSchemas";
 
-interface CreateUserInput {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-  role?: "buyer" | "seller";
-}
+
+
+
 
 export async function createUser(userData: CreateUserInput) {
   if (!userData?.name || !userData?.email || !userData?.username || !userData?.password) {
-    const error = new Error("Name, email, username, and password are required") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 400;
-    throw error;
+    throw new ValidationError("Name, email, username and password are required");
+
   }
 
   const name = userData.name.trim();
   const email = userData.email.trim().toLowerCase();
   const username = userData.username.trim().toLowerCase();
-  const role = userData.role?.trim().toLowerCase();
 
   const existingUser = await User.findOne({
     $or: [{ email }, { username }],
   });
 
   if (existingUser) {
-    const error = new Error("Email or username already in use") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 409;
-    throw error;
+    throw new ConflictError("Email or username already in use");
   }
 
   const passwordHash = await bcrypt.hash(userData.password, 10);
@@ -42,10 +32,10 @@ export async function createUser(userData: CreateUserInput) {
     email,
     username,
     passwordHash,
-    role,
+    ...(userData.role && { role: userData.role }),
   });
 
-  const safeUser = await User.findById(createdUser._id);
+  const safeUser = await User.findOne({ email });
 
   return safeUser;
 }
@@ -59,11 +49,108 @@ export async function getUserById(id: string) {
   const user = await User.findById(id);
 
   if (!user) {
-    const error = new Error("User not found") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 404;
-    throw error;
+    throw new NotFoundError("User not found");
   }
   return user;
+}
+
+export async function deleteUser(id: string) {
+  const deletedUser = await User.findByIdAndDelete(id);
+
+  if (!deletedUser) {
+    throw new NotFoundError("User not found");
+  }
+
+  return { message: "User deleted successfully" };
+}
+
+export async function updateUser(id: string, userData: UpdateUserInput) {
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  const updateData: {
+    name?: string;
+    email?: string;
+    username?: string;
+  } = {};
+
+  if (userData.name !== undefined) {
+    updateData.name = userData.name;
+  }
+
+  if (userData.email !== undefined) {
+    updateData.email = userData.email;
+  }
+
+  if (userData.username !== undefined) {
+    updateData.username = userData.username;
+  }
+
+  const conflictConditions = [];
+
+  if (updateData.email) {
+    conflictConditions.push({ email: updateData.email });
+  }
+
+  if (updateData.username) {
+    conflictConditions.push({ username: updateData.username });
+  }
+
+  if (conflictConditions.length > 0) {
+    const existingUser = await User.findOne({
+      _id: { $ne: id },
+      $or: conflictConditions,
+    });
+
+    if (existingUser) {
+      throw new ConflictError("Email or username already in use");
+    }
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+    new: true,
+    runValidators: true,
+  });
+
+  return updatedUser;
+}
+
+export async function changePasswordService(
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+) {
+  const user = await User.findById(userId).select("+passwordHash");
+
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(
+    currentPassword,
+    user.passwordHash
+  );
+
+  if (!isPasswordCorrect) {
+    throw new ValidationError("Current password is incorrect");
+  }
+
+  if (!newPassword) {
+    throw new ValidationError("New password cannot be empty");
+  }
+
+  if (newPassword.length < 6) {
+    throw new ValidationError("New password must be at least 6 characters");
+  }
+
+  user.passwordHash = await bcrypt.hash(newPassword, 10);
+
+  await user.save();
+
+  return {
+    message: "Password updated successfully",
+  };
 }

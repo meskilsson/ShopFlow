@@ -7,6 +7,9 @@ type CartSummaryProps = {
   total: number;
   itemCount: number;
   onContinueShopping?: () => void;
+  onCheckout?: () => void;
+  /** Hide action buttons (used on OrderPage) */
+  showActions?: boolean;
 };
 
 const CartSummary = ({
@@ -15,7 +18,11 @@ const CartSummary = ({
   total,
   itemCount,
   onContinueShopping,
+  onCheckout,
+  showActions = true,
 }: CartSummaryProps) => {
+  const isCartEmpty = itemCount === 0;
+
   return (
     <aside className={styles.summary}>
       <div className={styles.block}>
@@ -38,18 +45,26 @@ const CartSummary = ({
           <span>{total} kr</span>
         </div>
 
-        <div className={styles.actions}>
-          <ButtonStd variant="primary" fullWidth>
-            Checkout
-          </ButtonStd>
-          <ButtonStd
-            variant="ghost-dark"
-            fullWidth
-            onClick={onContinueShopping}
-          >
-            Continue shopping
-          </ButtonStd>
-        </div>
+        {/* Only show buttons when showActions is true */}
+        {showActions && (
+          <div className={styles.actions}>
+            <ButtonStd
+              variant="primary"
+              fullWidth
+              disabled={isCartEmpty}
+              onClick={onCheckout}
+            >
+              Checkout
+            </ButtonStd>
+            <ButtonStd
+              variant="ghost-dark"
+              fullWidth
+              onClick={onContinueShopping}
+            >
+              Continue shopping
+            </ButtonStd>
+          </div>
+        )}
       </div>
     </aside>
   );

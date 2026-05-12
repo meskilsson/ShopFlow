@@ -1,7 +1,16 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api/v1";
 
-export async function getProducts() {
-    const res = await fetch(`${API_URL}/products`);
+export async function getProducts(category?: string, page = 1, limit = 20) {
+    const params = new URLSearchParams();
+
+    if(category) {
+        params.set("category", category);
+    }
+
+    params.set("page", String(page));
+    params.set("limit", String(limit));
+    
+    const res = await fetch(`${API_URL}/products?${params.toString()}`);
 
     if(!res.ok) {
         throw new Error("Could not fetch products");

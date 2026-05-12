@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import * as addressService from "../services/addressService";
-import { UpdateAddressData, CreateAddressData } from "../types/address.types";
+import { getAddressOwner } from "../utils/getAddressOwner";
+import type {
+  AddressIdParam,
+  CreateAddressData,
+  UpdateAddressData,
+} from "../schemas/adressValidation";
 
 export async function createAddress(
   req: Request,
@@ -8,10 +13,12 @@ export async function createAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
-    const addressData: CreateAddressData = req.body;
+    const body = req.validatedBody as CreateAddressData;
 
-    const address = await addressService.createAddress(userId, addressData);
+    const address = await addressService.createAddress(
+      getAddressOwner(res),
+      body,
+    );
 
     res.status(201).json(address);
   } catch (error) {
@@ -24,8 +31,9 @@ export async function getAddresses(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
-    const addresses = await addressService.getAddressesByUser(userId);
+    const addresses = await addressService.getAddressesByOwner(
+      getAddressOwner(res),
+    );
     res.status(200).json(addresses);
   } catch (error) {
     next(error);
@@ -37,14 +45,12 @@ export async function updateAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
-    const addressId =
-      typeof req.params.id === "string" ? req.params.id : undefined;
-    const updateData: UpdateAddressData = req.body;
+    const params = req.validatedParams as AddressIdParam;
+    const updateData = req.validatedBody as UpdateAddressData;
 
     const address = await addressService.updateAddresses(
-      userId,
-      addressId,
+      getAddressOwner(res),
+      params.id,
       updateData,
     );
 
@@ -59,10 +65,11 @@ export async function deleteAddress(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?.userId;
-    const addressId =
-      typeof req.params.id === "string" ? req.params.id : undefined;
-    const address = await addressService.deleteAddress(userId, addressId);
+    const params = req.validatedParams as AddressIdParam;
+    const address = await addressService.deleteAddress(
+      getAddressOwner(res),
+      params.id,
+    );
 
     res.status(200).json(address);
   } catch (error) {

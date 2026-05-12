@@ -2,7 +2,7 @@ import { Schema, Types, model } from "mongoose";
 
 export interface ICartItem {
   cart: Types.ObjectId;
-  productId: Types.ObjectId;
+  productVariant: Types.ObjectId;
   quantity: number;
   unitPrice: number;
   createdAt?: Date;
@@ -17,10 +17,10 @@ const cartItemSchema = new Schema<ICartItem>(
       required: [true, "Cart is required"],
       index: true,
     },
-    productId: {
+    productVariant: {
       type: Schema.Types.ObjectId,
-      ref: "Product",
-      required: [true, "Product ID is required"],
+      ref: "ProductVariant",
+      required: [true, "Product variant is required"],
     },
     quantity: {
       type: Number,
@@ -39,7 +39,7 @@ const cartItemSchema = new Schema<ICartItem>(
   },
 );
 
-cartItemSchema.index({ cart: 1, productId: 1 }, { unique: true });
+cartItemSchema.index({ cart: 1, productVariant: 1 }, { unique: true });
 
 const CartItem = model<ICartItem>("CartItem", cartItemSchema);
 
