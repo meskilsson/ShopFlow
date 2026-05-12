@@ -1,13 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { verifyAccessToken } from "../utils/jwt";
-import { getGuestId } from "../utils/guestCookie";
+import jwt from "jsonwebtoken";
+import type { AuthTokenPayload } from "../types/authTypes";
+
+const JWT_SECRET = process.env.JWT_SECRET || "server_jwt_token";
 
 export default function resolveAddressOwner(
   req: Request,
   res: Response,
   next: NextFunction,
 ): void {
-  const token = req.cookies?.token;
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : null;
 
   if (!token) {
     res.locals.addressOwner = { sessionId: getGuestId(req, res) };
@@ -16,12 +21,8 @@ export default function resolveAddressOwner(
   }
 
   try {
-    const payload = verifyAccessToken(token);
-
-    res.locals.addressOwner = {
-      userId: payload.id,
-    };
-
+    const payload = jwt.verify(token, JWT_SECRET) as AuthTokenPayload;
+    res.locals.addressOwner = { userId: payload.userId };
     next();
   } catch {
     res.status(403).json({ error: "Unauthorized or expired token" });

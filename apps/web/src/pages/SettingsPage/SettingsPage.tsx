@@ -13,7 +13,7 @@ import styles from "./SettingsPage.module.css";
 
 export default function SettingsPage() {
     const navigate = useNavigate();
-    const { user: authUser, logout } = useAuth();
+    const { user: authUser, token, logout } = useAuth();
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteError, setDeleteError] = useState("");
@@ -34,7 +34,7 @@ export default function SettingsPage() {
     async function handleDeleteAccount() {
         setDeleteError("");
 
-        if (!authUser?._id) {
+        if (!authUser?._id || !token) {
             setDeleteError("No logged in user found.");
             return;
         }
@@ -42,7 +42,7 @@ export default function SettingsPage() {
         setIsDeleting(true);
 
         try {
-            await deleteUserRequest(authUser._id);
+            await deleteUserRequest(authUser._id, token);
 
             setIsDeleteModalOpen(false);
             logout();
