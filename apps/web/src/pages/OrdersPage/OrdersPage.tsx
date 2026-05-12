@@ -39,7 +39,7 @@ function formatPrice(price: number) {
 }
 
 function formatDate(date: string) {
-    return new Intl.DateTimeFormat("sv-SE", {
+    return new Intl.DateTimeFormat("en-EN", {
         year: "numeric",
         month: "short",
         day: "numeric",
@@ -52,6 +52,7 @@ export default function OrdersPage() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
         async function getUserOrders() {
@@ -148,6 +149,7 @@ export default function OrdersPage() {
                                                 className={`${styles.badge} ${styles[`payment-${order.paymentStatus}`]
                                                     }`}
                                             >
+
                                                 {order.paymentStatus}
                                             </span>
                                         </div>
