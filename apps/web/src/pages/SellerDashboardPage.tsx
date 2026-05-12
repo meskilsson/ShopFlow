@@ -15,7 +15,7 @@ const SellerDashboardPage = () => {
   return (
     <Container>
  
-        <h1>Seller Dashboard</h1>
+        <h1 className={Styles.header}>Seller Dashboard</h1>
         <Statistics/>
         <ProductsView/>
         
