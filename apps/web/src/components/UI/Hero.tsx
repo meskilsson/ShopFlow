@@ -33,6 +33,11 @@ const Hero = ({
     ? [providedImages[0], providedImages[1], providedImages[0]]
     : providedImages
   const hasSlideshow = providedImages.length > 1
+  const getSlideDelay = (index: number) => {
+    if (!hasSlideshow || index === 0) return undefined
+
+    return `${-(12 - index * 4)}s`
+  }
 
   const slideshow = (
     <div className={`${styles.slideshow} ${hasSlideshow ? styles.isAnimated : ""}`} aria-hidden="true">
@@ -42,7 +47,7 @@ const Hero = ({
           className={styles.slide}
           style={{
             backgroundImage: `url(${heroImage})`,
-            animationDelay: hasSlideshow ? `${index * 4}s` : undefined,
+            animationDelay: getSlideDelay(index),
           }}
         />
       ))}

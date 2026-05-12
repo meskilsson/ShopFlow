@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import kattarpImage1 from '@/assets/images/kattarp/16_cowboy.png';
+import kattarpImage1 from '@/assets/images/kattarp/13_kock.png';
 import kattarpImage2 from '@/assets/images/kattarp/09_surfer.png';
 import kattarpImage3 from '@/assets/images/kattarp/03_golf_a.png';
 
