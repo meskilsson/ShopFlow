@@ -69,7 +69,6 @@
 }
 
 .addressCard {
-    background: var(--bg-primary);
     border-radius: var(--br);
     padding: 1rem;
     display: flex;

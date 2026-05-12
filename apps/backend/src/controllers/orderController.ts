@@ -103,13 +103,13 @@ export async function createOrderFromCart(
 }
 
 export async function getOrdersWithItemsByUser(
-  req: Request<OrderIdParams>,
+  req: Request<UserIdParams>,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
     const orders = await orderService.getOrdersWithItemsByUser(
-      req.params.id
+      req.params.userId
     );
 
     res.status(200).json(orders);
