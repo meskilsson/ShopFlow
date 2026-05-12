@@ -84,7 +84,7 @@ const HomePage = () => {
 
         </div>
 
-        <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage1} image2={kattarpImage2} image3={kattarpImage3} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
+        <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage3} image2={kattarpImage1} image3={kattarpImage2} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
 
 This isn’t just clothing.
 It’s an identity crisis with premium materials.'>
