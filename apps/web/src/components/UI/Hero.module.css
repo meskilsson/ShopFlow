@@ -34,11 +34,13 @@
 
 .overlay h1 {
   font-size: 4.5rem;
+   color: white;
   /* margin-bottom: 1rem; */
 }
 
 .overlay p {
   font-size: 1.5rem;
+   color: white;
   /* margin-bottom: 2rem; */
 }
 
