@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import LoginCard from "../UI/LoginCard";
 import styles from "./Login.module.css";
 import { loginRequest } from "@/api/auth";
 
+type LoginLocationState = {
+  redirectTo?: string;
+};
+
 export default function LoginForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+  const redirectTo = (location.state as LoginLocationState | null)?.redirectTo;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +32,7 @@ export default function LoginForm() {
       });
 
       login(data.user);
-      navigate("/");
+      navigate(redirectTo || "/", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         setErrors(error.message);

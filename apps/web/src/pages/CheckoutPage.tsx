@@ -63,7 +63,12 @@ export default function CheckoutPage() {
             </div>
 
             <div className={styles.choiceActions}>
-              <ButtonStd variant="primary" onClick={() => navigate("/login")}>
+              <ButtonStd
+                variant="primary"
+                onClick={() =>
+                  navigate("/login", { state: { redirectTo: "/checkout" } })
+                }
+              >
                 Log in
               </ButtonStd>
               <ButtonStd
