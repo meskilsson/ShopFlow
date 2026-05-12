@@ -23,7 +23,7 @@ export const addressDataSchema = z.strictObject({
     .trim()
     .regex(
       /^\d{3}\s?\d{2}$/,
-      "Please enter a valid postal code, for example 123 44",
+      "Please enter a valid postal code, for example 123 49",
     ),
   city: z
     .string()
