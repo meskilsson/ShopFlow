@@ -1,6 +1,9 @@
 import React from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
+import kattarpImage1 from '@/assets/images/kattarp/13_kock.png';
+import kattarpImage2 from '@/assets/images/kattarp/09_surfer.png';
+import kattarpImage3 from '@/assets/images/kattarp/03_golf_a.png';
 
 import ProductCategories from "@/features/products/ProductCategories";
 import ButtonStd from '@/components/UI/ButtonStd';
@@ -42,7 +45,7 @@ const HomePage = () => {
   return (
     <>
     {/* <ProductCategories/> */}
-    <MainHero fullWidth title="SUMMER TIME" subtitle="Is your wardrobe up to date?" image="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></MainHero>
+    <MainHero fullWidth title="SUMMER TIME" subtitle="Is your wardrobe up to date?" image="https://images.unsplash.com/photo-1516370873344-fb7c61054fa9?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></MainHero>
       <Container>
 
         <Category categoryText="Shoes" articles={shoes.length}/>
@@ -81,9 +84,12 @@ const HomePage = () => {
 
         </div>
 
-        <Hero title="KATTARP" subtitle="Have you tried the new Kattarp-collection?" image='https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'>
+        <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage3} image2={kattarpImage1} image3={kattarpImage2} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
+
+This isn’t just clothing.
+It’s an identity crisis with premium materials.'>
             <div style={{marginTop: "1rem"}}></div>
-            <ButtonStd variant='ghost-light'>Check it out now</ButtonStd>
+            <ButtonStd variant='ghost-dark'>Check it out now</ButtonStd>
         </Hero>
         
       </Container>
