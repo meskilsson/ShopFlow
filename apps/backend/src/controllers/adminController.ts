@@ -11,11 +11,14 @@ export async function getAdminUsers(
     try {
         let limit = Number(req.query.limit);
         let page = Number(req.query.page);
+
         const rawRole = req.query.role;
         const rawSearch = req.query.search;
+        const rawIncludeDeleted = req.query.includeDeleted;
 
         let role: UserRole | undefined;
         let search: string | undefined;
+        let includeDeleted = false;
 
         if (Number.isNaN(limit) || limit < 1) {
             limit = 10;
@@ -45,17 +48,6 @@ export async function getAdminUsers(
             role = rawRole;
         }
 
-        const options: {
-            page: number;
-            limit: number;
-            role?: UserRole;
-            search?: string;
-        } = {
-            page,
-            limit,
-        };
-
-
         if (rawSearch !== undefined) {
             if (typeof rawSearch !== "string") {
                 throw new ValidationError("Search must be a string");
@@ -68,6 +60,35 @@ export async function getAdminUsers(
             }
         }
 
+        if (rawIncludeDeleted !== undefined) {
+            if (typeof rawIncludeDeleted !== "string") {
+                throw new ValidationError("includeDeleted must be a string");
+            }
+
+            if (
+                rawIncludeDeleted !== "true" &&
+                rawIncludeDeleted !== "false"
+            ) {
+                throw new ValidationError(
+                    "includeDeleted must be true or false",
+                );
+            }
+
+            includeDeleted = rawIncludeDeleted === "true";
+        }
+
+        const options: {
+            page: number;
+            limit: number;
+            role?: UserRole;
+            search?: string;
+            includeDeleted: boolean;
+        } = {
+            page,
+            limit,
+            includeDeleted,
+        };
+
         if (role !== undefined) {
             options.role = role;
         }
@@ -75,8 +96,6 @@ export async function getAdminUsers(
         if (search !== undefined) {
             options.search = search;
         }
-
-
 
         const result = await adminService.getAdminUsers(options);
 

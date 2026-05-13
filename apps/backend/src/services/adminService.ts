@@ -5,10 +5,11 @@ interface GetAdminUsersOptions {
     limit: number;
     role?: UserRole;
     search?: string;
+    includeDeleted: boolean;
 }
 
 type AdminUserFilter = {
-    deletedAt: null;
+    deletedAt?: null;
     role?: UserRole;
     $or?: Array<{
         name?: { $regex: string; $options: "i" };
@@ -22,12 +23,17 @@ export async function getAdminUsers({
     limit,
     role,
     search,
+    includeDeleted,
 }: GetAdminUsersOptions) {
+
     const skip = (page - 1) * limit;
 
-    const filter: AdminUserFilter = {
-        deletedAt: null,
-    };
+    const filter: AdminUserFilter = {};
+
+    if (!includeDeleted) {
+        filter.deletedAt = null;
+    }
+
 
     if (role) {
         filter.role = role;
@@ -40,6 +46,7 @@ export async function getAdminUsers({
             { username: { $regex: search, $options: "i" } },
         ];
     }
+
 
     const users = await User.find(filter)
         .sort({ createdAt: -1 })
