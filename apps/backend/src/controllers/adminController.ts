@@ -11,9 +11,11 @@ export async function getAdminUsers(
     try {
         let limit = Number(req.query.limit);
         let page = Number(req.query.page);
-
         const rawRole = req.query.role;
+        const rawSearch = req.query.search;
+
         let role: UserRole | undefined;
+        let search: string | undefined;
 
         if (Number.isNaN(limit) || limit < 1) {
             limit = 10;
@@ -47,14 +49,34 @@ export async function getAdminUsers(
             page: number;
             limit: number;
             role?: UserRole;
+            search?: string;
         } = {
             page,
             limit,
         };
 
+
+        if (rawSearch !== undefined) {
+            if (typeof rawSearch !== "string") {
+                throw new ValidationError("Search must be a string");
+            }
+
+            const trimmedSearch = rawSearch.trim();
+
+            if (trimmedSearch.length > 0) {
+                search = trimmedSearch;
+            }
+        }
+
         if (role !== undefined) {
             options.role = role;
         }
+
+        if (search !== undefined) {
+            options.search = search;
+        }
+
+
 
         const result = await adminService.getAdminUsers(options);
 
