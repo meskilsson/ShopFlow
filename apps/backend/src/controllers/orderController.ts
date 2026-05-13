@@ -10,7 +10,7 @@ import type {
 
 type OrderIdParams = { id: string };
 
-// CREATE ORDER
+// CREATE ORDER (med Zod-validering)
 export async function createOrder(
   req: Request,
   res: Response,
@@ -18,6 +18,7 @@ export async function createOrder(
 ): Promise<void> {
   try {
     const validatedData = req.validatedBody as CreateOrderInput;
+
     const { items, ...orderData } = validatedData;
 
     const newOrder = await orderService.createOrder(orderData, items);
