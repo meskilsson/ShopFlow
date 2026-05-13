@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt";
+import { ForbiddenError } from "../errors/AppError";
+import User from "../models/User";
 
-export function requireAuth(
+export async function requireAuth(
   req: Request,
   res: Response,
   next: NextFunction,
-): void {
+): Promise<void> {
   try {
     const token = req.cookies?.token;
 
@@ -16,14 +18,30 @@ export function requireAuth(
 
     const decoded = verifyAccessToken(token);
 
+
+
+
+    const user = await User.findById(decoded.id);
+
+
+    if (!user) {
+      throw new ForbiddenError("Forbidden");
+    }
+
+    if (user.deletedAt) {
+      throw new ForbiddenError("Forbidden");
+    }
+
     req.user = {
-      id: decoded.id,
-      email: decoded.email,
-      role: decoded.role,
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
     };
+
 
     next();
   } catch (error) {
-    res.status(403).json({ message: "Unauthorized or expired token" });
+    throw new ForbiddenError("Unauthorized or expired token");
   }
 }

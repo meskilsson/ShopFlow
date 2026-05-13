@@ -2,6 +2,7 @@ import Router from 'express';
 import { authorizeRoles } from '../middleware/authorizeRoles';
 import { validateRequest } from '../middleware/validate';
 import { requireAuth } from '../middleware/requireAuth';
+import { getAdminUsers } from '../controllers/adminController';
 
 
 const adminRouter = Router();
@@ -9,6 +10,8 @@ const adminRouter = Router();
 adminRouter.get("/", (req, res) => {
     res.json({ message: "Logged in as admin " });
 });
+
+adminRouter.get("/users", getAdminUsers);
 
 /* 
 
