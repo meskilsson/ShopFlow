@@ -1,4 +1,7 @@
+import { ForbiddenError, NotFoundError, ValidationError } from "../errors/AppError";
 import User, { type IUser, type UserRole } from "../models/User";
+import { DeleteAdminUserByIdInput } from "../types/admin.types";
+import { Types } from "mongoose";
 
 interface GetAdminUsersOptions {
     page: number;
@@ -66,4 +69,46 @@ export async function getAdminUsers({
         totalPages,
         users,
     };
+}
+
+export async function getAdminUserById(id: string) {
+
+    const user = await User.findById(id);
+
+    if (!user) {
+        throw new NotFoundError("Could not find user");
+    }
+
+
+    return user;
+
+}
+
+export async function deleteAdminUserById({
+    targetUserId,
+    adminUserId,
+    deleteReason,
+}: DeleteAdminUserByIdInput) {
+
+    const user = await User.findById(targetUserId);
+
+    if (!user) {
+        throw new NotFoundError("Could not find user");
+    }
+
+    if (user.deletedAt) {
+        throw new ValidationError("User is already deleted");
+    }
+
+    if (user.id === adminUserId) {
+        throw new ForbiddenError("You cannot delete your own admin account");
+    }
+
+    user.deletedAt = new Date();
+    user.deletedBy = new Types.ObjectId(adminUserId);
+    user.deleteReason = deleteReason ?? null;
+
+    await user.save();
+
+    return user;
 }

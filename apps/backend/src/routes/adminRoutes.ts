@@ -1,12 +1,19 @@
-import Router from 'express';
+import { Router } from 'express';
 import { validateRequest } from '../middleware/validate';
-import { getAdminUsers } from '../controllers/adminController';
+import { getAdminUsers, getAdminUserById, deleteAdminUserById } from '../controllers/adminController';
 
+import { userIdParamsSchema } from '../schemas/userSchemas';
+import { softDeleteUserBodySchema } from '../schemas/admin.schemas';
 
 const adminRouter = Router();
 
 
 adminRouter.get("/users", getAdminUsers);
+adminRouter.get("/users/:id", validateRequest({ params: userIdParamsSchema }), getAdminUserById);
+
+
+adminRouter.delete("/users/:id", validateRequest({ params: userIdParamsSchema, body: softDeleteUserBodySchema }), deleteAdminUserById);
+
 
 /* 
 

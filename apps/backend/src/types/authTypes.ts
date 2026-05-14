@@ -5,6 +5,7 @@ export type AuthTokenPayload = {
   email?: string;
   username?: string;
   role?: UserRole;
+
 };
 
 interface PublicUser {

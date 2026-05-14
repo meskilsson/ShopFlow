@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import * as adminService from "../services/adminService";
 import { ValidationError } from "../errors/AppError";
 import type { UserRole } from "../models/User";
+import type { UserIdParams } from "../schemas/userSchemas";
+import { SoftDeleteUserBody } from "../schemas/admin.schemas";
+
 
 export async function getAdminUsers(
     req: Request,
@@ -100,6 +103,53 @@ export async function getAdminUsers(
         const result = await adminService.getAdminUsers(options);
 
         res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function getAdminUserById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        const params = req.validatedParams as UserIdParams;
+
+        const user = await adminService.getAdminUserById(params.id);
+
+        res.status(200).json({
+            success: true,
+            user,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function deleteAdminUserById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        const params = req.validatedParams as UserIdParams;
+        const body = req.validatedBody as SoftDeleteUserBody;
+
+        const user = await adminService.deleteAdminUserById({
+            targetUserId: params.id,
+            adminUserId: req.user!.id,
+            deleteReason: body.deleteReason,
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "User soft-deleted successfully",
+            user,
+        });
     } catch (error) {
         next(error);
     }
