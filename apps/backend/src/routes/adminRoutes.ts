@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { validateRequest } from '../middleware/validate';
-import { getAdminUsers, getAdminUserById, deleteAdminUserById, restoreAdminUserById } from '../controllers/adminController';
+import { getAdminUsers, getAdminUserById, deleteAdminUserById, restoreAdminUserById, getAdminProducts, getAdminProductById, deleteAdminProductById, restoreAdminProductById } from '../controllers/adminController';
 
 import { userIdParamsSchema } from '../schemas/userSchemas';
 import { softDeleteUserBodySchema } from '../schemas/admin.schemas';
@@ -10,12 +10,26 @@ const adminRouter = Router();
 
 adminRouter.get("/users", getAdminUsers);
 adminRouter.get("/users/:id", validateRequest({ params: userIdParamsSchema }), getAdminUserById);
+adminRouter.get("/products", getAdminProducts);
+
+// FIXA VALIDATEREQUEST NÄR SCHEMAT ÄR GJORT!
+
+adminRouter.get("/products/:id", getAdminProductById);
 
 
 adminRouter.delete("/users/:id", validateRequest({ params: userIdParamsSchema, body: softDeleteUserBodySchema }), deleteAdminUserById);
 
+// FIXA VALIDATEREQUEST NÄR SCHEMAT ÄR GJORT!
+
+adminRouter.delete("/products/:id", deleteAdminProductById);
+
 
 adminRouter.patch("/users/:id/restore", validateRequest({ params: userIdParamsSchema }), restoreAdminUserById);
+
+// FIXA VALIDATEREQUEST NÄR SCHEMAT ÄR GJORT!
+
+adminRouter.patch("/products/:id/restore", restoreAdminProductById);
+
 
 /* 
 
@@ -25,10 +39,6 @@ adminRouter.patch("/users/:id/restore", validateRequest({ params: userIdParamsSc
 /api/v1/admin/reviews
 /api/v1/admin/dashboard
 
-GET /api/v1/admin/users
-GET /api/v1/admin/users/:id
-DELETE /api/v1/admin/users/:id
-PATCH /api/v1/admin/users/:id/restore
 
 */
 

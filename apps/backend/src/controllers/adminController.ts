@@ -4,6 +4,10 @@ import { ValidationError } from "../errors/AppError";
 import type { UserRole } from "../models/User";
 import { userIdParamsSchema, type UserIdParams } from "../schemas/userSchemas";
 import { SoftDeleteUserBody } from "../schemas/admin.schemas";
+import type { ProductIdParams, RestoreAdminProductByIdInput } from "../types/admin.types";
+import { Types } from "mongoose";
+
+import { ProductCategory } from "../models/Products";
 
 
 export async function getAdminUsers(
@@ -174,6 +178,239 @@ export async function restoreAdminUserById(
             user,
         });
 
+    } catch (error) {
+        next(error);
+    }
+}
+
+const productCategories: ProductCategory[] = [
+    "T-Shirts",
+    "Shoes",
+    "Pants",
+    "Shirts",
+    "Jackets",
+    "Accessories",
+];
+
+export async function getAdminProducts(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        let page = Number(req.query.page);
+        let limit = Number(req.query.limit);
+
+        const rawCategory = req.query.category;
+        const rawSearch = req.query.search;
+        const rawIncludeDeleted = req.query.includeDeleted;
+
+        let search: string | undefined;
+        let category: ProductCategory | undefined;
+        let includeDeleted = false;
+
+        if (Number.isNaN(limit) || limit < 1) {
+            limit = 10;
+        }
+
+        if (limit > 100) {
+            limit = 100;
+        }
+
+        if (Number.isNaN(page) || page < 1) {
+            page = 1;
+        }
+
+        if (rawSearch !== undefined) {
+            if (typeof rawSearch !== "string") {
+                throw new ValidationError("Search must be a string");
+            }
+
+            const trimmedSearch = rawSearch.trim();
+
+            if (trimmedSearch.length > 0) {
+                search = trimmedSearch;
+            }
+        }
+
+        if (rawCategory !== undefined) {
+            if (typeof rawCategory !== "string") {
+                throw new ValidationError("Category must be a string");
+            }
+
+            const trimmedCategory = rawCategory.trim();
+
+            if (!productCategories.includes(trimmedCategory as ProductCategory)) {
+                throw new ValidationError("Invalid category");
+            }
+
+            category = trimmedCategory as ProductCategory;
+        }
+
+        if (rawIncludeDeleted !== undefined) {
+            if (typeof rawIncludeDeleted !== "string") {
+                throw new ValidationError("includeDeleted must be a string");
+            }
+
+            if (rawIncludeDeleted !== "true" && rawIncludeDeleted !== "false") {
+                throw new ValidationError("includeDeleted must be true or false");
+            }
+
+            includeDeleted = rawIncludeDeleted === "true";
+        }
+
+
+
+        const options: {
+            page: number;
+            limit: number;
+            search?: string;
+            category?: ProductCategory;
+            includeDeleted: boolean;
+        } = {
+            page,
+            limit,
+            includeDeleted,
+        };
+
+        if (search !== undefined) {
+            options.search = search;
+        }
+
+        if (category !== undefined) {
+            options.category = category;
+        }
+
+        const result = await adminService.getAdminProducts(options);
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function getAdminProductById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        const params = req.validatedParams as UserIdParams;
+
+        const product = await adminService.getAdminProductById(params.id)
+
+        res.status(200).json({
+            success: true,
+            product,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function deleteAdminProductById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+
+
+
+        // const params = req.validatedParams as ProductIdParams;
+        // const body = req.validatedBody as RestoreAdminProductByIdInput;
+
+
+        // Placeholder tills zod schema har gjorts på product. 
+
+        const { id } = req.params;
+        const body = req.body;
+
+        if (!id) {
+            throw new ValidationError("Product id is required");
+        }
+
+        if (Array.isArray(id)) {
+            throw new ValidationError("Invalid product id");
+        }
+
+        if (!Types.ObjectId.isValid(id)) {
+            throw new ValidationError("Invalid product id");
+        }
+
+        if (
+            body.deleteReason !== undefined &&
+            typeof body.deleteReason !== "string"
+        ) {
+            throw new ValidationError("deleteReason must be a string");
+        }
+
+        const deleteReason = body.deleteReason?.trim();
+
+        // PLACEHOLDER
+
+
+        //deleteReason ska ersättas med deleteReason: body.deleteReason,
+
+        const product = await adminService.deleteAdminProductById({
+            targetProductId: id,
+            adminUserId: req.user!.id,
+            deleteReason,
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Product successfully restored",
+            product,
+        });
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function restoreAdminProductById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        // const params = req.validatedParams as ProductIdParams;
+        // const product = await adminService.restoreAdminProductById({ targetProductId: params.id });
+
+
+        // Placeholder tills zod schema har gjorts på product.
+
+        const { id } = req.params
+
+        if (!id) {
+            throw new ValidationError("Product id is required");
+        }
+
+        if (Array.isArray(id)) {
+            throw new ValidationError("Invalid product id");
+        }
+
+        if (!Types.ObjectId.isValid(id)) {
+            throw new ValidationError("Invalid product id");
+        }
+
+        // PLACEHOLDER
+
+        const product = await adminService.restoreAdminProductById({ targetProductId: id });
+
+
+
+        res.status(200).json({
+            success: true,
+            message: "Product restored successfully",
+            product,
+        });
     } catch (error) {
         next(error);
     }

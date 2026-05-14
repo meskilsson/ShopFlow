@@ -1,25 +1,10 @@
 import { ForbiddenError, NotFoundError, ValidationError } from "../errors/AppError";
-import User, { type IUser, type UserRole } from "../models/User";
-import { DeleteAdminUserByIdInput, RestoreAdminUserByIdInput } from "../types/admin.types";
+import Product from "../models/Products";
+import User from "../models/User";
+import { DeleteAdminUserByIdInput, RestoreAdminUserByIdInput, DeleteAdminProductByIdInput, RestoreProductUserByIdInput } from "../types/admin.types";
 import { Types } from "mongoose";
+import { GetAdminUsersOptions, AdminUserFilter, GetAdminProducts, ProductFilterOptions } from "../types/admin.types";
 
-interface GetAdminUsersOptions {
-    page: number;
-    limit: number;
-    role?: UserRole;
-    search?: string;
-    includeDeleted: boolean;
-}
-
-type AdminUserFilter = {
-    deletedAt?: null;
-    role?: UserRole;
-    $or?: Array<{
-        name?: { $regex: string; $options: "i" };
-        email?: { $regex: string; $options: "i" };
-        username?: { $regex: string; $options: "i" };
-    }>;
-};
 
 export async function getAdminUsers({
     page,
@@ -104,6 +89,18 @@ export async function deleteAdminUserById({
         throw new ForbiddenError("You cannot delete your own admin account");
     }
 
+
+    if (user.role === "admin") {
+        const activeAdminCount = await User.countDocuments({
+            role: "admin",
+            deletedAt: null,
+        });
+
+        if (activeAdminCount <= 1) {
+            throw new ForbiddenError("You cannot delete the last active admin");
+        }
+    }
+
     user.deletedAt = new Date();
     user.deletedBy = new Types.ObjectId(adminUserId);
     user.deleteReason = deleteReason ?? null;
@@ -136,4 +133,113 @@ export async function restoreAdminUserById({
     await user.save();
 
     return user;
+}
+
+
+
+export async function getAdminProducts({ page, limit, search, category, includeDeleted }: GetAdminProducts) {
+
+    const skip = (page - 1) * limit;
+    const filter: ProductFilterOptions = {};
+
+    if (!includeDeleted) {
+        filter.deletedAt = null;
+    }
+
+    if (category) {
+        filter.category = category;
+    }
+
+    if (search) {
+        filter.$or = [
+            { name: { $regex: search, $options: "i" } },
+            { category: { $regex: search, $options: "i" } },
+        ];
+    }
+
+
+    const products = await Product.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
+
+
+    const totalProducts = await Product.countDocuments(filter);
+    const totalPages = Math.ceil(totalProducts / limit);
+    const count = products.length;
+
+
+
+
+    return {
+        success: true,
+        products,
+        page,
+        limit,
+        totalProducts,
+        totalPages,
+        count
+    };
+}
+
+export async function getAdminProductById(id: string) {
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+        throw new NotFoundError("Could not find product");
+    }
+
+    return product;
+}
+
+export async function deleteAdminProductById({
+    targetProductId,
+    adminUserId,
+    deleteReason,
+}: DeleteAdminProductByIdInput) {
+
+    const product = await Product.findById(targetProductId);
+
+    if (!product) {
+        throw new NotFoundError("Could not find product");
+    }
+
+    if (product.deletedAt) {
+        throw new ValidationError("Product is already deleted");
+    }
+
+    product.deletedAt = new Date();
+    product.deletedBy = new Types.ObjectId(adminUserId);
+    product.deleteReason = deleteReason ?? null;
+
+    await product.save();
+
+    return product;
+
+}
+
+
+export async function restoreAdminProductById({
+    targetProductId,
+}: RestoreProductUserByIdInput) {
+
+    const product = await Product.findById(targetProductId);
+
+    if (!product) {
+        throw new NotFoundError("Could not find product");
+    }
+
+    if (!product.deletedAt) {
+        throw new ValidationError("Product is not deleted");
+    }
+
+    product.deletedAt = null;
+    product.deletedBy = null;
+    product.deleteReason = null;
+
+
+    await product.save();
+
+    return product;
 }
