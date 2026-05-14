@@ -10,4 +10,5 @@ export const softDeleteUserBodySchema = z.strictObject({
 });
 
 
+
 export type SoftDeleteUserBody = z.infer<typeof softDeleteUserBodySchema>;

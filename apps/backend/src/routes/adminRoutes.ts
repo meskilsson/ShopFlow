@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { validateRequest } from '../middleware/validate';
-import { getAdminUsers, getAdminUserById, deleteAdminUserById } from '../controllers/adminController';
+import { getAdminUsers, getAdminUserById, deleteAdminUserById, restoreAdminUserById } from '../controllers/adminController';
 
 import { userIdParamsSchema } from '../schemas/userSchemas';
 import { softDeleteUserBodySchema } from '../schemas/admin.schemas';
@@ -14,6 +14,8 @@ adminRouter.get("/users/:id", validateRequest({ params: userIdParamsSchema }), g
 
 adminRouter.delete("/users/:id", validateRequest({ params: userIdParamsSchema, body: softDeleteUserBodySchema }), deleteAdminUserById);
 
+
+adminRouter.patch("/users/:id/restore", validateRequest({ params: userIdParamsSchema }), restoreAdminUserById);
 
 /* 
 

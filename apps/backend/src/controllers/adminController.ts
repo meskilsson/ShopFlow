@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import * as adminService from "../services/adminService";
 import { ValidationError } from "../errors/AppError";
 import type { UserRole } from "../models/User";
-import type { UserIdParams } from "../schemas/userSchemas";
+import { userIdParamsSchema, type UserIdParams } from "../schemas/userSchemas";
 import { SoftDeleteUserBody } from "../schemas/admin.schemas";
 
 
@@ -150,6 +150,30 @@ export async function deleteAdminUserById(
             message: "User soft-deleted successfully",
             user,
         });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function restoreAdminUserById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        const params = req.validatedParams as UserIdParams;
+
+
+        const user = await adminService.restoreAdminUserById({ targetUserId: params.id });
+
+
+        res.status(200).json({
+            success: true,
+            message: "User restored successfully",
+            user,
+        });
+
     } catch (error) {
         next(error);
     }

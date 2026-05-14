@@ -7,3 +7,7 @@ export interface DeleteAdminUserByIdInput {
     deleteReason?: string | undefined;
 }
 
+export interface RestoreAdminUserByIdInput {
+    targetUserId: string;
+}
+

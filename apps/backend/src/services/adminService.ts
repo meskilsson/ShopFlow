@@ -1,6 +1,6 @@
 import { ForbiddenError, NotFoundError, ValidationError } from "../errors/AppError";
 import User, { type IUser, type UserRole } from "../models/User";
-import { DeleteAdminUserByIdInput } from "../types/admin.types";
+import { DeleteAdminUserByIdInput, RestoreAdminUserByIdInput } from "../types/admin.types";
 import { Types } from "mongoose";
 
 interface GetAdminUsersOptions {
@@ -107,6 +107,31 @@ export async function deleteAdminUserById({
     user.deletedAt = new Date();
     user.deletedBy = new Types.ObjectId(adminUserId);
     user.deleteReason = deleteReason ?? null;
+
+    await user.save();
+
+    return user;
+}
+
+
+export async function restoreAdminUserById({
+    targetUserId,
+}: RestoreAdminUserByIdInput) {
+
+    const user = await User.findById(targetUserId);
+
+    if (!user) {
+        throw new NotFoundError("User could not be found");
+    }
+
+    if (!user.deletedAt) {
+        throw new ValidationError("User is not deleted");
+    }
+
+    user.deletedAt = null;
+    user.deletedBy = null;
+    user.deleteReason = null;
+
 
     await user.save();
 
