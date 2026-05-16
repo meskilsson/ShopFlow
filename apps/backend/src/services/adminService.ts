@@ -2,9 +2,10 @@ import { ForbiddenError, NotFoundError, ValidationError } from "../errors/AppErr
 import Product from "../models/Products";
 import User from "../models/User";
 import Order from "../models/Order";
+import OrderItem from "../models/OrderItem";
 import { DeleteAdminUserByIdInput, RestoreAdminUserByIdInput, DeleteAdminProductByIdInput, RestoreProductUserByIdInput } from "../types/admin.types";
 import { Types } from "mongoose";
-import type { GetAdminUsersOptions, AdminUserFilter, GetAdminProducts, ProductFilterOptions, OrderFilterOptions, GetAdminOrders } from "../types/admin.types";
+import type { GetAdminUsersOptions, AdminUserFilter, GetAdminProducts, ProductFilterOptions, OrderFilterOptions, GetAdminOrders, DeleteAdminOrderByIdInput, RestoreAdminOrderByIdInput } from "../types/admin.types";
 
 
 export async function getAdminUsers({
@@ -305,4 +306,77 @@ export async function getAdminOrders({ page, limit, search, status, paymentStatu
         orders,
     }
 
+}
+
+export async function getAdminOrderById(id: string) {
+
+    const order = await Order.findById(id).populate(
+        "user",
+        "name email username role",
+    );
+
+    if (!order) {
+        throw new NotFoundError("Could not find order");
+    }
+
+    const items = await OrderItem.find({ order: order._id }).populate(
+        "productVariant",
+    );
+
+
+    return {
+        success: true,
+        order,
+        items,
+    }
+
+}
+
+export async function deleteAdminOrderById({
+    targetOrderId,
+    adminUserId,
+    deleteReason,
+}: DeleteAdminOrderByIdInput) {
+
+    const order = await Order.findById(targetOrderId);
+
+    if (!order) {
+        throw new NotFoundError("Could not find order");
+    }
+
+    if (order.deletedAt) {
+        throw new ValidationError("Order is already deleted");
+    }
+
+    order.deletedAt = new Date();
+    order.deletedBy = new Types.ObjectId(adminUserId);
+    order.deleteReason = deleteReason ?? null;
+
+
+    await order.save();
+
+    return order;
+}
+
+export async function restoreAdminOrderById({
+    targetOrderId,
+}: RestoreAdminOrderByIdInput) {
+
+    const order = await Order.findById(targetOrderId);
+
+    if (!order) {
+        throw new NotFoundError("Could not find order");
+    }
+
+    if (!order.deletedAt) {
+        throw new ValidationError("Order is not deleted");
+    }
+
+    order.deletedAt = null;
+    order.deletedBy = null;
+    order.deleteReason = null;
+
+    await order.save();
+
+    return order;
 }

@@ -160,7 +160,7 @@ export default function OrdersPage() {
                                             <p className={styles.orderDate}>
                                                 Placed on {formatDate(order.createdAt)}
                                             </p>
-
+                                            <p className={styles.orderId}>{order._id}</p>
 
                                         </div>
 

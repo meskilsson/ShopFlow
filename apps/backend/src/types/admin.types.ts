@@ -107,3 +107,13 @@ export type OrderFilterOptions = {
         paymentStatus?: PaymentStatus;
     }>;
 };
+
+export type DeleteAdminOrderByIdInput = {
+    targetOrderId: string;
+    adminUserId: string;
+    deleteReason: string;
+}
+
+export type RestoreAdminOrderByIdInput = {
+    targetOrderId: string;
+}

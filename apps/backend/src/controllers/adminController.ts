@@ -550,3 +550,129 @@ export async function getAdminOrders(
         next(error);
     }
 }
+
+export async function getAdminOrderById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+
+        // Uppdatera när zod validering är gjord
+        // const params = req.validatedParams as OrderIdParams;
+        // const result = await adminService.getAdminOrderById(params.id);
+
+        const { id } = req.params;
+
+        if (!id) {
+            throw new ValidationError("Order id is required");
+        }
+
+        if (Array.isArray(id)) {
+            throw new ValidationError("Invalid order id");
+        }
+
+        if (!Types.ObjectId.isValid(id)) {
+            throw new ValidationError("Invalid order id");
+        }
+
+        const result = await adminService.getAdminOrderById(id);
+
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function deleteAdminOrderById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        const { id } = req.params;
+        const body = req.body;
+
+        if (!id) {
+            throw new ValidationError("Order id is required");
+        }
+
+        if (Array.isArray(id)) {
+            throw new ValidationError("Invalid order id");
+        }
+
+        if (!Types.ObjectId.isValid(id)) {
+            throw new ValidationError("Invalid order id");
+        }
+
+        if (
+            body.deleteReason !== undefined &&
+            typeof body.deleteReason !== "string"
+        ) {
+            throw new ValidationError("deleteReason must be a string");
+        }
+
+        const deleteReason = body.deleteReason?.trim();
+
+        // PLACEHOLDER
+
+
+        // TODO: deleteReason ska ersättas med deleteReason: body.deleteReason,
+
+        const order = await adminService.deleteAdminOrderById({
+            targetOrderId: id,
+            adminUserId: req.user!.id,
+            deleteReason,
+        });
+
+
+        res.status(200).json({
+            success: true,
+            message: "Order successfully soft-deleted",
+            order,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function restoreAdminOrderById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        const { id } = req.params;
+
+        if (!id) {
+            throw new ValidationError("Order id is required");
+        }
+
+        if (Array.isArray(id)) {
+            throw new ValidationError("Invalid order id");
+        }
+
+        if (!Types.ObjectId.isValid(id)) {
+            throw new ValidationError("Invalid order id");
+        }
+
+        const order = await adminService.restoreAdminOrderById({
+            targetOrderId: id,
+        })
+
+
+
+        res.status(200).json({
+            success: true,
+            message: "Order successfully restored",
+            order,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
