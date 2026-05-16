@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import * as adminService from "../services/adminService";
 import { ValidationError } from "../errors/AppError";
 import type { UserRole } from "../models/User";
-import { userIdParamsSchema, type UserIdParams } from "../schemas/userSchemas";
+import type { UserIdParams } from "../schemas/userSchemas";
 import { SoftDeleteUserBody } from "../schemas/admin.schemas";
-import type { ProductIdParams, RestoreAdminProductByIdInput } from "../types/admin.types";
 import { Types } from "mongoose";
 
 import { ProductCategory } from "../models/Products";
+import { OrderStatus, PaymentStatus } from "../types/admin.types";
 
 
 export async function getAdminUsers(
@@ -411,6 +411,141 @@ export async function restoreAdminProductById(
             message: "Product restored successfully",
             product,
         });
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+const orderStatuses: OrderStatus[] = [
+    "pending",
+    "processing",
+    "shipped",
+    "delivered",
+    "cancelled",
+];
+
+const paymentStatuses: PaymentStatus[] = [
+    "pending",
+    "paid",
+    "failed",
+    "refunded",
+];
+
+export async function getAdminOrders(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+
+        let limit = Number(req.query.limit);
+        let page = Number(req.query.page);
+        let search: string | undefined;
+        let includeDeleted = false;
+        let status: OrderStatus | undefined;
+        let paymentStatus: PaymentStatus | undefined;
+
+        const rawSearch = req.query.search;
+        const rawIncludeDeleted = req.query.includeDeleted;
+        const rawStatus = req.query.status;
+        const rawPaymentStatus = req.query.paymentStatus;
+
+        if (Number.isNaN(limit) || limit < 1) {
+            limit = 10;
+        }
+
+        if (limit > 100) {
+            limit = 100;
+        }
+
+        if (Number.isNaN(page) || page < 1) {
+            page = 1;
+        }
+
+
+        if (rawSearch !== undefined) {
+            if (typeof rawSearch !== "string") {
+                throw new ValidationError("Search must be a string");
+            }
+
+            const trimmedSearch = rawSearch.trim();
+
+            if (trimmedSearch.length > 0) {
+                search = trimmedSearch;
+            }
+        }
+
+        if (rawIncludeDeleted !== undefined) {
+            if (typeof rawIncludeDeleted !== "string") {
+                throw new ValidationError("includeDeleted must be a string");
+            }
+
+            if (rawIncludeDeleted !== "true" &&
+                rawIncludeDeleted !== "false"
+            ) {
+                throw new ValidationError("includeDeleted must be true or false");
+            }
+
+            includeDeleted = rawIncludeDeleted === "true";
+        }
+
+        if (rawStatus !== undefined) {
+            if (typeof rawStatus !== "string") {
+                throw new ValidationError("status must be a string");
+            }
+
+            if (!orderStatuses.includes(rawStatus as OrderStatus)) {
+                throw new ValidationError("Invalid order status");
+            }
+
+            status = rawStatus as OrderStatus;
+        }
+
+        if (rawPaymentStatus !== undefined) {
+            if (typeof rawPaymentStatus !== "string") {
+                throw new ValidationError("Payment status must be a string");
+            }
+
+            if (!paymentStatuses.includes(rawPaymentStatus as PaymentStatus)) {
+                throw new ValidationError("Invalid payment status");
+            }
+
+            paymentStatus = rawPaymentStatus as PaymentStatus;
+        }
+
+
+
+        const options: {
+            page: number;
+            limit: number;
+            search?: string;
+            status?: OrderStatus;
+            paymentStatus?: PaymentStatus;
+            includeDeleted: boolean;
+        } = {
+            page,
+            limit,
+            includeDeleted,
+        };
+
+        if (search !== undefined) {
+            options.search = search;
+        }
+
+        if (status !== undefined) {
+            options.status = status;
+        }
+
+        if (paymentStatus !== undefined) {
+            options.paymentStatus = paymentStatus;
+        }
+
+
+        const result = await adminService.getAdminOrders(options);
+
+        res.status(200).json(result);
+
     } catch (error) {
         next(error);
     }

@@ -1,9 +1,10 @@
 import { ForbiddenError, NotFoundError, ValidationError } from "../errors/AppError";
 import Product from "../models/Products";
 import User from "../models/User";
+import Order from "../models/Order";
 import { DeleteAdminUserByIdInput, RestoreAdminUserByIdInput, DeleteAdminProductByIdInput, RestoreProductUserByIdInput } from "../types/admin.types";
 import { Types } from "mongoose";
-import { GetAdminUsersOptions, AdminUserFilter, GetAdminProducts, ProductFilterOptions } from "../types/admin.types";
+import type { GetAdminUsersOptions, AdminUserFilter, GetAdminProducts, ProductFilterOptions, OrderFilterOptions, GetAdminOrders } from "../types/admin.types";
 
 
 export async function getAdminUsers({
@@ -242,4 +243,66 @@ export async function restoreAdminProductById({
     await product.save();
 
     return product;
+}
+
+export async function getAdminOrders({ page, limit, search, status, paymentStatus, includeDeleted }: GetAdminOrders) {
+
+    const skip = (page - 1) * limit;
+
+    const filter: OrderFilterOptions = {};
+
+    if (!includeDeleted) {
+        filter.deletedAt = null;
+    }
+
+    if (status) {
+        filter.status = status;
+    }
+
+    if (paymentStatus) {
+        filter.paymentStatus = paymentStatus;
+    }
+
+
+    if (search) {
+        const searchConditions: OrderFilterOptions["$or"] = [
+            {
+                sessionId: {
+                    $regex: search,
+                    $options: "i",
+                },
+            },
+        ];
+
+        if (Types.ObjectId.isValid(search)) {
+            const objectId = new Types.ObjectId(search);
+
+            searchConditions.push(
+                { _id: objectId },
+                { user: objectId },
+            );
+        }
+
+        filter.$or = searchConditions;
+    }
+
+
+
+    const orders = await Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).populate("user", "name email username role");
+
+
+    const totalOrders = await Order.countDocuments(filter);
+    const totalPages = Math.ceil(totalOrders / limit);
+    const count = orders.length;
+
+    return {
+        success: true,
+        page,
+        limit,
+        count,
+        totalOrders,
+        totalPages,
+        orders,
+    }
+
 }

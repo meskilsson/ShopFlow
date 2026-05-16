@@ -6,6 +6,9 @@ export interface IOrder {
   totalPrice: number;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   paymentStatus: "pending" | "paid" | "failed" | "refunded";
+  deletedAt?: Date | null;
+  deletedBy?: Types.ObjectId | null;
+  deleteReason?: string | null;
 }
 
 const orderSchema = new Schema<IOrder>(
@@ -34,6 +37,20 @@ const orderSchema = new Schema<IOrder>(
       enum: ["pending", "paid", "failed", "refunded"],
       default: "pending",
       required: [true, "Payment status is required"],
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deletedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    deleteReason: {
+      type: String,
+      trim: true,
+      default: null,
     },
   },
   {

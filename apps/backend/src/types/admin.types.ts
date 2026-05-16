@@ -1,5 +1,6 @@
 import { UserRole } from "./authTypes";
 import { ProductCategory } from "../models/Products";
+import { Types } from "mongoose";
 
 export interface DeleteAdminUserByIdInput {
     targetUserId: string;
@@ -68,3 +69,41 @@ export type RestoreAdminProductByIdInput = {
     adminUserId: string;
     deleteReason: string;
 }
+
+export interface GetAdminOrders {
+    page: number;
+    limit: number;
+    search?: string;
+    status?: OrderStatus;
+    paymentStatus?: PaymentStatus;
+    includeDeleted: boolean;
+}
+
+export type OrderStatus =
+    | "pending"
+    | "processing"
+    | "shipped"
+    | "delivered"
+    | "cancelled";
+
+export type PaymentStatus =
+    | "pending"
+    | "paid"
+    | "failed"
+    | "refunded";
+
+export type OrderFilterOptions = {
+    deletedAt?: null;
+    status?: OrderStatus;
+    paymentStatus?: PaymentStatus;
+    user?: Types.ObjectId | { $in: Types.ObjectId[] };
+    sessionId?: { $regex: string; $options: "i" };
+    _id?: Types.ObjectId;
+    $or?: Array<{
+        _id?: Types.ObjectId;
+        user?: Types.ObjectId;
+        sessionId?: { $regex: string; $options: "i" };
+        status?: OrderStatus;
+        paymentStatus?: PaymentStatus;
+    }>;
+};
