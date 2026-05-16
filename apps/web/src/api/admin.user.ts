@@ -28,20 +28,20 @@ export async function getAdminUsersRequest(includeDeleted = false) {
 }
 
 export async function deleteAdminUserRequest(id: string, deleteReason?: string) {
+    const trimmedReason = deleteReason?.trim();
 
-    const hasDeleteReason = deleteReason !== undefined && deleteReason.trim().length > 0;
+    const body =
+        trimmedReason && trimmedReason.length > 0
+            ? { deleteReason: trimmedReason }
+            : {};
 
     const response = await fetch(`${API_URL}/admin/users/${id}`, {
         method: "DELETE",
         credentials: "include",
-
-        headers: hasDeleteReason ? {
+        headers: {
             "Content-Type": "application/json",
-        }
-            : undefined,
-        body: hasDeleteReason
-            ? JSON.stringify({ deleteReason: deleteReason.trim() })
-            : undefined,
+        },
+        body: JSON.stringify(body),
     });
 
     const data = await response.json();

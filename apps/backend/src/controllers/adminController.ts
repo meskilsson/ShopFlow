@@ -364,7 +364,7 @@ export async function deleteAdminProductById(
 
         res.status(200).json({
             success: true,
-            message: "Product successfully restored",
+            message: "Product successfully soft-deleted",
             product,
         });
 

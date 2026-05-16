@@ -3,7 +3,7 @@ import {
     getAdminUsersRequest,
     deleteAdminUserRequest,
     restoreAdminUserRequest,
-} from "@/api/admin";
+} from "@/api/admin.user";
 import { useState, useEffect } from "react";
 import Card from "@/components/UI/Card";
 import ButtonStd from "@/components/UI/ButtonStd";
@@ -199,8 +199,8 @@ export default function AdminUsersPage() {
 
                                 <span
                                     className={`${styles.statusBadge} ${isDeleted
-                                            ? styles.deletedBadge
-                                            : styles.activeBadge
+                                        ? styles.deletedBadge
+                                        : styles.activeBadge
                                         }`}
                                 >
                                     {isDeleted ? "Deleted" : "Active"}
@@ -325,8 +325,8 @@ export default function AdminUsersPage() {
                         className={styles.textarea}
                         value={deleteReason}
                         placeholder="Optional delete reason"
-                        onChange={(event) =>
-                            setDeleteReason(event.target.value)
+                        onChange={(e) =>
+                            setDeleteReason(e.target.value)
                         }
                     />
 
