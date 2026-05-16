@@ -4,22 +4,317 @@
     gap: 1.5rem;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+}
+
+.kicker {
+    margin: 0 0 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-gray);
+}
+
 .header h1 {
     margin: 0;
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    line-height: 1.05;
+    color: var(--text-primary);
 }
 
 .header p {
-    margin-top: 0.35rem;
-    color: var(--color-text-muted);
+    max-width: 680px;
+    margin: 0.55rem 0 0;
+    color: var(--text-gray);
+    line-height: 1.6;
 }
 
-.placeholder {
-    padding: 2rem;
-    border-radius: var(--radius-lg);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.summaryCard {
+    padding: 1rem;
+    border-radius: calc(var(--br) * 1.5);
+    background: color-mix(in srgb, var(--bg-primary) 45%, var(--bg-secondary));
+    border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+}
+
+.summaryCard span {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: var(--text-gray);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.summaryCard strong {
+    font-size: 1.65rem;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.usersGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.userCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    min-height: 100%;
+    transition:
+        opacity 0.2s ease,
+        filter 0.2s ease,
+        transform 0.2s ease;
+}
+
+.userCard:hover {
+    transform: translateY(-2px);
+}
+
+.userHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
+}
+
+.userHeader h2 {
+    margin: 0.25rem 0 0;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.userId {
+    margin: 0;
+    max-width: 220px;
+    color: var(--text-gray);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    word-break: break-all;
+}
+
+.statusBadge {
+    flex: 0 0 auto;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border: 1px solid transparent;
+}
+
+.activeBadge {
+    color: color-mix(in srgb, var(--btn-primary) 72%, var(--text-primary));
+    background: color-mix(in srgb, var(--btn-primary) 12%, transparent);
+    border-color: color-mix(in srgb, var(--btn-primary) 22%, transparent);
+}
+
+.deletedBadge {
+    color: color-mix(in srgb, var(--text-gray) 85%, var(--text-primary));
+    background: color-mix(in srgb, var(--text-gray) 14%, transparent);
+    border-color: color-mix(in srgb, var(--text-gray) 22%, transparent);
+}
+
+.metaGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+}
+
+.metaItem {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.metaItem span {
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.metaItem strong {
+    color: color-mix(in srgb, var(--text-primary) 82%, var(--text-gray));
+    font-size: 0.92rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.roleBadge {
+    width: fit-content;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg-primary) 65%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    text-transform: capitalize;
+}
+
+.reasonBox {
+    padding: 0.85rem;
+    border-radius: var(--br);
+    background: color-mix(in srgb, var(--bg-primary) 45%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
+}
+
+.reasonBox span {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.reasonBox p {
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.actions {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
 }
 
 .deleted {
-    opacity: 0.4;
+    opacity: 0.72;
+    filter: grayscale(0.35);
+    border-style: dashed;
+}
+
+.deleted::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+            color-mix(in srgb, var(--text-gray) 8%, transparent),
+            transparent 45%);
+}
+
+.deleted .userHeader h2,
+.deleted .metaItem strong,
+.deleted .reasonBox p {
+    color: color-mix(in srgb, var(--text-gray) 80%, var(--text-primary));
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modalContent p {
+    margin: 0;
+    color: var(--text-gray);
+    line-height: 1.5;
+}
+
+.modalContent strong {
+    color: var(--text-primary);
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 96px;
+    resize: vertical;
+    padding: 0.85rem 0.95rem;
+    border-radius: var(--br);
+    border: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent);
+    background: color-mix(in srgb, var(--bg-primary) 78%, var(--bg-secondary));
+    color: var(--text-primary);
+    font: inherit;
+    line-height: 1.45;
+}
+
+.textarea::placeholder {
+    color: color-mix(in srgb, var(--text-gray) 75%, transparent);
+}
+
+.textarea:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--btn-primary) 55%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--btn-primary) 14%, transparent);
+}
+
+.error {
+    padding: 0.85rem 1rem;
+    border-radius: var(--br);
+    color: #ffb4b4;
+    background: rgba(255, 80, 80, 0.12);
+    border: 1px solid rgba(255, 80, 80, 0.3);
+}
+
+.stateText {
+    padding: 1rem;
+    color: var(--text-gray);
+}
+
+@media (max-width: 760px) {
+    .page {
+        gap: 1rem;
+    }
+
+    .header {
+        flex-direction: column;
+        padding-bottom: 1rem;
+    }
+
+    .summaryGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .usersGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .userHeader {
+        flex-direction: column;
+    }
+
+    .statusBadge {
+        width: fit-content;
+    }
+
+    .modalActions {
+        justify-content: stretch;
+    }
+
+    .modalActions button {
+        flex: 1;
+    }
 }

@@ -19,7 +19,8 @@ import OrderPage from "./pages/OrderPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import AdminLayout from "./pages/AdminPages/AdminLayout/AdminLayout";
 import AdminUsersPage from "./pages/AdminPages/AdminUsersPage/AdminUsersPage";
-
+import AdminOrderPage from "./pages/AdminPages/AdminOrderPage/AdminOrderPage";
+import AdminProductPage from "./pages/AdminPages/AdminProductPage/AdminProductPage";
 
 import NavBar from "@/features/navbar/NavBar";
 import ContentWrapper from "@/components/ContentWrapper";
@@ -46,6 +47,8 @@ function App() {
 
               <Route path="/admin" element={<AdminLayout />}>
                 <Route path="users" element={<AdminUsersPage />} />
+                <Route path="products" element={<AdminProductPage />} />
+                <Route path="orders" element={<AdminOrderPage />} />
               </Route>
 
               <Route index element={<HomePage />} />

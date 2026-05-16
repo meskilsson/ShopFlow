@@ -36,8 +36,10 @@ export default function AdminUsersPage() {
     const [deleteReason, setDeleteReason] = useState("");
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [userToDelete, setUserToDelete] = useState<AdminUser | null>(null);
-
     const [userToRestore, setUserToRestore] = useState<AdminUser | null>(null);
+
+    const activeUsers = users.filter((user) => !user.deletedAt).length;
+    const deletedUsers = users.filter((user) => user.deletedAt).length;
 
     useEffect(() => {
         setError("");
@@ -102,7 +104,7 @@ export default function AdminUsersPage() {
                 ),
             );
 
-            setUserToRestore(null)
+            setUserToRestore(null);
         } catch (error) {
             if (error instanceof Error) {
                 setRestoreError(error.message || "Failed to restore user");
@@ -142,46 +144,122 @@ export default function AdminUsersPage() {
         setUserToRestore(null);
     }
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <p className={styles.stateText}>Loading users...</p>;
 
-    if (error) return <p>{error}</p>;
+    if (error) return <p className={styles.error}>{error}</p>;
 
     return (
         <section className={styles.page}>
             <header className={styles.header}>
                 <div>
+                    <p className={styles.kicker}>User management</p>
                     <h1>Admin users</h1>
-                    <p>Manage users, roles and soft-deleted accounts.</p>
+                    <p>
+                        Manage user accounts, inspect soft-deleted users, and
+                        restore accounts when needed.
+                    </p>
                 </div>
             </header>
 
+            <div className={styles.summaryGrid}>
+                <div className={styles.summaryCard}>
+                    <span>Total users</span>
+                    <strong>{users.length}</strong>
+                </div>
+
+                <div className={styles.summaryCard}>
+                    <span>Active users</span>
+                    <strong>{activeUsers}</strong>
+                </div>
+
+                <div className={styles.summaryCard}>
+                    <span>Deleted users</span>
+                    <strong>{deletedUsers}</strong>
+                </div>
+            </div>
+
             {restoreError && <p className={styles.error}>{restoreError}</p>}
 
-            <div className={styles.placeholder}>
-                <div>
-                    {users.map((user) => (
-                        <div key={user._id}>
-                            <Card
-                                variant="default"
-                                className={user.deletedAt ? styles.deleted : ""}
-                            >
-                                <h3>User id: {user._id}</h3>
-                                <p>Name: {user.name}</p>
-                                <p>Email: {user.email}</p>
-                                <p>Username: {user.username}</p>
-                                <p>Role: {user.role}</p>
-                                <p>Created at: {user.createdAt}</p>
-                                <p>
-                                    Deleted at:{" "}
-                                    {user.deletedAt ?? "Not deleted"}
-                                </p>
-                                <p>Deleted by: {user.deletedBy ?? "N/A"}</p>
-                                <p>
-                                    Delete reason:{" "}
-                                    {user.deleteReason ?? "N/A"}
-                                </p>
+            <div className={styles.usersGrid}>
+                {users.map((user) => {
+                    const isDeleted = Boolean(user.deletedAt);
 
-                                {user.deletedAt ? (
+                    return (
+                        <Card
+                            key={user._id}
+                            variant="default"
+                            className={`${styles.userCard} ${isDeleted ? styles.deleted : ""
+                                }`}
+                        >
+                            <div className={styles.userHeader}>
+                                <div>
+                                    <p className={styles.userId}>{user._id}</p>
+                                    <h2>{user.name}</h2>
+                                </div>
+
+                                <span
+                                    className={`${styles.statusBadge} ${isDeleted
+                                            ? styles.deletedBadge
+                                            : styles.activeBadge
+                                        }`}
+                                >
+                                    {isDeleted ? "Deleted" : "Active"}
+                                </span>
+                            </div>
+
+                            <div className={styles.metaGrid}>
+                                <div className={styles.metaItem}>
+                                    <span>Email</span>
+                                    <strong>{user.email}</strong>
+                                </div>
+
+                                <div className={styles.metaItem}>
+                                    <span>Username</span>
+                                    <strong>{user.username}</strong>
+                                </div>
+
+                                <div className={styles.metaItem}>
+                                    <span>Role</span>
+                                    <strong className={styles.roleBadge}>
+                                        {user.role}
+                                    </strong>
+                                </div>
+
+                                <div className={styles.metaItem}>
+                                    <span>Created</span>
+                                    <strong>
+                                        {new Date(
+                                            user.createdAt,
+                                        ).toLocaleDateString()}
+                                    </strong>
+                                </div>
+
+                                <div className={styles.metaItem}>
+                                    <span>Deleted at</span>
+                                    <strong>
+                                        {user.deletedAt
+                                            ? new Date(
+                                                user.deletedAt,
+                                            ).toLocaleDateString()
+                                            : "Not deleted"}
+                                    </strong>
+                                </div>
+
+                                <div className={styles.metaItem}>
+                                    <span>Deleted by</span>
+                                    <strong>{user.deletedBy ?? "N/A"}</strong>
+                                </div>
+                            </div>
+
+                            {user.deleteReason && (
+                                <div className={styles.reasonBox}>
+                                    <span>Delete reason</span>
+                                    <p>{user.deleteReason}</p>
+                                </div>
+                            )}
+
+                            <div className={styles.actions}>
+                                {isDeleted ? (
                                     <ButtonStd
                                         variant="primary"
                                         onClick={() => openRestoreModal(user)}
@@ -189,7 +267,7 @@ export default function AdminUsersPage() {
                                     >
                                         {isRestoring === user._id
                                             ? "Restoring..."
-                                            : "Restore User"}
+                                            : "Restore user"}
                                     </ButtonStd>
                                 ) : (
                                     <ButtonStd
@@ -197,13 +275,13 @@ export default function AdminUsersPage() {
                                         onClick={() => openDeleteModal(user)}
                                         disabled={isDeleting === user._id}
                                     >
-                                        Delete User
+                                        Delete user
                                     </ButtonStd>
                                 )}
-                            </Card>
-                        </div>
-                    ))}
-                </div>
+                            </div>
+                        </Card>
+                    );
+                })}
             </div>
 
             <Modal
@@ -211,15 +289,7 @@ export default function AdminUsersPage() {
                 isOpen={isDeleteModalOpen}
                 onClose={closeDeleteModal}
                 actions={
-                    <>
-                        <textarea
-                            value={deleteReason}
-                            placeholder="Delete reason"
-                            onChange={(event) =>
-                                setDeleteReason(event.target.value)
-                            }
-                        />
-
+                    <div className={styles.modalActions}>
                         <ButtonStd
                             variant="secondary"
                             onClick={closeDeleteModal}
@@ -239,22 +309,39 @@ export default function AdminUsersPage() {
                         >
                             {isDeleting ? "Deleting..." : "Yes, delete"}
                         </ButtonStd>
-                    </>
+                    </div>
                 }
             >
-                <p>
-                    Soft delete{" "}
-                    {userToDelete ? userToDelete.email : "this user"}.
-                </p>
+                <div className={styles.modalContent}>
+                    <p>
+                        You are about to soft delete{" "}
+                        <strong>
+                            {userToDelete ? userToDelete.email : "this user"}
+                        </strong>
+                        .
+                    </p>
 
-                {deleteError && <p className={styles.error}>{deleteError}</p>}
+                    <textarea
+                        className={styles.textarea}
+                        value={deleteReason}
+                        placeholder="Optional delete reason"
+                        onChange={(event) =>
+                            setDeleteReason(event.target.value)
+                        }
+                    />
+
+                    {deleteError && (
+                        <p className={styles.error}>{deleteError}</p>
+                    )}
+                </div>
             </Modal>
+
             <Modal
                 title="Restore account?"
                 isOpen={Boolean(userToRestore)}
                 onClose={closeRestoreModal}
                 actions={
-                    <>
+                    <div className={styles.modalActions}>
                         <ButtonStd
                             variant="secondary"
                             onClick={closeRestoreModal}
@@ -274,17 +361,25 @@ export default function AdminUsersPage() {
                         >
                             {isRestoring ? "Restoring..." : "Yes, restore"}
                         </ButtonStd>
-                    </>
+                    </div>
                 }
             >
-                <p>
-                    Restore{" "}
-                    {userToRestore ? userToRestore.email : "this user"}?
-                </p>
+                <div className={styles.modalContent}>
+                    <p>
+                        Restore{" "}
+                        <strong>
+                            {userToRestore
+                                ? userToRestore.email
+                                : "this user"}
+                        </strong>
+                        ?
+                    </p>
 
-                {restoreError && <p className={styles.error}>{restoreError}</p>}
+                    {restoreError && (
+                        <p className={styles.error}>{restoreError}</p>
+                    )}
+                </div>
             </Modal>
-
         </section>
     );
 }

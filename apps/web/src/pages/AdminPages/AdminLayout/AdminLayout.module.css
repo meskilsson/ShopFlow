@@ -1,0 +1,187 @@
+.page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 3rem clamp(1rem, 4vw, 3rem) 5rem;
+    background:
+        radial-gradient(circle at top right,
+            color-mix(in srgb, var(--btn-primary) 8%, transparent),
+            transparent 32rem),
+        var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.loading {
+    padding: 2rem;
+    color: var(--text-gray);
+}
+
+.pageHeader {
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+}
+
+.kicker {
+    margin: 0 0 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-gray);
+}
+
+.title {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    max-width: 680px;
+    margin: 0.85rem 0 0;
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+.adminLayout {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.sideNav {
+    position: sticky;
+    top: calc(var(--navbar-height, 0px) + 2rem);
+    padding: 1rem;
+    border-radius: calc(var(--br) * 2);
+    background: color-mix(in srgb, var(--bg-secondary) 78%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.08);
+}
+
+.navHeader {
+    margin: 0 0 0.85rem;
+    padding-left: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-gray);
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.85rem;
+    border-radius: var(--br);
+    color: color-mix(in srgb, var(--text-primary) 62%, var(--bg-primary));
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.link::before {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-right: 0.75rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text-gray) 60%, var(--bg-primary));
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.link:hover {
+    background-color: color-mix(in srgb, var(--bg-primary) 55%, transparent);
+    color: var(--text-primary);
+    transform: translateX(2px);
+}
+
+.link:hover::before {
+    background: color-mix(in srgb, var(--btn-primary) 55%, var(--text-gray));
+}
+
+.activeLink {
+    background-color: color-mix(in srgb, var(--btn-primary) 13%, var(--bg-secondary));
+    color: var(--text-primary);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-primary) 22%, transparent);
+}
+
+.activeLink::before {
+    background-color: color-mix(in srgb, var(--btn-primary) 75%, var(--text-gray));
+    transform: scale(1.2);
+}
+
+.content {
+    min-width: 0;
+    min-height: 520px;
+    padding: clamp(1rem, 3vw, 2rem);
+    border-radius: calc(var(--br) * 2);
+    border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    background: color-mix(in srgb, var(--bg-secondary) 92%, var(--bg-primary));
+    box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 850px) {
+    .page {
+        padding: 2rem 1rem 3.5rem;
+    }
+
+    .pageHeader {
+        margin-bottom: 1.25rem;
+    }
+
+    .adminLayout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .sideNav {
+        position: static;
+        padding: 0.85rem;
+    }
+
+    .links {
+        flex-direction: row;
+        gap: 0.6rem;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+    }
+
+    .link {
+        min-height: 2.5rem;
+        white-space: nowrap;
+        border-radius: 999px;
+        padding: 0 1rem;
+    }
+
+    .link::before {
+        display: none;
+    }
+
+    .content {
+        padding: 1rem;
+        min-height: 400px;
+    }
+}
