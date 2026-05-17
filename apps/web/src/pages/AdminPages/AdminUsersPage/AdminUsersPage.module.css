@@ -284,6 +284,31 @@
     color: var(--text-gray);
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+.pagination span {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+@media (max-width: 760px) {
+    .pagination {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagination button {
+        width: 100%;
+    }
+}
+
 @media (max-width: 760px) {
     .page {
         gap: 1rem;
@@ -309,6 +334,7 @@
     .statusBadge {
         width: fit-content;
     }
+
 
     .modalActions {
         justify-content: stretch;

@@ -23,6 +23,13 @@ type AdminUser = {
 };
 
 export default function AdminUsersPage() {
+
+    const [page, setPage] = useState(1);
+    const [limit] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalUsers, setTotalUsers] = useState(0);
+
+
     const [users, setUsers] = useState<AdminUser[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -47,9 +54,15 @@ export default function AdminUsersPage() {
 
         async function getAdminUsers() {
             try {
-                const data = await getAdminUsersRequest(true);
+                const data = await getAdminUsersRequest({
+                    includeDeleted: true,
+                    page,
+                    limit,
+                });
 
                 setUsers(data.users);
+                setTotalPages(data.totalPages)
+                setTotalUsers(data.totalUsers);
             } catch (error) {
                 if (error instanceof Error) {
                     setError(error.message);
@@ -62,7 +75,7 @@ export default function AdminUsersPage() {
         }
 
         getAdminUsers();
-    }, []);
+    }, [page, limit]);
 
     async function handleDelete(userId: string) {
         setDeleteError("");
@@ -164,7 +177,7 @@ export default function AdminUsersPage() {
             <div className={styles.summaryGrid}>
                 <div className={styles.summaryCard}>
                     <span>Total users</span>
-                    <strong>{users.length}</strong>
+                    <strong>{totalUsers}</strong>
                 </div>
 
                 <div className={styles.summaryCard}>
@@ -282,6 +295,30 @@ export default function AdminUsersPage() {
                         </Card>
                     );
                 })}
+            </div>
+
+            <div className={styles.pagination}>
+                <ButtonStd
+                    variant="secondary"
+                    onClick={() => setPage((currentPage) => Math.max(currentPage - 1, 1))}
+                    disabled={page <= 1 || isLoading}
+                >
+                    Previous
+                </ButtonStd>
+
+                <span>
+                    Page {page} of {totalPages}
+                </span>
+
+                <ButtonStd
+                    variant="secondary"
+                    onClick={() =>
+                        setPage((currentPage) => Math.min(currentPage + 1, totalPages))
+                    }
+                    disabled={page >= totalPages || isLoading}
+                >
+                    Next
+                </ButtonStd>
             </div>
 
             <Modal

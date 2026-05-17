@@ -1,19 +1,23 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api/v1";
 
+type GetAdminUsersOptions = {
+    includeDeleted?: boolean;
+    page?: number;
+    limit?: number;
+}
 
-export async function getAdminUsersRequest(includeDeleted = false) {
+
+export async function getAdminUsersRequest({ includeDeleted = false, page = 1, limit = 10 }: GetAdminUsersOptions = {}) {
     const params = new URLSearchParams();
+
+    params.set("page", String(page));
+    params.set("limit", String(limit));
 
     if (includeDeleted) {
         params.set("includeDeleted", "true");
     }
 
-    const queryString = params.toString();
-    const url = queryString
-        ? `${API_URL}/admin/users?${queryString}`
-        : `${API_URL}/admin/users`;
-
-    const response = await fetch(url, {
+    const response = await fetch(`${API_URL}/admin/users?${params.toString()}`, {
         method: "GET",
         credentials: "include",
     });
