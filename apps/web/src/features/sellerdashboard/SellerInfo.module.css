@@ -1,0 +1,128 @@
+.content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--btn-primary);
+    color: #fff;
+    font-size: 1.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.welcomeText {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin: 0;
+}
+
+.nameRow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: var(--btn-height);
+}
+
+.storeName {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+    line-height: var(--btn-height);
+}
+
+.editBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--br);
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.editBtn:hover {
+    color: var(--text-primary);
+    background-color: var(--btn-ghost-dark-hover);
+}
+
+.subText {
+    font-size: 0.875rem;
+    color: var(--text-gray);
+    margin: 0.15rem 0 0;
+}
+
+.editRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: var(--btn-height);
+}
+
+.input {
+    font-size: 1.25rem;
+    font-weight: 600;
+    border: 1.5px solid var(--btn-primary);
+    border-radius: var(--br);
+    padding: 0 0.5rem;
+    outline: none;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    min-width: 200px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.btnSave {
+    height: 100%;
+    padding: 0 0.75rem;
+    font-size: var(--btn-text-size);
+    border-radius: var(--br);
+    border: none;
+    cursor: pointer;
+    background-color: var(--btn-primary);
+    color: var(--btn-primary-text);
+    transition: background-color 0.2s;
+}
+
+.btnSave:hover {
+    background-color: var(--btn-primary-hover);
+}
+
+.btnCancel {
+    height: 100%;
+    padding: 0 0.75rem;
+    font-size: var(--btn-text-size);
+    border-radius: var(--br);
+    border: none;
+    cursor: pointer;
+    background: none;
+    color: var(--text-gray);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btnCancel:hover {
+    background-color: var(--btn-ghost-dark-hover);
+    color: var(--text-primary);
+}
