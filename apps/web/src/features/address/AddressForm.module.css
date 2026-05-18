@@ -39,3 +39,7 @@
         grid-template-columns: 1fr;
     }
 }
+
+.error {
+    color: #b42318;
+}
