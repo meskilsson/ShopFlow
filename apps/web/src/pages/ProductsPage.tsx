@@ -45,12 +45,18 @@ const ProductsPage = () => {
 
     }
 
+    const search = searchParams.get("search") ?? "";
+    const hasSearch = search.trim().length > 0;
+    const visibleProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(search.toLowerCase())
+    );
+
     return (
         <Container>
             <ProductCategories/>
             <Category categoryText={category ?? "All Products"} articles={products.length}/>
             <ProductsContainer>
-                {products.map((product) => (
+                {visibleProducts.map((product) => (
                     <ProductCard
                         key={product._id}
                         title={product.name}
@@ -62,7 +68,7 @@ const ProductsPage = () => {
                     />
                 ))}
 
-                {page < totalPages && (
+                {!hasSearch && page < totalPages && (
                     <ButtonStd onClick={handleLoadMore}>
                         Load more
                     </ButtonStd>
