@@ -10,11 +10,8 @@ import ButtonStd from "@/components/UI/ButtonStd";
 import AddressCard from "./AddressCard";
 import AddressForm from "./AddressForm";
 import type { Address, CreateAddressData } from "./address.types";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import styles from "./AddressSection.module.css";
-
-type ApiError = Error & {
-  status?: number;
-};
 
 export default function AddressSection() {
   const navigate = useNavigate();
@@ -31,8 +28,8 @@ export default function AddressSection() {
 
         setShippingAddress(existingShippingAddress);
       })
-      .catch((error: ApiError) => {
-        setError(error.message);
+      .catch((error: unknown) => {
+        setError(getErrorMessage(error));
       })
       .finally(() => {
         setLoading(false);
@@ -59,9 +56,7 @@ export default function AddressSection() {
 
       setShippingAddress(savedAddress);
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Could not save address",
-      );
+      setError(getErrorMessage(error));
     } finally {
       setSaving(false);
     }
@@ -79,9 +74,7 @@ export default function AddressSection() {
       await deleteAddress(shippingAddress._id);
       setShippingAddress(null);
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Could not remove address",
-      );
+      setError(getErrorMessage(error));
     } finally {
       setSaving(false);
     }
@@ -109,6 +102,7 @@ export default function AddressSection() {
       <AddressForm
         address={shippingAddress}
         saving={saving}
+        error={error}
         onSubmit={handleSaveAddress}
       />
 
@@ -128,7 +122,6 @@ export default function AddressSection() {
         </div>
       ) : null}
 
-      {error ? <p className={styles.error}>{error}</p> : null}
     </section>
   );
 }

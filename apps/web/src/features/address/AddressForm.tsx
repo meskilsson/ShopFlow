@@ -6,6 +6,7 @@ import styles from "./AddressForm.module.css";
 type AddressFormProps = {
   address?: Address | null;
   saving?: boolean;
+  error?: string;
   onSubmit: (address: CreateAddressData) => void | Promise<void>;
 };
 
@@ -21,6 +22,7 @@ const emptyForm: CreateAddressData = {
 export default function AddressForm({
   address,
   saving = false,
+  error,
   onSubmit,
 }: AddressFormProps) {
   const [formData, setFormData] = useState<CreateAddressData>(emptyForm);
@@ -108,6 +110,8 @@ export default function AddressForm({
           required
         />
       </div>
+
+      {error ? <p className={styles.error}>{error}</p> : null}
 
       <ButtonStd variant="primary" fullWidth className={styles.submitBtn}>
         {saving ? "Saving..." : "Save address"}
