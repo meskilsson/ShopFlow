@@ -1,6 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
-import { ValidationError, ConflictError, NotFoundError } from "../errors/AppError";
+import { createHttpError } from "../middleware/HttpError";
 import type { UpdateUserInput, CreateUserInput } from "../schemas/userSchemas";
 
 
@@ -9,7 +9,7 @@ import type { UpdateUserInput, CreateUserInput } from "../schemas/userSchemas";
 
 export async function createUser(userData: CreateUserInput) {
   if (!userData?.name || !userData?.email || !userData?.username || !userData?.password) {
-    throw new ValidationError("Name, email, username and password are required");
+    throw createHttpError("Name, email, username and password are required", 400);
 
   }
 
@@ -22,7 +22,7 @@ export async function createUser(userData: CreateUserInput) {
   });
 
   if (existingUser) {
-    throw new ConflictError("Email or username already in use");
+    throw createHttpError("Email or username already in use", 409);
   }
 
   const passwordHash = await bcrypt.hash(userData.password, 10);
@@ -49,7 +49,7 @@ export async function getUserById(id: string) {
   const user = await User.findById(id);
 
   if (!user) {
-    throw new NotFoundError("User not found");
+    throw createHttpError("User not found", 404);
   }
   return user;
 }
@@ -58,7 +58,7 @@ export async function deleteUser(id: string) {
   const deletedUser = await User.findByIdAndDelete(id);
 
   if (!deletedUser) {
-    throw new NotFoundError("User not found");
+    throw createHttpError("User not found", 404);
   }
 
   return { message: "User deleted successfully" };
@@ -68,7 +68,7 @@ export async function updateUser(id: string, userData: UpdateUserInput) {
   const user = await User.findById(id);
 
   if (!user) {
-    throw new NotFoundError("User not found");
+    throw createHttpError("User not found", 404);
   }
 
   const updateData: {
@@ -106,7 +106,7 @@ export async function updateUser(id: string, userData: UpdateUserInput) {
     });
 
     if (existingUser) {
-      throw new ConflictError("Email or username already in use");
+      throw createHttpError("Email or username already in use", 409);
     }
   }
 
@@ -126,7 +126,7 @@ export async function changePasswordService(
   const user = await User.findById(userId).select("+passwordHash");
 
   if (!user) {
-    throw new NotFoundError("User not found");
+    throw createHttpError("User not found", 404);
   }
 
   const isPasswordCorrect = await bcrypt.compare(
@@ -135,15 +135,15 @@ export async function changePasswordService(
   );
 
   if (!isPasswordCorrect) {
-    throw new ValidationError("Current password is incorrect");
+    throw createHttpError("Current password is incorrect", 400);
   }
 
   if (!newPassword) {
-    throw new ValidationError("New password cannot be empty");
+    throw createHttpError("New password cannot be empty", 400);
   }
 
   if (newPassword.length < 6) {
-    throw new ValidationError("New password must be at least 6 characters");
+    throw createHttpError("New password must be at least 6 characters", 400);
   }
 
   user.passwordHash = await bcrypt.hash(newPassword, 10);

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocation, useNavigate } from "react-router";
 import LoginCard from "../UI/LoginCard";
-import styles from "./Login.module.css";
+import styles from './Login.module.css';
 import { loginRequest } from "@/api/auth";
 
 type LoginLocationState = {

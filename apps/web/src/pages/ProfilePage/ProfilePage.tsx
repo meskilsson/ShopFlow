@@ -13,7 +13,7 @@ import styles from "./ProfilePage.module.css";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
-    const { user: authUser } = useAuth();
+    const { user: authUser, token } = useAuth();
 
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState("");
@@ -25,13 +25,13 @@ export default function ProfilePage() {
                 setIsLoading(true);
                 setError("");
 
-                if (!authUser?._id) {
+                if (!authUser?._id || !token) {
                     setUser(null);
                     setError("No logged in user found.");
                     return;
                 }
 
-                const userData = await getUserByIdRequest(authUser._id);
+                const userData = await getUserByIdRequest(authUser._id, token);
                 setUser(userData);
             } catch (error) {
                 if (error instanceof Error) {
@@ -45,7 +45,7 @@ export default function ProfilePage() {
         }
 
         getUser();
-    }, [authUser?._id]);
+    }, [authUser?._id, token]);
 
     if (isLoading) {
         return (
