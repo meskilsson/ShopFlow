@@ -14,6 +14,9 @@ import addressRouter from "./routes/addressRoutes";
 import { connectDB } from "./config/db";
 import cartRouter from "./routes/cartRoutes";
 import paymentRouter from "./routes/paymentRoutes";
+import adminRouter from "./routes/adminRoutes";
+import { authorizeRoles } from "./middleware/authorizeRoles";
+import { requireAuth } from "./middleware/requireAuth";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -38,6 +41,8 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ ok: true });
 });
 
+
+app.use("/api/v1/admin", requireAuth, authorizeRoles("admin"), adminRouter);
 app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/orders", orderRouter);

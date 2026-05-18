@@ -8,15 +8,24 @@ interface LoginUserInput {
 }
 
 export async function loginUser(loginData: LoginUserInput) {
+
+
+
+
   if (!loginData?.email || !loginData?.password) {
     throw new ValidationError("Email and password are required");
   }
+
 
   const email = loginData.email.trim().toLowerCase();
 
   const user = await User.findOne({ email }).select("+passwordHash");
 
   if (!user) {
+    throw new UnauthorizedError("Invalid email or password");
+  }
+
+  if (user.deletedAt) {
     throw new UnauthorizedError("Invalid email or password");
   }
 

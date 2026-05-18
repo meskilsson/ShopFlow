@@ -17,6 +17,10 @@ import AddressPage from "./pages/AddressPage/AddressPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderPage from "./pages/OrderPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import AdminLayout from "./pages/AdminPages/AdminLayout/AdminLayout";
+import AdminUsersPage from "./pages/AdminPages/AdminUsersPage/AdminUsersPage";
+import AdminOrderPage from "./pages/AdminPages/AdminOrderPage/AdminOrderPage";
+import AdminProductPage from "./pages/AdminPages/AdminProductPage/AdminProductPage";
 
 import NavBar from "@/features/navbar/NavBar";
 import ContentWrapper from "@/components/ContentWrapper";
@@ -40,6 +44,13 @@ function App() {
           <ContentWrapper>
             <Routes location={location}>
               {/* Routes här under pls */}
+
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route path="users" element={<AdminUsersPage />} />
+                <Route path="products" element={<AdminProductPage />} />
+                <Route path="orders" element={<AdminOrderPage />} />
+              </Route>
+
               <Route index element={<HomePage />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/products" element={<ProductsPage />} />
@@ -47,7 +58,7 @@ function App() {
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cart" element={<CartPage />} />
-              <Route path="/sellerdashboard" element={<SellerDashboardPage/>}/>
+              <Route path="/sellerdashboard" element={<SellerDashboardPage />} />
 
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order" element={<OrderPage />} />
