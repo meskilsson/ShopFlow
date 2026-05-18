@@ -10,7 +10,7 @@ type UserIdParams = {
   userId: string;
 };
 
-// CREATE ORDERR
+// CREATE ORDER
 export async function createOrder(
   req: Request,
   res: Response,
