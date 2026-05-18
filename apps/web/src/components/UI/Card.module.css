@@ -18,3 +18,7 @@
 .transparent {
   background-color: transparent;
 }
+
+.fullWidth {
+  width: 100%;
+}

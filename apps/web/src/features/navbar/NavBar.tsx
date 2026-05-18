@@ -9,8 +9,55 @@ import { useAuth } from "@/contexts/AuthContext";
 import Dropdown from "@/components/UI/Dropdown";
 
 const NavBar = () => {
-  const { logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+
+  const isAdmin = user?.role === "admin";
+
+  if (isAdmin && isAuthenticated) {
+    return (
+      <div className={styles.navbar}>
+        <div className={styles.container}>
+          <Link to="/home" className={styles.link}>
+            <h2>ShopFlow</h2>
+          </Link>
+
+          <div className={styles.iconContainer}>
+            <Dropdown>
+              <Dropdown.Trigger asChild>
+                <a className={styles.iconBtn}>
+                  <ProfileIcon className={styles.icon} />
+                </a>
+              </Dropdown.Trigger>
+
+              <Dropdown.Content>
+                <button
+                  onClick={() => navigate("/profile")}
+                >Profile</button>
+                <button
+                  onClick={() => navigate("/profile/settings")}
+                >Settings</button>
+                <button onClick={logout}>Log out</button>
+              </Dropdown.Content>
+            </Dropdown>
+
+            <a className={styles.iconBtn}>
+              <HeartIcon className={styles.icon} />
+            </a>
+
+            <Link to="/cart" className={styles.iconBtn}>
+              <CartIcon className={styles.icon} />
+            </Link>
+
+            <Link to="/admin" className={styles.iconBtn}>
+              Admin Dashboard
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   return isAuthenticated ? (
     <div className={styles.navbar}>
