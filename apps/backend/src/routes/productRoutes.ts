@@ -11,21 +11,77 @@ import {
     deleteVariant,
     updateVariant
 } from "../controllers/productsController.ts"
+import { validateRequest } from "../middleware/validate.ts";
+import {
+    productIdParamsSchema,
+    variantIdParamsSchema,
+    productQuerySchema,
+    createProductSchema,
+    updateProductSchema,
+    createProductVariantSchema,
+    updateProductVariantSchema,
+} from "../schemas/productSchemas.ts"
 
 const productRouter = Router();
 
-productRouter.get("/", getAllProducts),
-productRouter.get("/:id", getProductById),
-productRouter.post("/", createProduct),
-productRouter.patch("/:id", updateProduct),
-productRouter.delete("/:id", deleteProduct)
+productRouter.get(
+    "/",
+    validateRequest({ query: productQuerySchema }),
+    getAllProducts),
+    productRouter.get(
+        "/:id",
+        validateRequest({ params: productIdParamsSchema }),
+        getProductById),
+
+    productRouter.post(
+        "/",
+        validateRequest({ body: createProductSchema }),
+        createProduct),
+
+    productRouter.patch(
+        "/:id",
+        validateRequest({
+            params: productIdParamsSchema,
+            body: updateProductSchema,
+        }),
+        updateProduct),
+
+    productRouter.delete(
+        "/:id",
+        validateRequest({ params: productIdParamsSchema }),
+        deleteProduct)
 
 // ===== VARIANT ===== //
-productRouter.get("/:id/variants", getProductVariants)
-productRouter.get("/variants/:variantId", getVariantById),
-productRouter.post("/:id/variants", createProductVariant)
-productRouter.patch("/variants/:variantId", updateVariant),
-productRouter.delete("/variants/:variantId", deleteVariant)
+productRouter.get(
+    "/:id/variants",
+    validateRequest({ params: productIdParamsSchema }),
+    getProductVariants),
+
+    productRouter.get(
+        "/variants/:variantId",
+        validateRequest({ params: variantIdParamsSchema }),
+        getVariantById),
+
+    productRouter.post(
+        "/:id/variants",
+        validateRequest({
+            params: productIdParamsSchema,
+            body: createProductVariantSchema
+        }),
+        createProductVariant),
+
+    productRouter.patch(
+        "/variants/:variantId",
+        validateRequest({
+            params: variantIdParamsSchema,
+            body: updateProductVariantSchema
+        }),
+        updateVariant),
+
+    productRouter.delete(
+        "/variants/:variantId",
+        validateRequest({ params: variantIdParamsSchema }),
+        deleteVariant)
 
 
 export default productRouter;
