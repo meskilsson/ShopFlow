@@ -29,72 +29,72 @@ const HomePage = () => {
     const [shoes, setShoes] = useState<Product[]>([])
     const [tshirts, setTshirts] = useState<Product[]>([])
 
-    useEffect(() =>  {
+    useEffect(() => {
         getProducts("Shoes").then((result) => {
             setShoes(result.data);
         });
     }, []);
 
-    useEffect(() =>  {
+    useEffect(() => {
         getProducts("T-shirts").then((result) => {
             setTshirts(result.data);
         });
     }, []);
     const navigate = useNavigate();
 
-  return (
-    <>
-    {/* <ProductCategories/> */}
-    <MainHero fullWidth title="SUMMER TIME" subtitle="Is your wardrobe up to date?" image="https://images.unsplash.com/photo-1516370873344-fb7c61054fa9?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></MainHero>
-      <Container>
+    return (
+        <>
+            {/* <ProductCategories/> */}
+            <MainHero fullWidth title="SUMMER TIME" subtitle="Is your wardrobe up to date?" image="https://images.unsplash.com/photo-1516370873344-fb7c61054fa9?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></MainHero>
+            <Container>
 
-        <Category categoryText="Shoes" articles={shoes.length}/>
-        <div style={{margin: "0 auto", marginBottom: "1rem"}}>
-            <ProductsCarousel>
-                {shoes.map((product) => (
-                    <ProductCard
-                        key={product._id}
-                        title={product.name}
-                        brand={product.category}
-                        variants={product.variants}
-                        price={(product.price)}
-                        link={`/product/${product._id}`}
-                        image={product.ProductImage}
-                    /> ))}
-                
-            </ProductsCarousel>
+                <Category categoryText="Shoes" articles={shoes.length} />
+                <div style={{ margin: "0 auto", marginBottom: "1rem" }}>
+                    <ProductsCarousel>
+                        {shoes.map((product) => (
+                            <ProductCard
+                                key={product._id}
+                                title={product.name}
+                                brand={product.category}
+                                variants={product.variants}
+                                price={(product.price)}
+                                link={`/product/${product._id}`}
+                                image={product.ProductImage}
+                            />))}
 
-        </div>
+                    </ProductsCarousel>
 
-        <Category categoryText="T-Shirts" articles={tshirts.length}/>
-        <div style={{margin: "0 auto", marginBottom: "1rem"}}>
-            <ProductsCarousel>
-                {tshirts.map((product) => (
-                    <ProductCard
-                        key={product._id}
-                        title={product.name}
-                        brand={product.category}
-                        variants={product.variants}
-                        price={(product.price)}
-                        link={`/product/${product._id}`}
-                        image={product.ProductImage}
-                    /> ))}
-                
-            </ProductsCarousel>
+                </div>
 
-        </div>
+                <Category categoryText="T-Shirts" articles={tshirts.length} />
+                <div style={{ margin: "0 auto", marginBottom: "1rem" }}>
+                    <ProductsCarousel>
+                        {tshirts.map((product) => (
+                            <ProductCard
+                                key={product._id}
+                                title={product.name}
+                                brand={product.category}
+                                variants={product.variants}
+                                price={(product.price)}
+                                link={`/product/${product._id}`}
+                                image={product.ProductImage}
+                            />))}
 
-        <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage3} image2={kattarpImage1} image3={kattarpImage2} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
+                    </ProductsCarousel>
+
+                </div>
+
+                <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage3} image2={kattarpImage1} image3={kattarpImage2} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
 
 This isn’t just clothing.
 It’s an identity crisis with premium materials.'>
-            <div style={{marginTop: "1rem"}}></div>
-            <ButtonStd variant='ghost-dark'>Check it out now</ButtonStd>
-        </Hero>
-        
-      </Container>
-    </>
-  )
+                    <div style={{ marginTop: "1rem" }}></div>
+                    <ButtonStd variant='ghost-dark'>Check it out now</ButtonStd>
+                </Hero>
+
+            </Container>
+        </>
+    )
 }
 
 export default HomePage
