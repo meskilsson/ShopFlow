@@ -17,7 +17,7 @@ import ProductsCarousel from '@/components/UI/ProductsCarousel';
 import { getProducts } from '@/api/products';
 
 // Summon the mighty one
-const kattarpEnabled = false;
+const kattarpEnabled = true;
 
 type Product = {
     _id: string;
@@ -87,10 +87,14 @@ const HomePage = () => {
 
         </div>
 
-        {kattarpEnabled && <Hero title="THE KATTARP COLLECTION" subtitle="Fashion fades. Legends multiply." image={kattarpImage3} image2={kattarpImage1} image3={kattarpImage2} textBesideImage description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness.
-
-This isn’t just clothing.
-It’s an identity crisis with premium materials.'>
+        {kattarpEnabled && <Hero 
+            title="THE KATTARP COLLECTION" 
+            subtitle="Fashion fades. Legends multiply." 
+            image={kattarpImage3} 
+            image2={kattarpImage1} 
+            image3={kattarpImage2} 
+            textBesideImage 
+            description='From cowboy outlaw to disco king, mountain climber to synth wizard — our latest collection is inspired by the many dangerously confident versions of our legendary teacher. Every outfit captures a different chaotic persona, balanced perfectly between action movie energy and complete fashion madness. This isn’t just clothing. It’s an identity crisis with premium materials.'>
             <div style={{marginTop: "1rem"}}></div>
             <ButtonStd variant='ghost-dark'>Check it out now</ButtonStd>
         </Hero>}
