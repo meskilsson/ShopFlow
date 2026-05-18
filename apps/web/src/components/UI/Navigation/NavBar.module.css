@@ -42,10 +42,3 @@
 .icon:hover {
     fill: var(--icon-secondary-hover);
 }
-
-.navbar :is(h1, h2) .flow {
-    font-style: italic;
-    font-weight: 600;
-    display: inline-block;
-    transform: skewX(-8deg);
-}

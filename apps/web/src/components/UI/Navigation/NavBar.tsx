@@ -7,7 +7,7 @@ const navbar = () => {
   return (
     <div className={styles.navbar}>
       <div className={styles.container}>
-        <h2>SHOP<span className={styles.flow}>Flow</span></h2>
+        <h2>ShopFlow</h2>
         <div className={styles.iconContainer}>
           <a className={styles.iconBtn}><ProfileIcon className={styles.icon}/></a>
           <a className={styles.iconBtn}><HeartIcon className={styles.icon}/></a>

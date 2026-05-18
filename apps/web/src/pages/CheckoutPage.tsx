@@ -5,6 +5,7 @@ import ButtonStd from "@/components/UI/ButtonStd";
 import { useAuth } from "@/contexts/AuthContext";
 import AddressSection from "@/features/address/AddressSection";
 import CheckoutStepper from "@/features/checkout/CheckoutStepper";
+import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react"; // ← NYTT
 import styles from "./CheckoutPage.module.css";
 
 export default function CheckoutPage() {
@@ -32,6 +33,20 @@ export default function CheckoutPage() {
             Add shipping details and review your order.
           </p>
         </div>
+
+        <ButtonStd
+          variant="secondary"
+          fullWidth={false}
+          onClick={() => navigate(-1)}
+          style={{
+            width: "fit-content",
+            minWidth: "40px",
+            height: "40px",
+            padding: "8px",
+          }}
+        >
+          <BackIcon style={{ width: "22px", height: "22px" }} />
+        </ButtonStd>
 
         {isLoading ? (
           <section className={styles.choicePanel}>Checking account...</section>

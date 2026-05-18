@@ -1,15 +1,24 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { apiFetch } from "@/api/client";
 import { getCart } from "@/api/cart";
 import CheckoutStepper from "@/features/checkout/CheckoutStepper";
 import CartItems from "../features/cart/CartItems";
 import CartSummary from "../features/cart/CartSummary";
 import styles from "./OrderPage.module.css";
+import type { CartResponse } from "../features/cart/types";
+import type { Address } from "@/features/address/address.types";
+import ButtonStd from "@/components/UI/ButtonStd";
+import BackIcon from "@/assets/icons/angle-left-solid-full.svg?react";
 
 const OrderPage = () => {
   const navigate = useNavigate();
-  const [cart, setCart] = useState<any>(null);
+  const location = useLocation();
+  const selectedAddress = location.state?.selectedAddress as
+    | Address
+    | undefined;
+
+  const [cart, setCart] = useState<CartResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [orderLoading, setOrderLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +33,6 @@ const OrderPage = () => {
         console.error(err);
         if (err.status === 404) {
           setCart(null);
-          setError(null);
         } else {
           setError("Could not fetch your cart");
         }
@@ -46,9 +54,7 @@ const OrderPage = () => {
     setError(null);
 
     try {
-      const order = await apiFetch("/orders/from-cart", {
-        method: "POST",
-      });
+      const order = await apiFetch("/orders/from-cart", { method: "POST" });
       navigate(`/order-confirmation/${order._id}`);
     } catch (err: any) {
       console.error(err);
@@ -58,7 +64,6 @@ const OrderPage = () => {
     }
   };
 
-  const noopCartAction = () => {};
   const hasItems = cart && cart.items && cart.items.length > 0;
 
   if (loading) {
@@ -86,7 +91,6 @@ const OrderPage = () => {
           ]}
         />
 
-        {/* Header */}
         <div className={styles.header}>
           <p className={styles.eyebrow}>Checkout</p>
           <h1>Complete your order</h1>
@@ -97,8 +101,22 @@ const OrderPage = () => {
           </p>
         </div>
 
+        <ButtonStd
+          variant="secondary"
+          fullWidth={false}
+          onClick={() => navigate(-1)}
+          style={{
+            width: "fit-content",
+            minWidth: "40px",
+            height: "40px",
+            padding: "8px",
+          }}
+        >
+          <BackIcon style={{ width: "22px", height: "22px" }} />
+        </ButtonStd>
+
         <div className={styles.content}>
-          {/* Left column */}
+          {/* LEFT COLUMN */}
           <div className={styles.leftColumn}>
             <div className={styles.section}>
               <h2>Delivery Address</h2>
@@ -121,23 +139,36 @@ const OrderPage = () => {
             <div className={styles.section}>
               <h2>Payment Method</h2>
               <div className={styles.paymentOptions}>
-                <label>
-                  <input type="radio" name="payment" defaultChecked /> Credit
-                  Card
+                <label className={styles.disabledOption}>
+                  <input type="radio" name="payment" disabled /> Credit Card
+                </label>
+                <label className={styles.disabledOption}>
+                  <input type="radio" name="payment" disabled /> Swish
                 </label>
                 <label>
-                  <input type="radio" name="payment" /> Swish
-                </label>
-                <label>
-                  <input type="radio" name="payment" /> Invoice
+                  <input type="radio" name="payment" defaultChecked /> Invoice
                 </label>
               </div>
             </div>
 
             {error && <p className={styles.error}>{error}</p>}
+
+            <ButtonStd
+              variant="primary"
+              fullWidth
+              onClick={handleConfirmOrder}
+              disabled={orderLoading || !hasItems}
+            >
+              {orderLoading ? "Creating order..." : "Complete your order"}
+            </ButtonStd>
+
+            <p className={styles.terms}>
+              By completing your purchase you agree to our terms and privacy
+              policy.
+            </p>
           </div>
 
-          {/* Right kolumn – order summary */}
+          {/* RIGHT COLUMN – Read-only order summary */}
           <div className={styles.rightColumn}>
             <h2>Your order</h2>
 
@@ -145,38 +176,32 @@ const OrderPage = () => {
               <>
                 <CartItems
                   items={cart.items}
-                  onDecreaseQuantity={noopCartAction}
-                  onIncreaseQuantity={noopCartAction}
-                  onRemoveItem={noopCartAction}
+                  onDecreaseQuantity={() => {}}
+                  onIncreaseQuantity={() => {}}
+                  onRemoveItem={() => {}}
+                  readonly={true}
                 />
                 <CartSummary
                   subtotal={cart.total || 0}
                   shipping={49}
                   total={(cart.total || 0) + 49}
-                  itemCount={cart.items.length}
+                  itemCount={cart.items.reduce(
+                    (sum, item) => sum + item.quantity,
+                    0,
+                  )}
+                  showActions={false}
+                  onContinueShopping={undefined}
+                  onCheckout={undefined}
                 />
               </>
             ) : (
               <p>Your cart is empty. Please add products before continuing.</p>
             )}
-
-            <button
-              onClick={handleConfirmOrder}
-              disabled={orderLoading || !hasItems}
-              className={styles.confirmButton}
-            >
-              {orderLoading ? "Creating order..." : "Complete purchase"}
-            </button>
-
-            <p className={styles.terms}>
-              By completing your purchase you agree to our terms and privacy
-              policy.
-            </p>
           </div>
         </div>
       </div>
     </div>
-  );
+);
 };
 
 export default OrderPage;

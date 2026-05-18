@@ -1,20 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import type { AuthTokenPayload } from "../types/authTypes";
+import { verifyAccessToken } from "../utils/jwt";
 import { mergeCartOwners } from "../services/cartService";
 import { getGuestId } from "../utils/guestCookie";
-
-const JWT_SECRET = process.env.JWT_SECRET || "server_jwt_token";
 
 async function resolveCartOwner(
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.startsWith("Bearer ")
-    ? authHeader.split(" ")[1]
-    : null;
+  const token = req.cookies?.token;
 
   if (!token) {
     res.locals.cartOwner = { sessionId: getGuestId(req, res) };
@@ -23,8 +17,11 @@ async function resolveCartOwner(
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as AuthTokenPayload;
-    const userOwner = { userId: payload.userId } as const;
+    const payload = verifyAccessToken(token);
+
+    const userOwner = {
+      userId: payload.id,
+    } as const;
 
     const guestId = getGuestId(req, res, { create: false });
 

@@ -61,9 +61,3 @@
     text-decoration: none;
     color: var(--text-primary);
 }
-
-.flow {
-    display: inline-block;
-    font-style: italic;
-    font-weight: 400;
-}

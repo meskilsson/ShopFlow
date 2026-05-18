@@ -1,14 +1,13 @@
 import { Request, Response, NextFunction} from "express"
 import * as productService from "../services/productService";
-import type {
-    ProductIdParams,
-    VariantIdParams,
-    ProductQueryInput,
-    CreateProductInput,
-    UpdateProductInput,
-    CreateProductInputVariant,
-    UpdateProductInputVariant
-} from "../schemas/productSchemas";
+
+type ProductIdParams = {
+  id: string;
+};
+
+type VariantIdParams = {
+  variantId: string;
+};
 
 // ===== CREATE ===== //
 export async function createProduct(
@@ -17,9 +16,7 @@ export async function createProduct(
     next: NextFunction,
 ): Promise<void> {
     try {
-        const body = req.validatedBody as CreateProductInput;
-        const product = await productService.createProduct(body);
-
+        const product = await productService.createProduct(req.body);
         res.status(201).json(product);
     } catch (error) {
         next(error);
@@ -28,18 +25,15 @@ export async function createProduct(
 
 // ===== CREATE PRODUCT VARIANT ===== //
 export async function createProductVariant(
-    req: Request,
+    req: Request<{id: string}>,
     res: Response, 
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as ProductIdParams;
-        const body = req.validatedBody as CreateProductInputVariant;
-
         const variant = await productService.createProductVariant(
-            params.id,
-            body
-        )
+            req.params.id,
+            req.body,
+        );
         res.status(201).json(variant);
     } catch (error) {
         next(error);
@@ -48,21 +42,24 @@ export async function createProductVariant(
 
 // ===== GET ALL ===== //
 export async function getAllProducts(
-    req: Request, 
+    _req: Request, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-            const query = req.validatedQuery as ProductQueryInput;
-            const sortOrder = query.order === "desc" ? -1 : 1;
+            const { category, inStock, sort, order, page, limit } = _req.query;
+
+            const pageNum = parseInt(page as string) || 1;
+            const limitNum = parseInt(limit as string) || 20;
+            const sortOrder = order === "desc" ? -1 : 1;
 
             const result = await productService.getAllProducts({
-                category: query.category,
-                inStock: query.inStock,
-                sort: query.sort,
+                category,
+                inStock,
+                sort,
                 sortOrder,
-                page: query.page,
-                limit: query.limit,
+                page: pageNum,
+                limit: limitNum,
             });
 
             res.status(200).json(result);
@@ -73,14 +70,12 @@ export async function getAllProducts(
 
 // ===== GET ID ===== //
 export async function getProductById(
-    req: Request, 
+    req: Request<ProductIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as ProductIdParams;
-        const product = await productService.getProductById(params.id);
-
+        const product = await productService.getProductById(req.params.id);
         res.status(200).json(product);
     } catch (error) {
         next(error);
@@ -89,14 +84,12 @@ export async function getProductById(
 
 // ===== GET PRODUCT VARIANTS ===== //
 export async function getProductVariants(
-    req: Request,
+    req: Request<ProductIdParams>,
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as ProductIdParams;
-        const variants = await productService.getProductVariants(params.id);
-
+        const variants = await productService.getProductVariants(req.params.id);
         res.status(200).json(variants);
     } catch (error) {
         next(error);
@@ -105,14 +98,12 @@ export async function getProductVariants(
 
 // ===== GET VARIANTID ===== //
 export async function getVariantById(
-    req: Request,
+    req: Request<VariantIdParams>,
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as VariantIdParams;
-        const variant = await productService.getVariantById(params.variantId);
-        
+        const variant = await productService.getVariantById(req.params.variantId);
         res.status(200).json(variant);
     } catch (error) {
         next(error);
@@ -121,19 +112,15 @@ export async function getVariantById(
 
 // ===== UPDATE ===== //
 export async function updateProduct(
-    req: Request, 
+    req: Request<ProductIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as ProductIdParams;
-        const body = req.validatedBody as UpdateProductInput;
-
         const updatedProduct = await productService.updateProduct(
-            params.id,
-            body
+            req.params.id,
+            req.body,
         );
-
         res.status(200).json(updatedProduct);
     } catch (error) {
         next(error);
@@ -142,18 +129,15 @@ export async function updateProduct(
 
 // ===== UPDATE VARIANT ===== //
 export async function updateVariant(
-    req: Request, 
+    req: Request<VariantIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as VariantIdParams;
-        const body = req.validatedBody as UpdateProductInputVariant;
-        
         const updatedVariant = await productService.updateVariant(
-            params.variantId,
-            body
-        )
+            req.params.variantId,
+            req.body,
+        );
         res.status(200).json(updatedVariant);
     } catch (error) {
         next(error);
@@ -162,14 +146,12 @@ export async function updateVariant(
 
 // ===== DELETE ===== //
 export async function deleteProduct(
-    req: Request, 
+    req: Request<ProductIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as ProductIdParams;
-        await productService.deleteProduct(params.id);
-
+        await productService.deleteProduct(req.params.id);
         res.status(204).send();
     } catch (error) {
         next(error);
@@ -178,14 +160,12 @@ export async function deleteProduct(
 
 // ===== DELETE VARIANT ===== //
 export async function deleteVariant(
-    req: Request, 
+    req: Request<VariantIdParams>, 
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const params = req.validatedParams as VariantIdParams;
-        await productService.deleteVariant(params.variantId);
-
+        await productService.deleteVariant(req.params.variantId);
         res.status(204).send();
     } catch (error) {
         next(error);
