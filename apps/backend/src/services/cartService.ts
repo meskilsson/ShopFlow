@@ -1,8 +1,7 @@
 import Cart from "../models/Cart";
 import CartItem from "../models/CartItem";
 import type { CartOwner } from "../types/cart.types";
-import { createHttpError } from "../middleware/HttpError";
-
+import { NotFoundError, ConflictError } from "../errors/AppError";
 export function getCartQuery(owner: CartOwner) {
   return "userId" in owner ? { user: owner.userId } : { sessionId: owner.sessionId };
 }
@@ -70,7 +69,7 @@ export async function formatCartResponse(cartId: string) {
   const cart = await Cart.findById(cartId).select("-__v").lean();
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   const items = await CartItem.find({ cart: cart._id })
@@ -130,7 +129,7 @@ export async function getCartByOwner(owner: CartOwner) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   return formatCartResponse(String(cart._id));
@@ -140,7 +139,7 @@ export async function createCart(owner: CartOwner) {
   const existingCart = await findCartByOwner(owner);
 
   if (existingCart) {
-    throw createHttpError("Cart already exists for this owner", 409);
+    throw new ConflictError("Cart already exists for this owner");
   }
 
   const cart = await Cart.create(getCartPayload(owner));
@@ -151,7 +150,7 @@ export async function clearCart(owner: CartOwner) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   await CartItem.deleteMany({ cart: cart._id });

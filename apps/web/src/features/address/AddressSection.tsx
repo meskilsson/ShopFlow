@@ -46,10 +46,10 @@ export default function AddressSection() {
     try {
       const savedAddress = shippingAddress
         ? await updateAddress(shippingAddress._id, {
-            full_name: addressData.full_name,
+            fullName: addressData.fullName,
             street: addressData.street,
             city: addressData.city,
-            postal_code: addressData.postal_code,
+            postalCode: addressData.postalCode,
             country: addressData.country,
           })
         : await createAddress({

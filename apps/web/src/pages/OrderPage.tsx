@@ -102,9 +102,20 @@ const OrderPage = () => {
           <div className={styles.leftColumn}>
             <div className={styles.section}>
               <h2>Delivery Address</h2>
-              <p>Tomac Jansson</p>
-              <p>Exempelgatan 12</p>
-              <p>123 45 Stockholm</p>
+              {selectedAddress ? (
+                <>
+                  <p>{selectedAddress.fullName}</p>
+                  <p>{selectedAddress.street}</p>
+                  <p>
+                    {selectedAddress.postalCode} {selectedAddress.city}
+                  </p>
+                  {selectedAddress.country && <p>{selectedAddress.country}</p>}
+                </>
+              ) : (
+                <p className={styles.error}>
+                  No address selected. Please go back to checkout.
+                </p>
+              )}
             </div>
 
             <div className={styles.section}>

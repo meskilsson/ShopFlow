@@ -1,8 +1,10 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import ButtonStd from "@/components/UI/ButtonStd";
 import styles from "./OrderConfirmationPage.module.css";
 
 const OrderConfirmationPage = () => {
   const { orderId } = useParams();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
@@ -21,12 +23,21 @@ const OrderConfirmationPage = () => {
         </p>
 
         <div className={styles.actions}>
-          <Link to="/products" className={styles.buttonPrimary}>
+          <ButtonStd
+            variant="primary"
+            fullWidth
+            onClick={() => navigate("/products")}
+          >
             Continue shopping
-          </Link>
-          <Link to="/profile" className={styles.buttonSecondary}>
-            My orders
-          </Link>
+          </ButtonStd>
+
+          <ButtonStd
+            variant="secondary"
+            fullWidth
+            onClick={() => navigate("/profile/orders")}
+          >
+            View my orders
+          </ButtonStd>
         </div>
 
         <p className={styles.note}>

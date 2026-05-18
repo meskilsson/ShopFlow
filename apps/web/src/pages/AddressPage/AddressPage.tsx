@@ -94,13 +94,12 @@ export default function AddressPage() {
                                     <article key={address._id} className={styles.addressCard}>
                                         <div className={styles.addressTop}>
                                             <h2>{address.type}</h2>
-                                            <span className={styles.badge}>{address.type}</span>
                                         </div>
 
                                         <div className={styles.addressDetails}>
                                             <p>{address.street}</p>
                                             <p>
-                                                {address.postal_code} {address.city}
+                                                {address.postalCode} {address.city}
                                             </p>
                                             <p>{address.country}</p>
                                         </div>

@@ -1,10 +1,11 @@
-import { createHttpError } from "../middleware/HttpError";
 import Address from "../models/Address";
+import type { AddressOwner } from "../types/address.types";
+import { ValidationError, NotFoundError, ConflictError } from "../errors/AppError";
+
 import type {
-  AddressOwner,
   CreateAddressData,
   UpdateAddressData,
-} from "../types/address.types";
+} from "../schemas/adressValidation";
 
 function getAddressQuery(owner: AddressOwner) {
   return "userId" in owner
@@ -22,7 +23,7 @@ export async function createAddress(
   });
 
   if (existingAddress) {
-    throw createHttpError("Address already exists", 409);
+    throw new ConflictError("Address already exists");
   }
 
   const address = await Address.create({
@@ -45,17 +46,17 @@ export async function updateAddresses(
   updateData: UpdateAddressData,
 ) {
   if (!addressId) {
-    throw createHttpError("Address id is required", 400);
+    throw new ValidationError("Address id is required");
   }
 
   const result = await Address.findOneAndUpdate(
     { ...getAddressQuery(owner), _id: addressId },
     { $set: updateData },
-    { new: true },
+    { new: true, runValidators: true },
   );
 
   if (!result) {
-    throw createHttpError("Address not found", 404);
+    throw new NotFoundError("Address not found");
   }
 
   return result;
@@ -66,7 +67,7 @@ export async function deleteAddress(
   addressId: string | undefined,
 ) {
   if (!addressId) {
-    throw createHttpError("Address id is required", 400);
+    throw new ValidationError("Address id is required");
   }
 
   const deletedAddress = await Address.findOneAndDelete({
@@ -75,7 +76,7 @@ export async function deleteAddress(
   });
 
   if (!deletedAddress) {
-    throw createHttpError("Address not found", 404);
+    throw new NotFoundError("Address not found");
   }
 
   return deletedAddress;

@@ -10,8 +10,6 @@
   margin-bottom: 1rem;
   margin-top: 1rem;
 
-
-
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 
 }
@@ -31,11 +29,13 @@
 
 .overlay h1 {
   font-size: 4.5rem;
+  color: white;
   /* margin-bottom: 1rem; */
 }
 
 .overlay p {
   font-size: 1.5rem;
+   color: white;
   /* margin-bottom: 2rem; */
 }
 

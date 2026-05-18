@@ -13,10 +13,10 @@ type ChangeAddressProp = {
 
 function getInitialFormData(address: Address): UpdateAddressData {
     return {
-        full_name: address.full_name,
+        fullName: address.fullName,
         street: address.street,
         city: address.city,
-        postal_code: address.postal_code,
+        postalCode: address.postalCode,
         country: address.country,
     };
 }
@@ -76,17 +76,17 @@ export default function ChangeAddressForm({ address }: ChangeAddressProp) {
 
             <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.field}>
-                    <label htmlFor={`full_name-${address._id}`} className={styles.label}>
+                    <label htmlFor={`fullName-${address._id}`} className={styles.label}>
                         Full name
                     </label>
                     <input
-                        id={`full_name-${address._id}`}
+                        id={`fullName-${address._id}`}
                         type="text"
-                        value={formData.full_name}
+                        value={formData.fullName}
                         onChange={(e) =>
                             setFormData((prev) => ({
                                 ...prev,
-                                full_name: e.target.value,
+                                fullName: e.target.value,
                             }))
                         }
                         className={styles.input}
@@ -135,19 +135,19 @@ export default function ChangeAddressForm({ address }: ChangeAddressProp) {
 
                     <div className={styles.field}>
                         <label
-                            htmlFor={`postal_code-${address._id}`}
+                            htmlFor={`postalCode-${address._id}`}
                             className={styles.label}
                         >
                             Postal code
                         </label>
                         <input
-                            id={`postal_code-${address._id}`}
+                            id={`postalCode-${address._id}`}
                             type="text"
-                            value={formData.postal_code}
+                            value={formData.postalCode}
                             onChange={(e) =>
                                 setFormData((prev) => ({
                                     ...prev,
-                                    postal_code: e.target.value,
+                                    postalCode: e.target.value,
                                 }))
                             }
                             className={styles.input}

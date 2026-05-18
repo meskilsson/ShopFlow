@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import type { AuthTokenPayload } from "../types/authTypes";
 
 const JWT_SECRET = process.env.JWT_SECRET || "server_jwt_token";
+import { verifyAccessToken } from "../utils/jwt";
+import { getGuestId } from "../utils/guestCookie";
 
 export default function resolveAddressOwner(
   req: Request,
@@ -15,7 +17,7 @@ export default function resolveAddressOwner(
     : null;
 
   if (!token) {
-    res.locals.addressOwner = { sessionId: req.sessionID };
+    res.locals.addressOwner = { sessionId: getGuestId(req, res) };
     next();
     return;
   }

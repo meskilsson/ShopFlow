@@ -54,6 +54,8 @@ export async function getOrdersByUser(userId: string) {
     .sort({ createdAt: -1 });
 }
 
+//Finds all orders, adds user info to each order, finds all order items for each order, adds product variant info to each item, returns orders with items included.
+
 export async function getOrdersWithItemsByUser(userId: string) {
   const orders = await Order.find({ user: userId })
     .populate("user", "name email role")

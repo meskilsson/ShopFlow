@@ -8,6 +8,7 @@ import ProductPage from "@/pages/ProductPage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
+import SellerDashboardPage from "./pages/SellerDashboardPage"
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import SettingsPage from "./pages/SettingsPage/SettingsPage";
 import ReturnsPage from "./pages/ReturnsPage/ReturnsPage";
@@ -48,6 +49,8 @@ function App() {
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/sellerdashboard" element={<SellerDashboardPage/>}/>
+
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order" element={<OrderPage />} />
               <Route path="/profile" element={<AccountLayout />}>

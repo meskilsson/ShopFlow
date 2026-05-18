@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import type { AuthTokenPayload } from "../types/authTypes";
 import { mergeCartOwners } from "../services/cartService";
+import { getGuestId } from "../utils/guestCookie";
 
 const JWT_SECRET = process.env.JWT_SECRET || "server_jwt_token";
 
@@ -16,7 +17,7 @@ async function resolveCartOwner(
     : null;
 
   if (!token) {
-    res.locals.cartOwner = { sessionId: req.sessionID };
+    res.locals.cartOwner = { sessionId: getGuestId(req, res) };
     next();
     return;
   }
@@ -25,7 +26,11 @@ async function resolveCartOwner(
     const payload = jwt.verify(token, JWT_SECRET) as AuthTokenPayload;
     const userOwner = { userId: payload.userId } as const;
 
-    await mergeCartOwners({ sessionId: req.sessionID }, userOwner);
+    const guestId = getGuestId(req, res, { create: false });
+
+    if (guestId) {
+      await mergeCartOwners({ sessionId: guestId }, userOwner);
+    }
 
     res.locals.cartOwner = userOwner;
     next();

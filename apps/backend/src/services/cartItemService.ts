@@ -1,14 +1,13 @@
 import CartItem from "../models/CartItem";
 import ProductVariant from "../models/ProductVariant";
-import { Types } from "mongoose";
 import type { CartOwner } from "../types/cart.types";
-import { createHttpError } from "../middleware/HttpError";
 import {
   findCartByOwner,
   formatCartResponse,
   getCartPayload,
 } from "./cartService";
 import Cart from "../models/Cart";
+import { NotFoundError, ValidationError } from "../errors/AppError";
 
 export type CreateCartItemInput = {
   productVariantId: string;
@@ -43,17 +42,17 @@ export async function addItemToCart(
   ).populate("product", "price");
 
   if (!productVariant) {
-    throw createHttpError("Product variant not found", 404);
+    throw new NotFoundError("Product variant not found");
   }
 
   if (productVariant.inStock === false) {
-    throw createHttpError("Product variant is out of stock", 400);
+    throw new ValidationError("Product variant is out of stock");
   }
 
   const product = productVariant.product as unknown as { price?: unknown } | null;
 
   if (!product || typeof product.price !== "number") {
-    throw createHttpError("Product for variant not found", 404);
+    throw new NotFoundError("Product for variant not found");
   }
 
   const existingItem = await CartItem.findOne({
@@ -84,7 +83,7 @@ export async function updateCartItemQuantity(
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   const existingItem = await CartItem.findOne({
@@ -93,7 +92,7 @@ export async function updateCartItemQuantity(
   });
 
   if (!existingItem) {
-    throw createHttpError("Cart item not found", 404);
+    throw new NotFoundError("Cart item not found");
   }
 
   if (quantity <= 0) {
@@ -114,7 +113,7 @@ export async function removeCartItem(
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   const deletedItem = await CartItem.findOneAndDelete({
@@ -123,7 +122,7 @@ export async function removeCartItem(
   });
 
   if (!deletedItem) {
-    throw createHttpError("Cart item not found", 404);
+    throw new NotFoundError("Cart item not found");
   }
 
   return formatCartResponse(String(cart._id));
