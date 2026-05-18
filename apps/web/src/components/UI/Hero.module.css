@@ -165,7 +165,7 @@
 }
 
 .textBesideImage .description::before {
-  content: "\201C";
+  content: ""; /* "\201C"; */
   position: absolute;
   top: -0.35rem;
   left: -0.25rem;
