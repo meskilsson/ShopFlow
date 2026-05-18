@@ -16,7 +16,7 @@ const NavBar = () => {
     <div className={styles.navbar}>
       <div className={styles.container}>
         <Link to="/home" className={styles.link}>
-          <h2>SHOP<span className={styles.flow}>Flow</span></h2>
+          <h2>ShopFlow</h2>
         </Link>
 
         <div className={styles.iconContainer}>
@@ -52,7 +52,7 @@ const NavBar = () => {
     <div className={styles.navbar}>
       <div className={styles.container}>
         <Link to="/home" className={styles.link}>
-          <h2>Shop<span className={styles.flow}>Flow</span></h2>
+          <h2>ShopFlow</h2>
         </Link>
 
         <div className={styles.iconContainer}>

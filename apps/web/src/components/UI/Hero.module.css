@@ -158,22 +158,9 @@
 }
 
 .textBesideImage .description {
-  position: relative;
   font-size: 1.05rem;
   letter-spacing: 0;
   color: rgba(0, 0, 0, 0.68);
-}
-
-.textBesideImage .description::before {
-  content: ""; /* "\201C"; */
-  position: absolute;
-  top: -0.35rem;
-  left: -0.25rem;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 3rem;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.16);
-  transform: translateX(-100%);
 }
 
 @media (max-width: 700px) {

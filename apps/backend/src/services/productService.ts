@@ -1,17 +1,10 @@
 import Product, { IProduct } from "../models/Products";
 import ProductVariant, { IProductVariant } from "../models/ProductVariant";
-import type {
-    CreateProductInput,
-    CreateProductInputVariant,
-    ProductQueryInput,
-    UpdateProductInput,
-    UpdateProductInputVariant,
-} from "../schemas/productSchemas";
 
 type ProductFilters = {
-    category?: ProductQueryInput["category"];
-    inStock?: ProductQueryInput["inStock"];
-    sort: ProductQueryInput["sort"];
+    category?: unknown;
+    inStock?: unknown;
+    sort?: unknown;
     sortOrder: 1 | -1;
     page: number;
     limit: number;
@@ -32,36 +25,19 @@ function sortBySizeOrder(variants: IProductVariant[]) {
 }
 
 // ===== CREATE ===== //
-export async function createProduct(productData: CreateProductInput) {
-    const product = {
-        name: productData.name,
-        price: productData.price,
-        category: productData.category,
-        ...(productData.ProductImage !== undefined && {
-            ProductImage: productData.ProductImage,
-        }),
-    };
-
-    return await Product.create(product);
+export async function createProduct(productData: IProduct) {
+    return await Product.create(productData);
 }
 
 // ===== CREATE PRODUCT VARIANT ===== //
-export async function createProductVariant(productId: string, variantData: CreateProductInputVariant) {
+export async function createProductVariant(productId: string, variantData: IProductVariant) {
     const product = await Product.findById(productId);
     handlerNotFound(product, "Product not found");
 
-    const variant = {
+    return await ProductVariant.create({
+        ...variantData,
         product: productId,
-        size: variantData.size,
-        ...(variantData.inStock !== undefined && {
-            inStock: variantData.inStock,
-        }),
-        ...(variantData.sku !== undefined && {
-            sku: variantData.sku,
-        }),
-    };
-
-    return await ProductVariant.create(variant);
+    });
 }
 
 
@@ -136,15 +112,8 @@ export async function getVariantById(variantId: string) {
 }
 
 // ===== UPDATE ===== //
-export async function updateProduct(id: string, updateData: UpdateProductInput) {
-    const productUpdate: Partial<IProduct> = {};
-
-    if (updateData.name !== undefined) productUpdate.name = updateData.name;
-    if (updateData.price !== undefined) productUpdate.price = updateData.price;
-    if (updateData.category !== undefined) productUpdate.category = updateData.category;
-    if (updateData.ProductImage !== undefined) productUpdate.ProductImage = updateData.ProductImage;
-
-    const product = await Product.findByIdAndUpdate(id, productUpdate, {
+export async function updateProduct(id: string, updateData: Partial<IProduct>) {
+    const product = await Product.findByIdAndUpdate(id, updateData, {
         new: true,
         runValidators: true,
     });
@@ -152,14 +121,8 @@ export async function updateProduct(id: string, updateData: UpdateProductInput) 
 }
 
 // ===== UPDATE VARIANT ===== //
-export async function updateVariant(variantId: string, updateData: UpdateProductInputVariant) {
-    const variantUpdate: Partial<IProductVariant> = {};
-
-    if (updateData.size !== undefined) variantUpdate.size = updateData.size;
-    if (updateData.inStock !== undefined) variantUpdate.inStock = updateData.inStock;
-    if (updateData.sku !== undefined) variantUpdate.sku = updateData.sku;
-
-    const variant = await ProductVariant.findByIdAndUpdate(variantId, variantUpdate, {
+export async function updateVariant(variantId: string, updateData: Partial<IProductVariant>) {
+    const variant = await ProductVariant.findByIdAndUpdate(variantId, updateData, {
         new: true,
         runValidators: true,
     });
