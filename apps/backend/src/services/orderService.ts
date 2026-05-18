@@ -1,28 +1,38 @@
 import Order, { IOrder } from "../models/Order";
-import OrderItem, { IOrderItem } from "../models/OrderItem";
+import OrderItem from "../models/OrderItem";
 import CartItem from "../models/CartItem";
 import { createHttpError } from "../middleware/HttpError";
 import type { CartOwner } from "../types/cart.types";
-import {
-  findCartByOwner,
-  getCartPayload,
-} from "./cartService";
+import type { CreateOrderInput } from "../schemas/orderSchemas";
+import { findCartByOwner, getCartPayload } from "./cartService";
+
+type CreateOrderData = Omit<CreateOrderInput, "items">;
+type CreateOrderItemInput = CreateOrderInput["items"][number];
+
 
 export async function createOrder(
-  orderData: Omit<IOrder, "createdAt" | "updatedAt">,
-  itemsData: Omit<IOrderItem, "order" | "createdAt" | "updatedAt">[],
+  orderData: CreateOrderData,
+  items: CreateOrderItemInput[],
 ) {
-  const newOrder = await Order.create(orderData);
+  const orderPayload = {
+    totalPrice: orderData.totalPrice,
+    status: orderData.status ?? "pending",
+    paymentStatus: orderData.paymentStatus ?? "pending",
+    ...(orderData.user ? { user: orderData.user } : {}),
+    ...(orderData.sessionId ? { sessionId: orderData.sessionId } : {}),
+  };
+
+  const order = await Order.create(orderPayload);
 
   const orderItems = await OrderItem.insertMany(
-    itemsData.map((item) => ({
+    items.map((item) => ({
       ...item,
-      order: newOrder._id,
+      order: order._id,
     })),
   );
 
   return {
-    ...newOrder.toObject(),
+    ...order.toObject(),
     items: orderItems,
   };
 }
@@ -83,17 +93,22 @@ export async function getOrdersWithItemsByUser(userId: string) {
 
 export async function updateOrderStatus(
   id: string,
-  status: IOrder["status"],
+  status?: IOrder["status"],
   paymentStatus?: IOrder["paymentStatus"],
 ) {
-  const updatedOrder = await Order.findByIdAndUpdate(
-    id,
-    {
-      status,
-      ...(paymentStatus && { paymentStatus }),
-    },
-    { new: true },
-  ).populate("user", "name email role");
+  const updateData: Partial<Pick<IOrder, "status" | "paymentStatus">> = {};
+
+  if (status !== undefined) {
+    updateData.status = status;
+  }
+
+  if (paymentStatus !== undefined) {
+    updateData.paymentStatus = paymentStatus;
+  }
+
+  const updatedOrder = await Order.findByIdAndUpdate(id, updateData, {
+    new: true,
+  }).populate("user", "name email role");
 
   if (!updatedOrder) {
     throw createHttpError("Order not found", 404);

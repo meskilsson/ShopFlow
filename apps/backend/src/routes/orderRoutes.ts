@@ -6,31 +6,54 @@ import {
   getOrdersByUser,
   updateOrderStatus,
   createOrderFromCart,
-  getOrdersWithItemsByUser
+  getOrdersWithItemsByUser,
 } from "../controllers/orderController";
 import resolveCartOwner from "../middleware/resolveCartOwner";
+import { validateRequest } from "../middleware/validate";
+import {
+  createOrderSchema,
+  orderIdParamSchema,
+  userIdParamSchema,
+  updateOrderStatusSchema,
+} from "../schemas/orderSchemas";
 
 const orderRouter = Router();
 
-// CREATE - Create a new order (buyer checkout)
-orderRouter.post("/", createOrder);
+orderRouter.post(
+  "/",
+  validateRequest({ body: createOrderSchema }),
+  createOrder,
+);
+
 orderRouter.post("/from-cart", resolveCartOwner, createOrderFromCart);
 
-// READ ALL - Get all orders (admin/seller)
 orderRouter.get("/", getAllOrders);
 
-// READ USER ORDERS - Get all orders for a specific user
-orderRouter.get("/user/:userId", getOrdersByUser);
+orderRouter.get(
+  "/user/:userId",
+  validateRequest({ params: userIdParamSchema }),
+  getOrdersByUser,
+);
 
-// READ ONE - Get a specific order by ID
-orderRouter.get("/:id", getOrderById);
+orderRouter.get(
+  "/user/:userId/with-items",
+  validateRequest({ params: userIdParamSchema }),
+  getOrdersWithItemsByUser,
+);
 
-// READ USERS ORDERS WITH ITEMS - Get all orders with items for a specific user
-orderRouter.get("/user/:userId/with-items", getOrdersWithItemsByUser);
+orderRouter.get(
+  "/:id",
+  validateRequest({ params: orderIdParamSchema }),
+  getOrderById,
+);
 
-// UPDATE - Update order status (admin/seller)
-orderRouter.patch("/:id", updateOrderStatus);
-
-
+orderRouter.patch(
+  "/:id",
+  validateRequest({
+    params: orderIdParamSchema,
+    body: updateOrderStatusSchema,
+  }),
+  updateOrderStatus,
+);
 
 export default orderRouter;

@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import * as orderService from "../services/orderService";
 import { getCartOwner } from "../utils/getCartOwner";
 
-type OrderIdParams = {
-  id: string;
-};
+import type {
+  OrderIdParam,
+  UserIdParam,
+  CreateOrderInput,
+  UpdateOrderStatusInput,
+} from "../schemas/orderSchemas";
 
-type UserIdParams = {
-  userId: string;
-};
 
 // CREATE ORDER
 export async function createOrder(
@@ -17,10 +17,12 @@ export async function createOrder(
   next: NextFunction,
 ): Promise<void> {
   try {
-    // Split body into order-data and items (frontend send all in one object)
-    const { items, ...orderData } = req.body;
+    const body = req.validatedBody as CreateOrderInput;
+
+    const { items, ...orderData } = body;
 
     const newOrder = await orderService.createOrder(orderData, items);
+
     res.status(201).json(newOrder);
   } catch (error) {
     next(error);
@@ -43,12 +45,15 @@ export async function getAllOrders(
 
 // GET SINGLE ORDER
 export async function getOrderById(
-  req: Request<OrderIdParams>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const order = await orderService.getOrderById(req.params.id);
+    const params = req.validatedParams as OrderIdParam;
+
+    const order = await orderService.getOrderById(params.id);
+
     res.status(200).json(order);
   } catch (error) {
     next(error);
@@ -57,12 +62,15 @@ export async function getOrderById(
 
 // GET ORDERS FOR A SPECIFIC USER
 export async function getOrdersByUser(
-  req: Request<UserIdParams>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const orders = await orderService.getOrdersByUser(req.params.userId);
+    const params = req.validatedParams as UserIdParam;
+
+    const orders = await orderService.getOrdersByUser(params.userId);
+
     res.status(200).json(orders);
   } catch (error) {
     next(error);
@@ -71,18 +79,20 @@ export async function getOrdersByUser(
 
 // UPDATE ORDER STATUS (for admin/seller)
 export async function updateOrderStatus(
-  req: Request<OrderIdParams>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const { status, paymentStatus } = req.body;
+    const params = req.validatedParams as OrderIdParam;
+    const body = req.validatedBody as UpdateOrderStatusInput;
 
     const updatedOrder = await orderService.updateOrderStatus(
-      req.params.id,
-      status,
-      paymentStatus,
+      params.id,
+      body.status,
+      body.paymentStatus,
     );
+
     res.status(200).json(updatedOrder);
   } catch (error) {
     next(error);
@@ -103,14 +113,14 @@ export async function createOrderFromCart(
 }
 
 export async function getOrdersWithItemsByUser(
-  req: Request<UserIdParams>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const orders = await orderService.getOrdersWithItemsByUser(
-      req.params.userId
-    );
+    const params = req.validatedParams as UserIdParam;
+
+    const orders = await orderService.getOrdersWithItemsByUser(params.userId);
 
     res.status(200).json(orders);
   } catch (error) {
