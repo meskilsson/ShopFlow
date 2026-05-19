@@ -1,4 +1,4 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 import ProductsContainer from "@/features/products/ProductsContainer"
 import ProductCard from "@/features/products/ProductCard"
@@ -24,20 +24,19 @@ const ProductsPage = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [searchParams] = useSearchParams();
     const category = searchParams.get("category") ?? undefined;
-
-    const navigate = useNavigate();
+    const search = searchParams.get("search") ?? undefined;
 
     useEffect(() =>  {
-        getProducts(category, 1).then((result) => {
+        getProducts(category, search, 1).then((result) => {
             setProducts(result.data);
             setTotalPages(result.meta.totalPages);
             setPage(result.meta.page)
         });
-    }, [category]);
+    }, [category, search]);
 
         async function handleLoadMore(){
         const nextPage = page + 1;
-        const result = await getProducts(category, nextPage);
+        const result = await getProducts(category, search, nextPage);
 
         setProducts((prev) => [...prev, ...result.data]);
         setTotalPages(result.meta.totalPages);
@@ -45,18 +44,12 @@ const ProductsPage = () => {
 
     }
 
-    const search = searchParams.get("search") ?? "";
-    const hasSearch = search.trim().length > 0;
-    const visibleProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(search.toLowerCase())
-    );
-
     return (
         <Container>
             <ProductCategories/>
             <Category categoryText={category ?? "All Products"} articles={products.length}/>
             <ProductsContainer>
-                {visibleProducts.map((product) => (
+                {products.map((product) => (
                     <ProductCard
                         key={product._id}
                         title={product.name}
@@ -68,7 +61,7 @@ const ProductsPage = () => {
                     />
                 ))}
 
-                {!hasSearch && page < totalPages && (
+                {page < totalPages && (
                     <ButtonStd onClick={handleLoadMore}>
                         Load more
                     </ButtonStd>

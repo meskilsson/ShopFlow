@@ -1,10 +1,14 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api/v1";
 
-export async function getProducts(category?: string, page = 1, limit = 20) {
+export async function getProducts(category?: string, search?: string, page = 1, limit = 20) {
     const params = new URLSearchParams();
 
     if(category) {
         params.set("category", category);
+    }
+
+    if(search) {
+        params.set("search", search);
     }
 
     params.set("page", String(page));
