@@ -1,7 +1,7 @@
 import Order, { IOrder } from "../models/Order";
 import OrderItem from "../models/OrderItem";
 import CartItem from "../models/CartItem";
-import { createHttpError } from "../middleware/HttpError";
+import { NotFoundError, ValidationError } from "../errors/AppError";
 import type { CartOwner } from "../types/cart.types";
 import type { CreateOrderInput } from "../schemas/orderSchemas";
 import { findCartByOwner, getCartPayload } from "./cartService";
@@ -47,7 +47,7 @@ export async function getOrderById(id: string) {
   const order = await Order.findById(id).populate("user", "name email role");
 
   if (!order) {
-    throw createHttpError("Order not found", 404);
+    throw new NotFoundError("Order not found");
   }
 
   const items = await OrderItem.find({ order: id }).populate("productVariant");
@@ -111,7 +111,7 @@ export async function updateOrderStatus(
   }).populate("user", "name email role");
 
   if (!updatedOrder) {
-    throw createHttpError("Order not found", 404);
+    throw new NotFoundError("Order not found");
   }
 
   const items = await OrderItem.find({ order: id }).populate("productVariant");
@@ -126,13 +126,13 @@ export async function createOrderFromCart(owner: CartOwner) {
   const cart = await findCartByOwner(owner);
 
   if (!cart) {
-    throw createHttpError("Cart not found", 404);
+    throw new NotFoundError("Cart not found");
   }
 
   const cartItems = await CartItem.find({ cart: cart._id });
 
   if (cartItems.length === 0) {
-    throw createHttpError("Cart is empty", 400);
+    throw new ValidationError("Cart is empty");
   }
 
   const totalPrice = cartItems.reduce(

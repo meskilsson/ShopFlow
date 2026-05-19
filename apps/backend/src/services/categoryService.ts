@@ -1,4 +1,5 @@
 import Category, { ICategory } from "../models/Categories";
+import { NotFoundError } from "../errors/AppError";
 
 // ===== CREATE ===== //
 export async function createCategory(categoryData: ICategory) {
@@ -37,9 +38,7 @@ export async function deleteCategory(id: string) {
 // ===== ERROR HANDLER ===== //
 function handlerNotFound<T>(item: T | null, message = "Not found"): T {
     if (!item) {
-        const error = new Error(message) as Error & { statusCode?: number };
-        error.statusCode = 404;
-        throw error;
+        throw new NotFoundError(message);
     }
     return item;
 }

@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import { createHttpError } from "../middleware/HttpError";
+import { AppError } from "../errors/AppError";
 import type { AddressOwner } from "../types/address.types";
 
 export function getAddressOwner(res: Response): AddressOwner {
@@ -19,5 +19,5 @@ export function getAddressOwner(res: Response): AddressOwner {
     return { sessionId: addressOwner.sessionId };
   }
 
-  throw createHttpError("Address owner could not be resolved", 500);
+  throw new AppError("Address owner could not be resolved", 500);
 }

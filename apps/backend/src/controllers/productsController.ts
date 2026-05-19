@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import * as productService from "../services/productService";
+import { uploadProductImage } from "../services/imageService";
 import type {
     ProductIdParams,
     VariantIdParams,
@@ -187,6 +188,25 @@ export async function deleteVariant(
         await productService.deleteVariant(params.variantId);
 
         res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+}
+
+// ===== UPLOAD PRODUCT IMAGE ===== //
+export async function uploadProductImageController(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        if (!req.file) {
+            res.status(400).json({ message: "No image file provided" });
+            return;
+        }
+
+        const url = await uploadProductImage(req.file);
+        res.status(200).json({ url });
     } catch (error) {
         next(error);
     }
