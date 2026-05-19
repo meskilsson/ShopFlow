@@ -24,6 +24,7 @@ const productImageSchema = z.string().trim().url().optional();
 
 export const productQuerySchema = z.strictObject({
     category: productCategorySchema.optional(),
+    search: z.string().trim().min(1).max(100).optional(),
     inStock: z.enum(["true", "false"]).optional(),
     sort: z.enum(["createdAt", "name", "price", "category"]).default("createdAt"),
     order: z.enum(["asc", "desc"]).default("asc"),

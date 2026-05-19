@@ -58,6 +58,7 @@ export async function getAllProducts(
 
         const result = await productService.getAllProducts({
             category: query.category,
+            search: query.search,
             inStock: query.inStock,
             sort: query.sort,
             sortOrder,

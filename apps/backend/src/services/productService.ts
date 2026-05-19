@@ -10,6 +10,7 @@ import type {
 
 type ProductFilters = {
     category?: ProductQueryInput["category"];
+    search?: ProductQueryInput["search"];
     inStock?: ProductQueryInput["inStock"];
     sort: ProductQueryInput["sort"];
     sortOrder: 1 | -1;
@@ -18,6 +19,41 @@ type ProductFilters = {
 }
 
 const SIZE_ORDER = ["xs", "s", "m", "l", "xl"];
+
+function createFlexibleSearchRegex(search: string) {
+    const normalized = search.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    if (!normalized) {
+        return null;
+    }
+
+    const escapedCharacters = normalized
+        .split("")
+        .map((character) => character.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+
+    return new RegExp(escapedCharacters.join("[^a-z0-9]*"), "i");
+}
+
+function createSearchQuery(search: string) {
+    const searchRegexes = search
+        .trim()
+        .split(/\s+/)
+        .map(createFlexibleSearchRegex)
+        .filter((regex): regex is RegExp => regex !== null);
+
+    if (searchRegexes.length === 0) {
+        return undefined;
+    }
+
+    return {
+        $and: searchRegexes.map((searchRegex) => ({
+            $or: [
+                { name: searchRegex },
+                { category: searchRegex },
+            ],
+        })),
+    };
+}
 
 function sortBySizeOrder(variants: IProductVariant[]) {
     return variants.sort((a, b) => {
@@ -71,6 +107,14 @@ export async function getAllProducts(filters: ProductFilters) {
 
     if (filters.category) {
         query.category = filters.category;
+    }
+
+    if (filters.search) {
+        const searchQuery = createSearchQuery(filters.search);
+
+        if (searchQuery) {
+            query.$and = searchQuery.$and;
+        }
     }
 
     if (filters.inStock !== undefined) {
