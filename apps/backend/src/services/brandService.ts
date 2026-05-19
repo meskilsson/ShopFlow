@@ -1,4 +1,5 @@
 import Brand, { IBrand } from "../models/Brands";
+import { NotFoundError } from "../errors/AppError";
 
 // ===== CREATE ===== //
 export async function createBrand(brandData: IBrand) {
@@ -34,9 +35,7 @@ export async function deleteBrand(id: string) {
 // ===== ERROR HANDLER ===== //
 function handlerNotFound<T>(item: T | null, message = "Not found"): T {
     if (!item) {
-        const error = new Error(message) as Error & { statusCode?: number };
-        error.statusCode = 404;
-        throw error;
+        throw new NotFoundError(message);
     }
     return item;
 }

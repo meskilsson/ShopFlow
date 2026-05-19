@@ -1,4 +1,5 @@
 import Payment, { IPayment } from "../models/Payment";
+import { NotFoundError } from "../errors/AppError";
 
 export async function createPayment(
   paymentData: Omit<IPayment, "createdAt" | "updatedAt">,
@@ -10,11 +11,7 @@ export async function getPaymentById(id: string) {
   const payment = await Payment.findById(id).populate("order");
 
   if (!payment) {
-    const error = new Error("Payment not found") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 404;
-    throw error;
+    throw new NotFoundError("Payment not found");
   }
 
   return payment;
@@ -36,11 +33,7 @@ export async function updatePaymentStatus(
   ).populate("order");
 
   if (!updatedPayment) {
-    const error = new Error("Payment not found") as Error & {
-      statusCode?: number;
-    };
-    error.statusCode = 404;
-    throw error;
+    throw new NotFoundError("Payment not found");
   }
 
   return updatedPayment;

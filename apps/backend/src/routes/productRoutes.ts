@@ -9,9 +9,13 @@ import {
     getProductVariants,
     getVariantById,
     deleteVariant,
-    updateVariant
+    updateVariant,
+    uploadProductImageController,
 } from "../controllers/productsController.ts"
 import { validateRequest } from "../middleware/validate.ts";
+import { requireAuth } from "../middleware/requireAuth.ts";
+import { authorizeRoles } from "../middleware/authorizeRoles.ts";
+import { upload } from "../middleware/upload.ts";
 import {
     productIdParamsSchema,
     variantIdParamsSchema,
@@ -23,6 +27,15 @@ import {
 } from "../schemas/productSchemas.ts"
 
 const productRouter = Router();
+
+// Must be before /:id to avoid route collision
+productRouter.post(
+    "/upload-image",
+    requireAuth,
+    authorizeRoles("seller", "admin"),
+    upload.single("image"),
+    uploadProductImageController,
+);
 
 productRouter.get(
     "/",

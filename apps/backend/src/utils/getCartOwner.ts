@@ -1,6 +1,6 @@
 import type { Response } from "express";
 import type { CartOwner } from "../types/cart.types"
-import { createHttpError} from "../middleware/HttpError";
+import { AppError } from "../errors/AppError";
 
 export function getCartOwner(res: Response): CartOwner {
   const cartOwner = res.locals.cartOwner as
@@ -19,5 +19,5 @@ export function getCartOwner(res: Response): CartOwner {
     return { sessionId: cartOwner.sessionId };
   }
 
-  throw createHttpError("Cart owner could not be resolved", 500);
+  throw new AppError("Cart owner could not be resolved", 500);
 }
