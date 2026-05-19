@@ -5,7 +5,8 @@
     "module": "commonjs",
     "target": "es2020",
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "allowImportingTsExtensions": true,
     "noEmit": true,
