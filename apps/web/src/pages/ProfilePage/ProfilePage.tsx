@@ -11,6 +11,8 @@ import type { User } from "@/types/userTypes";
 
 import styles from "./ProfilePage.module.css";
 
+import { getErrorMessage } from "@/utils/getErrorMessage";
+
 export default function ProfilePage() {
     const navigate = useNavigate();
     const { user: authUser } = useAuth();
@@ -18,6 +20,8 @@ export default function ProfilePage() {
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+
+
 
     useEffect(() => {
         async function getUser() {
@@ -35,7 +39,7 @@ export default function ProfilePage() {
                 setUser(userData);
             } catch (error) {
                 if (error instanceof Error) {
-                    setError(error.message);
+                    setError(getErrorMessage(error.message));
                 } else {
                     setError("Something went wrong");
                 }

@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import Modal from "@/components/UI/Modal/Modal";
 import ButtonStd from "@/components/UI/ButtonStd";
 import Card from "@/components/UI/Card";
+import { formatDateEnglish } from "@/utils/formatDateEnglish";
+import { formatPrice } from "@/utils/formatPrice";
 
 export type ProductCategory =
     | "T-Shirts"
@@ -30,22 +32,8 @@ export interface Product {
     updatedAt?: string;
 }
 
-function formatDate(value?: string | null) {
-    if (!value) return "N/A";
 
-    return new Date(value).toLocaleDateString("sv-SE", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    });
-}
 
-function formatPrice(price: number) {
-    return new Intl.NumberFormat("sv-SE", {
-        style: "currency",
-        currency: "SEK",
-    }).format(price);
-}
 
 export default function AdminProductPage() {
 
@@ -279,12 +267,12 @@ export default function AdminProductPage() {
 
                                 <div className={styles.metaItem}>
                                     <span>Created</span>
-                                    <strong>{formatDate(product.createdAt)}</strong>
+                                    <strong>{formatDateEnglish(product.createdAt)}</strong>
                                 </div>
 
                                 <div className={styles.metaItem}>
                                     <span>Deleted at</span>
-                                    <strong>{formatDate(product.deletedAt)}</strong>
+                                    <strong>{formatDateEnglish(product.deletedAt)}</strong>
                                 </div>
 
                                 <div className={styles.metaItem}>

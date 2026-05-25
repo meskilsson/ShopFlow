@@ -16,6 +16,8 @@ import {
   userIdParamSchema,
   updateOrderStatusSchema,
 } from "../schemas/orderSchemas";
+import { requireSelfOrAdmin } from "../middleware/requireSelfOrAdmin";
+import { authorizeRoles } from "../middleware/authorizeRoles";
 
 const orderRouter = Router();
 
@@ -27,22 +29,25 @@ orderRouter.post(
 
 orderRouter.post("/from-cart", resolveCartOwner, createOrderFromCart);
 
-orderRouter.get("/", getAllOrders);
+orderRouter.get("/", authorizeRoles("admin"), getAllOrders);
 
 orderRouter.get(
   "/user/:userId",
   validateRequest({ params: userIdParamSchema }),
+  requireSelfOrAdmin,
   getOrdersByUser,
 );
 
 orderRouter.get(
   "/user/:userId/with-items",
   validateRequest({ params: userIdParamSchema }),
+  requireSelfOrAdmin,
   getOrdersWithItemsByUser,
 );
 
 orderRouter.get(
   "/:id",
+  requireSelfOrAdmin,
   validateRequest({ params: orderIdParamSchema }),
   getOrderById,
 );
@@ -53,6 +58,7 @@ orderRouter.patch(
     params: orderIdParamSchema,
     body: updateOrderStatusSchema,
   }),
+  requireSelfOrAdmin,
   updateOrderStatus,
 );
 
