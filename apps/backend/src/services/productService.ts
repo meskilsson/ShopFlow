@@ -1,5 +1,6 @@
 import Product, { IProduct } from "../models/Products";
 import ProductVariant, { IProductVariant } from "../models/ProductVariant";
+import { NotFoundError } from "../errors/AppError";
 import type {
     CreateProductInput,
     CreateProductInputVariant,
@@ -225,11 +226,7 @@ export async function deleteVariant(variantId: string) {
 
 function handlerNotFound<T>(item: T | null, message = "Not found"): T {
     if (!item) {
-        const error = new Error(message) as Error & {
-            statusCode?: number;
-        };
-        error.statusCode = 404;
-        throw error;
+        throw new NotFoundError(message);
     }
     return item;
 }

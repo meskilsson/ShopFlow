@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react'
 import styles from './AddProductModal.module.css'
 import ButtonStd from '@/components/UI/ButtonStd'
 
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api/v1'
+
 const LETTER_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 const NUMBER_SIZES = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46']
 
@@ -14,15 +16,19 @@ interface ProductData {
 
 interface AddProductModalProps {
   onClose: () => void
+  onSuccess?: () => void
   initialData?: ProductData
 }
 
-const AddProductModal: React.FC<AddProductModalProps> = ({ onClose, initialData }) => {
+const AddProductModal: React.FC<AddProductModalProps> = ({ onClose, onSuccess, initialData }) => {
   const [name, setName] = useState(initialData?.name ?? '')
   const [description, setDescription] = useState(initialData?.description ?? '')
   const [selectedSizes, setSelectedSizes] = useState<string[]>(initialData?.selectedSizes ?? [])
   const [active, setActive] = useState(initialData?.active ?? false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const toggleSize = (size: string) => {
@@ -34,11 +40,63 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onClose, initialData 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    setImageFile(file)
     setImagePreview(URL.createObjectURL(file))
   }
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) onClose()
+  }
+
+  async function uploadImage(file: File): Promise<string> {
+    const formData = new FormData()
+    formData.append('image', file)
+
+    const res = await fetch(`${API_URL}/products/upload-image`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    })
+
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message ?? 'Image upload failed')
+    return data.url as string
+  }
+
+  async function handleSubmit() {
+    setError(null)
+    setIsSubmitting(true)
+
+    try {
+      let productImageUrl: string | undefined
+
+      if (imageFile) {
+        productImageUrl = await uploadImage(imageFile)
+      }
+
+      const res = await fetch(`${API_URL}/products`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          // price and category are required by the API — fill these in when the form fields are added
+          price: 0,
+          category: 'T-shirts',
+          ...(productImageUrl !== undefined && { ProductImage: productImageUrl }),
+        }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message ?? 'Failed to create product')
+
+      onSuccess?.()
+      onClose()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -131,11 +189,15 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onClose, initialData 
               onChange={handleImageChange}
             />
           </div>
+
+          {error && <p style={{ color: 'red', marginTop: '0.5rem' }}>{error}</p>}
         </div>
 
         <div className={styles.footer}>
-          <ButtonStd variant="ghost-dark" onClick={onClose}>Cancel</ButtonStd>
-          <ButtonStd variant="primary">{initialData ? 'Save' : 'Add Product'}</ButtonStd>
+          <ButtonStd variant="ghost-dark" onClick={onClose} disabled={isSubmitting}>Cancel</ButtonStd>
+          <ButtonStd variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : initialData ? 'Save' : 'Add Product'}
+          </ButtonStd>
         </div>
       </div>
     </div>
