@@ -37,7 +37,7 @@ const OrderConfirmationPage = () => {
           </ButtonStd>
 
           <ButtonStd
-            variant="secondary"
+            variant="ghost-dark"
             fullWidth
             onClick={() => navigate("/profile/orders")}
           >
