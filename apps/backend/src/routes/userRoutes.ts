@@ -1,3 +1,4 @@
+// apps/backend/src/routes/userRoutes.ts
 import { Router } from "express";
 import {
   createUser,
@@ -6,19 +7,25 @@ import {
   deleteUser,
   updateUser,
   changePassword,
+  getWishlist,
+  toggleWishlist,
 } from "../controllers/userController";
+
 import {
   createUserSchema,
   updateUserSchema,
   changePasswordSchema,
   userIdParamsSchema,
+  toggleWishlistSchema,
 } from "../schemas/userSchemas";
+
 import { validateRequest } from "../middleware/validate";
 import { requireAuth } from "../middleware/requireAuth";
 
 const userRouter = Router();
 
 userRouter.get("/", requireAuth, getAllUsers);
+
 userRouter.get(
   "/:id",
   requireAuth,
@@ -34,6 +41,7 @@ userRouter.patch(
   validateRequest({ params: userIdParamsSchema, body: updateUserSchema }),
   updateUser,
 );
+
 userRouter.patch(
   "/:id/password",
   requireAuth,
@@ -46,6 +54,15 @@ userRouter.delete(
   requireAuth,
   validateRequest({ params: userIdParamsSchema }),
   deleteUser,
+);
+
+userRouter.get("/wishlist", requireAuth, getWishlist);
+
+userRouter.post(
+  "/wishlist",
+  requireAuth,
+  validateRequest({ body: toggleWishlistSchema }),
+  toggleWishlist,
 );
 
 export default userRouter;

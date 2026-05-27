@@ -5,6 +5,7 @@ import type {
   CreateUserInput,
   UpdateUserInput,
   ChangePasswordInput,
+  ToggleWishlistInput,
 } from "../schemas/userSchemas";
 
 export async function createUser(
@@ -100,6 +101,36 @@ export async function changePassword(
       body.newPassword,
     );
 
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getWishlist(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const userId = req.user?._id;
+    const wishlist = await userService.getWishlist(userId!);
+    res.status(200).json(wishlist);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function toggleWishlist(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const userId = req.user?._id;
+    const { productId } = req.validatedBody as ToggleWishlistInput;
+
+    const result = await userService.toggleWishlist(userId!, productId);
     res.status(200).json(result);
   } catch (error) {
     next(error);
