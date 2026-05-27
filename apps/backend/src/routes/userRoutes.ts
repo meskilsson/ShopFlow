@@ -1,4 +1,3 @@
-// apps/backend/src/routes/userRoutes.ts
 import { Router } from "express";
 import {
   createUser,
@@ -23,6 +22,20 @@ import { validateRequest } from "../middleware/validate";
 import { requireAuth } from "../middleware/requireAuth";
 
 const userRouter = Router();
+
+// Temp: For debuging
+userRouter.get("/test-wishlist", (req, res) => {
+  res.json({ message: "✅ Wishlist-routen är registrerad och fungerar!" });
+});
+
+userRouter.get("/wishlist", requireAuth, getWishlist);
+
+userRouter.post(
+  "/wishlist",
+  requireAuth,
+  validateRequest({ body: toggleWishlistSchema }),
+  toggleWishlist,
+);
 
 userRouter.get("/", requireAuth, getAllUsers);
 
@@ -54,15 +67,6 @@ userRouter.delete(
   requireAuth,
   validateRequest({ params: userIdParamsSchema }),
   deleteUser,
-);
-
-userRouter.get("/wishlist", requireAuth, getWishlist);
-
-userRouter.post(
-  "/wishlist",
-  requireAuth,
-  validateRequest({ body: toggleWishlistSchema }),
-  toggleWishlist,
 );
 
 export default userRouter;

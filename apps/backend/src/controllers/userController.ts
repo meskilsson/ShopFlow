@@ -113,8 +113,13 @@ export async function getWishlist(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?._id;
-    const wishlist = await userService.getWishlist(userId!);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new Error("No user in request (auth middleware failed)");
+    }
+
+    const wishlist = await userService.getWishlist(userId);
     res.status(200).json(wishlist);
   } catch (error) {
     next(error);
@@ -127,10 +132,15 @@ export async function toggleWishlist(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const userId = req.user?._id;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new Error("No user in request (auth middleware failed)");
+    }
+
     const { productId } = req.validatedBody as ToggleWishlistInput;
 
-    const result = await userService.toggleWishlist(userId!, productId);
+    const result = await userService.toggleWishlist(userId, productId);
     res.status(200).json(result);
   } catch (error) {
     next(error);

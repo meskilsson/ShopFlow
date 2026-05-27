@@ -1,4 +1,5 @@
 import User from "../models/User";
+import Product from "../models/Products";
 import bcrypt from "bcrypt";
 import {
   ValidationError,
