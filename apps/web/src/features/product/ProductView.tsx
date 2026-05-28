@@ -54,15 +54,18 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
       .catch(() => {});
   }, [isAuthenticated, product._id]);
 
+  const { refreshWishlist } = useAuth();
+
   async function handleToggleWishlist() {
     if (!isAuthenticated) {
-      alert("Logga in för att spara i önskelistan.");
+      alert("Logga in för att spara i önskelistan ❤️");
       return;
     }
 
     try {
       const result = await toggleWishlist(product._id);
       setIsInWishlist(result.inWishlist);
+      await refreshWishlist(); // ← NY – uppdaterar NavBar direkt
     } catch (error) {
       console.error("Wishlist toggle failed", error);
     }

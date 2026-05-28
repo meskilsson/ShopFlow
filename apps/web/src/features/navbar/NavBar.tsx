@@ -7,38 +7,12 @@ import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react";
 
 import { useAuth } from "@/contexts/AuthContext";
 import Dropdown from "@/components/UI/Dropdown";
-import { useEffect, useState } from "react";
-import { getWishlist } from "@/api/wishlist";
 
 const NavBar = () => {
-  const { logout, isAuthenticated, user } = useAuth();
+  const { logout, isAuthenticated, user, wishlistCount } = useAuth();
   const navigate = useNavigate();
-  const [wishlistCount, setWishlistCount] = useState(0);
 
   const isAdmin = user?.role === "admin";
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      getWishlist()
-        .then((data) => setWishlistCount(data.length))
-        .catch(() => setWishlistCount(0));
-    } else {
-      setWishlistCount(0);
-    }
-  }, [isAuthenticated]);
-
-  const WishlistIcon = (
-    <Link
-      to="/wishlist"
-      className={styles.iconBtn}
-      style={{ position: "relative" }}
-    >
-      <HeartIcon className={styles.icon} />
-      {wishlistCount > 0 && (
-        <span className={styles.wishlistCount}>{wishlistCount}</span>
-      )}
-    </Link>
-  );
 
   if (isAdmin && isAuthenticated) {
     return (
@@ -65,7 +39,16 @@ const NavBar = () => {
               </Dropdown.Content>
             </Dropdown>
 
-            {WishlistIcon}
+            <Link
+              to="/wishlist"
+              className={styles.iconBtn}
+              style={{ position: "relative" }}
+            >
+              <HeartIcon className={styles.icon} />
+              {wishlistCount > 0 && (
+                <span className={styles.wishlistCount}>{wishlistCount}</span>
+              )}
+            </Link>
 
             <Link to="/cart" className={styles.iconBtn}>
               <CartIcon className={styles.icon} />
@@ -104,7 +87,16 @@ const NavBar = () => {
             </Dropdown.Content>
           </Dropdown>
 
-          {WishlistIcon}
+          <Link
+            to="/wishlist"
+            className={styles.iconBtn}
+            style={{ position: "relative" }}
+          >
+            <HeartIcon className={styles.icon} />
+            {wishlistCount > 0 && (
+              <span className={styles.wishlistCount}>{wishlistCount}</span>
+            )}
+          </Link>
 
           <Link to="/cart" className={styles.iconBtn}>
             <CartIcon className={styles.icon} />
@@ -132,7 +124,16 @@ const NavBar = () => {
             </Dropdown.Content>
           </Dropdown>
 
-          {WishlistIcon}
+          <Link
+            to="/wishlist"
+            className={styles.iconBtn}
+            style={{ position: "relative" }}
+          >
+            <HeartIcon className={styles.icon} />
+            {wishlistCount > 0 && (
+              <span className={styles.wishlistCount}>{wishlistCount}</span>
+            )}
+          </Link>
 
           <Link to="/cart" className={styles.iconBtn}>
             <CartIcon className={styles.icon} />
