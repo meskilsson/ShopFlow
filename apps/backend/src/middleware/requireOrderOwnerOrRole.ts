@@ -24,9 +24,7 @@ export function requireOrderOwnerOrRole(...allowedRoles: UserRole[]) {
                 throw new NotFoundError("Order not found");
             }
 
-            const isOwner =
-                req.user.role === "buyer" &&
-                order.user?.toString() === req.user.id;
+            const isOwner = order.user?.toString() === req.user.id;
 
             const hasAllowedRole = allowedRoles.includes(req.user.role);
 
