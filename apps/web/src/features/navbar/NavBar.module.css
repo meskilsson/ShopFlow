@@ -65,15 +65,18 @@
   position: absolute;
   top: -4px;
   right: -4px;
-  background-color: var(--accent-red, #e74c3c);
-  color: white;
+  background-color: #111111;
+  color: #ffffff;
   font-size: 10px;
-  font-weight: bold;
-  width: 16px;
+  font-weight: 700;
+  min-width: 16px;
   height: 16px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  z-index: 10;
 }

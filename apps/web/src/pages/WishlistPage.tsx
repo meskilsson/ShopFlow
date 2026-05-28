@@ -56,9 +56,34 @@ const WishlistPage = () => {
       <h1 style={{ marginBottom: "2rem" }}>Min önskelista</h1>
 
       {products.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "4rem 0" }}>
-          <p>Din önskelista är tom.</p>
-          <ButtonStd onClick={() => navigate("/products")}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "60vh",
+            width: "100%",
+            textAlign: "center",
+            padding: "4rem 2rem",
+            gap: "2rem",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "1.8rem",
+              fontWeight: "500",
+              color: "#333",
+              margin: 0,
+            }}
+          >
+            Din önskelista är tom
+          </p>
+
+          <ButtonStd
+            onClick={() => navigate("/products")}
+            style={{ minWidth: "240px" }}
+          >
             Bläddra bland produkter
           </ButtonStd>
         </div>
