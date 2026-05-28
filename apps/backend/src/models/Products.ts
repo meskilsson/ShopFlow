@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { Types } from "mongoose";
 
 export type ProductCategory =
-    | "T-shirts"
+    | "T-Shirts"
     | "Shoes"
     | "Pants"
     | "Shirts"
