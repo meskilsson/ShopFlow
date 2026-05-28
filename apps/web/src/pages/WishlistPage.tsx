@@ -1,4 +1,3 @@
-// apps/web/src/pages/WishlistPage.tsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,8 +5,8 @@ import ProductsContainer from "@/features/products/ProductsContainer";
 import ProductCard from "@/features/products/ProductCard";
 import ProductCategories from "@/features/products/ProductCategories";
 import Container from "@/components/containers/Container";
-import { getWishlist, toggleWishlist } from "@/api/wishlist"; // ← NY
-import { useAuth } from "@/contexts/AuthContext"; // ← NY
+import { getWishlist, toggleWishlist } from "@/api/wishlist";
+import { useAuth } from "@/contexts/AuthContext";
 import ButtonStd from "@/components/UI/ButtonStd";
 
 type Product = {
@@ -21,7 +20,7 @@ type Product = {
 const WishlistPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { refreshWishlist } = useAuth(); // ← nu importerad
+  const { refreshWishlist } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
