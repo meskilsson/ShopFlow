@@ -10,6 +10,7 @@ import type {
     CreateProductInputVariant,
     UpdateProductInputVariant
 } from "../schemas/productSchemas";
+import { UnauthorizedError } from "../errors/AppError";
 
 // ===== CREATE ===== //
 export async function createProduct(
@@ -19,7 +20,16 @@ export async function createProduct(
 ): Promise<void> {
     try {
         const body = req.validatedBody as CreateProductInput;
-        const product = await productService.createProduct(body);
+
+        if (!req.user) {
+            throw new UnauthorizedError("Unauthorized");
+            return;
+        }
+
+        const product = await productService.createProduct(body, {
+            id: req.user.id,
+            role: req.user.role,
+        });
 
         res.status(201).json(product);
     } catch (error) {
