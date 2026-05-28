@@ -139,6 +139,21 @@
   padding-left: .2rem;
 }
 
+.commentsBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.commentInput {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  padding: 0.75rem;
+  border: 1px solid var(--text-gray);
+  border-radius: var(--br);
+  font: inherit;
+}
+
 .variantDiv {
   margin-top: 1rem;
 }
@@ -177,4 +192,25 @@
   height: 160%;
   opacity: 50%;
   pointer-events: none;
+}
+
+.ratingSelect {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.starButton {
+    border: none;
+    background-color: transparent;
+    color: var(--icon-rating);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    transition: transform 0.5s ease;
+}
+
+.starButton:hover {
+  transform: scale(1.1);
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import styles from "./ProductView.module.css";
 import FallbackProductImage from "@/assets/1.webp";
 import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react";
@@ -6,6 +6,7 @@ import Line from "@/assets/icons/line.svg?react";
 import ButtonStd from "@/components/UI/ButtonStd";
 import Card from "@/components/UI/Card";
 import { addToCart } from "@/api/cart";
+import Modal from "@/components/UI/Modal/Modal";
 
 type ProductVariant = {
   _id: string;
@@ -35,6 +36,13 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
     variants.find((variant) => variant.inStock !== false)?._id ?? null,
   );
 
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [commentRating, setCommentRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const isCommentValid = commentText.trim().length > 0 && commentRating > 0;
+
+
   async function handleAddToCart() {
     if (!selectedVariantId) {
       setCartMessage("Choose a size and color first");
@@ -53,7 +61,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
     }
   }
 
-  const comments = [
+  const [comments, setComments] = useState([
     {
       user: "Chas-Robin",
       comment: "Love these boots!",
@@ -75,7 +83,30 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
       rating: 1,
       imageUrl: "https://i.pravatar.cc/100?img=1",
     },
-  ];
+  ]);
+
+  function handleSaveComment() {
+    if (!commentText.trim() || commentRating === 0) return;
+    
+    setComments([
+      ...comments,
+      {
+        user: "You",
+        comment: commentText,
+        date: new Date().toLocaleDateString("en-GB", {
+          day: "numeric",
+          month:"long",
+          year:"numeric"
+        }),
+        rating: commentRating,
+        imageUrl: "https://i.pravatar.cc/100?img=1",
+      },
+    ]);
+
+    setCommentText("");
+    setCommentRating(0)
+    setIsCommentModalOpen(false);
+  }
 
   return (
     <section className={styles.productContainer}>
@@ -155,7 +186,8 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         </Card>
 
         <Card>
-          <p className={styles.commentsText}>Comments:</p>
+            <p className={styles.commentsText}>Comments:</p>
+
           <section className={styles.comment}>
             {comments.map((c, index) => (
               <div key={index} className={styles.commentItem}>
@@ -176,8 +208,68 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
               </div>
             ))}
           </section>
+          <div className={styles.commentsBtn}>
+            <ButtonStd
+              variant="ghost-dark"
+              onClick={() => setIsCommentModalOpen(true)}
+              >
+                Add a comment
+              </ButtonStd>
+          </div>
         </Card>
       </div>
+
+            {/* ===== MODAL ===== */}
+      <Modal
+        title="Add a comment"
+        isOpen={isCommentModalOpen}
+        onClose={() => setIsCommentModalOpen(false)}
+        actions={
+          <>
+            <ButtonStd
+              variant="ghost-dark"
+              onClick={() => {
+                setIsCommentModalOpen(false)
+              }} >
+              Cancel
+            </ButtonStd>
+
+            <ButtonStd
+              variant="primary"
+              onClick={handleSaveComment} 
+              disabled={!isCommentValid}>
+                Save
+              </ButtonStd>
+          </>
+        }
+      >
+        <div className="{styles.ratingSelect">
+          {[1, 2, 3, 4, 5].map((rating) => {
+            const activeRating = hoverRating || commentRating;
+
+            return (
+              <button
+              key={rating}
+              type="button"
+              className={styles.starButton}
+              onClick={()=> setCommentRating(rating)}
+              onMouseEnter={() => setHoverRating(rating)}
+              onMouseLeave={() => setHoverRating(0)}
+              >
+                {rating <= activeRating ? "★" : "☆"} 
+              </button>
+            )
+          })}
+        </div>
+
+        <textarea
+          className={styles.commentInput}
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          placeholder="Write your comment ..." 
+        />
+      </Modal>
+
     </section>
   );
 };
