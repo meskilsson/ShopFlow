@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt";
-import { ForbiddenError, UnauthorizedError } from "../errors/AppError";
+import { AppError, ForbiddenError, UnauthorizedError } from "../errors/AppError";
 import User from "../models/User";
 
 export async function requireAuth(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
@@ -36,6 +36,11 @@ export async function requireAuth(
 
     next();
   } catch (error) {
+    if (error instanceof AppError) {
+      next(error);
+      return;
+    }
+
     next(new UnauthorizedError("Invalid or expired token"));
   }
 }
