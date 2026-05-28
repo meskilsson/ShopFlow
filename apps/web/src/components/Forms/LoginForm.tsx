@@ -5,6 +5,8 @@ import LoginCard from "../UI/LoginCard";
 import styles from "./Login.module.css";
 import { loginRequest } from "@/api/auth";
 
+import { getErrorMessage } from "@/utils/getErrorMessage";
+
 type LoginLocationState = {
   redirectTo?: string;
 };
@@ -35,7 +37,7 @@ export default function LoginForm() {
       navigate(redirectTo || "/", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
-        setErrors(error.message);
+        setErrors(getErrorMessage(error));
       } else {
         setErrors("Something went wrong");
       }

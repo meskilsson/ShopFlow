@@ -3,6 +3,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import ButtonStd from "../UI/ButtonStd";
 
+import { getErrorMessage } from "@/utils/getErrorMessage";
+
 export default function ChangePasswordForm() {
     const { user: authUser } = useAuth();
 
@@ -46,9 +48,11 @@ export default function ChangePasswordForm() {
 
             setSuccess("Password updated successfully.");
         } catch (error) {
-            setError(
-                error instanceof Error ? error.message : "Failed to update password"
-            );
+            if (error instanceof Error) {
+                setError(getErrorMessage(error) || "Password could not be updated");
+            } else {
+                setError("Something went wrong");
+            }
         } finally {
             setIsLoading(false);
         }
