@@ -12,7 +12,7 @@ import { formatDateEnglish } from "@/utils/formatDateEnglish";
 import { formatPrice } from "@/utils/formatPrice";
 
 export type ProductCategory =
-    | "T-Shirts"
+    | "T-shirts"
     | "Shoes"
     | "Pants"
     | "Shirts"

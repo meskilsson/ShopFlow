@@ -13,7 +13,7 @@ export const variantIdParamsSchema = z.strictObject({
 const productNameSchema = z.string().trim().min(2).max(100);
 const productPriceSchema = z.number().positive();
 const productCategorySchema = z.enum([
-    "T-Shirts",
+    "T-shirts",
     "Shoes",
     "Pants",
     "Shirts",

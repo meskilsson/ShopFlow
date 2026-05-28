@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { Types } from "mongoose";
 
 export type ProductCategory =
-    | "T-Shirts"
+    | "T-shirts"
     | "Shoes"
     | "Pants"
     | "Shirts"
@@ -42,7 +42,7 @@ const productSchema = new Schema<IProduct>(
             required: [true, "Category is required"],
             trim: true,
             enum: [
-                "T-Shirts",
+                "T-shirts",
                 "Shoes",
                 "Pants",
                 "Shirts",

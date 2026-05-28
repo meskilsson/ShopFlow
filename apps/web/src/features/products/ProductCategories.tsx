@@ -7,7 +7,7 @@ import NavSpacer from '@/features/navbar/NavSpacer'
 import SearchBar from '@/features/search/SearchBar'
 
 const categories = [
-  { label: "T-Shirts", value: "T-Shirts" },
+  { label: "T-Shirts", value: "T-shirts" },
   { label: "Shoes", value: "Shoes" },
   { label: "Pants", value: "Pants" },
   { label: "Shirts", value: "Shirts" },
