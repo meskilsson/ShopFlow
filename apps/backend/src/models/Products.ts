@@ -14,6 +14,7 @@ export interface IProduct {
     price: number;
     category: ProductCategory;
     ProductImage?: string;
+    seller?: Types.ObjectId | null;
     deletedAt?: Date | null;
     deletedBy?: Types.ObjectId | null;
     deleteReason?: string | null;
@@ -54,6 +55,11 @@ const productSchema = new Schema<IProduct>(
             type: String,
             trim: true,
         },
+        seller: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            default: null,
+        },
         deletedAt: {
             type: Date,
             default: null,
@@ -73,6 +79,9 @@ const productSchema = new Schema<IProduct>(
         timestamps: true,
     }
 )
+
+productSchema.index({ seller: 1 });
+productSchema.index({ deletedAt: 1 });
 
 const Product = model<IProduct>("Product", productSchema);
 export default Product;
