@@ -1,3 +1,4 @@
+// apps/web/src/pages/WishlistPage.tsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -5,7 +6,8 @@ import ProductsContainer from "@/features/products/ProductsContainer";
 import ProductCard from "@/features/products/ProductCard";
 import ProductCategories from "@/features/products/ProductCategories";
 import Container from "@/components/containers/Container";
-import { getWishlist } from "@/api/wishlist";
+import { getWishlist, toggleWishlist } from "@/api/wishlist"; // ← NY
+import { useAuth } from "@/contexts/AuthContext"; // ← NY
 import ButtonStd from "@/components/UI/ButtonStd";
 
 type Product = {
@@ -19,6 +21,7 @@ type Product = {
 const WishlistPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { refreshWishlist } = useAuth(); // ← nu importerad
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +32,16 @@ const WishlistPage = () => {
       })
       .catch(() => setIsLoading(false));
   }, []);
+
+  const handleRemove = async (productId: string) => {
+    try {
+      await toggleWishlist(productId);
+      setProducts((prev) => prev.filter((p) => p._id !== productId));
+      await refreshWishlist();
+    } catch (error) {
+      console.error("Failed to remove from wishlist", error);
+    }
+  };
 
   if (isLoading)
     return (
@@ -54,12 +67,15 @@ const WishlistPage = () => {
           {products.map((product) => (
             <ProductCard
               key={product._id}
+              id={product._id}
               title={product.name}
               brand={product.category}
               variants={0}
               price={product.price}
               link={`/product/${product._id}`}
               image={product.ProductImage}
+              isWishlist={true}
+              onRemove={handleRemove}
             />
           ))}
         </ProductsContainer>

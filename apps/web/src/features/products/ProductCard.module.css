@@ -16,7 +16,9 @@
   text-decoration: none;
   color: inherit;
 
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -76,7 +78,6 @@
   color: var(--text-gray);
 }
 
-
 .productPrice {
   font-size: 0.85rem;
   font-weight: 500;
@@ -85,4 +86,32 @@
 .card:focus-visible {
   outline: 2px solid var(--btn-primary);
   outline-offset: 2px;
+}
+
+.removeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.removeButton:hover {
+  background: rgba(220, 53, 69, 0.9);
+  transform: scale(1.1);
+}
+
+.trashIcon {
+  width: 18px;
+  height: 18px;
+  fill: white;
 }
