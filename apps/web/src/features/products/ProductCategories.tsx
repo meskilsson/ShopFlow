@@ -7,7 +7,7 @@ import NavSpacer from '@/features/navbar/NavSpacer'
 import SearchBar from '@/features/search/SearchBar'
 
 const categories = [
-  { label: "T-Shirts", value: "T-shirts" },
+  { label: "T-Shirts", value: "T-Shirts" },
   { label: "Shoes", value: "Shoes" },
   { label: "Pants", value: "Pants" },
   { label: "Shirts", value: "Shirts" },
@@ -23,18 +23,18 @@ const ProductCategories = () => {
     <nav className={styles.productCategories}>
       <div className={styles.container}>
         <ButtonStd variant="secondary" bold onClick={() => navigate("/products")}>All Products</ButtonStd>
-        <NavSpacer size={"0.5rem"}/>
+        <NavSpacer size={"0.5rem"} />
         {categories.map((category) => (
           <ButtonStd
-              key={category.value}
-              variant="secondary"
-              onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} > 
-              {category.label}
+            key={category.value}
+            variant="secondary"
+            onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} >
+            {category.label}
           </ButtonStd>
-          ))}
+        ))}
       </div>
       <div className={styles.container}>
-        <SearchBar/>
+        <SearchBar />
       </div>
     </nav>
   )

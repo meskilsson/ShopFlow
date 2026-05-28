@@ -82,7 +82,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onClose, onSuccess, i
           name,
           // price and category are required by the API — fill these in when the form fields are added
           price: 0,
-          category: 'T-shirts',
+          category: 'T-Shirts',
           ...(productImageUrl !== undefined && { ProductImage: productImageUrl }),
         }),
       })

@@ -36,7 +36,7 @@ const HomePage = () => {
     }, []);
 
     useEffect(() => {
-        getProducts("T-shirts").then((result) => {
+        getProducts("T-Shirts").then((result) => {
             setTshirts(result.data);
         });
     }, []);

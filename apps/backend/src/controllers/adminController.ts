@@ -184,7 +184,7 @@ export async function restoreAdminUserById(
 }
 
 const productCategories: ProductCategory[] = [
-    "T-shirts",
+    "T-Shirts",
     "Shoes",
     "Pants",
     "Shirts",
