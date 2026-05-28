@@ -23,7 +23,6 @@ export async function createProduct(
 
         if (!req.user) {
             throw new UnauthorizedError("Unauthorized");
-            return;
         }
 
         const product = await productService.createProduct(body, {
