@@ -24,7 +24,10 @@ export function requireProductOwnerOrRole(...allowedRoles: UserRole[]) {
                 throw new NotFoundError("Product not found");
             }
 
-            const isOwner = product.seller?.toString() === req.user.id;
+            const isOwner =
+                req.user.role === "seller" &&
+                product.seller?.toString() === req.user.id;
+
             const hasAllowedRole = allowedRoles.includes(req.user.role);
 
             if (!isOwner && !hasAllowedRole) {
