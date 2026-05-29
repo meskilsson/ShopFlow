@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import styles from "./ProductView.module.css";
 import FallbackProductImage from "@/assets/1.webp";
 import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react";
@@ -6,7 +6,7 @@ import Line from "@/assets/icons/line.svg?react";
 import ButtonStd from "@/components/UI/ButtonStd";
 import Card from "@/components/UI/Card";
 import { addToCart } from "@/api/cart";
-import Modal from "@/components/UI/Modal/Modal";
+import ProductViewModal from "./ProductViewModal";
 
 type ProductVariant = {
   _id: string;
@@ -30,39 +30,24 @@ type ProductViewProps = {
   variants: ProductVariant[];
 };
 
+type Comment = {
+  id: string;
+  user: string;
+  comment: string;
+  date: string;
+  rating: number;
+  imageUrl: string;
+};
+
 const ProductView = ({ product, variants }: ProductViewProps) => {
   const [cartMessage, setCartMessage] = useState<string>("");
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
     variants.find((variant) => variant.inStock !== false)?._id ?? null,
   );
-
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const [commentText, setCommentText] = useState("");
-  const [commentRating, setCommentRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const isCommentValid = commentText.trim().length > 0 && commentRating > 0;
-
-
-  async function handleAddToCart() {
-    if (!selectedVariantId) {
-      setCartMessage("Choose a size and color first");
-      return;
-    }
-
-    try {
-      await addToCart(selectedVariantId, 1);
-      setCartMessage("Item added to cart");
-
-      setTimeout(() => {
-        setCartMessage("");
-      }, 2500);
-    } catch {
-      setCartMessage("Could not add item to cart");
-    }
-  }
-
-  const [comments, setComments] = useState([
+  const [comments, setComments] = useState<Comment[]>([
     {
+      id: "comment-1",
       user: "Chas-Robin",
       comment: "Love these boots!",
       date: "14 April 2026",
@@ -70,6 +55,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
       imageUrl: "https://i.pravatar.cc/100?img=22",
     },
     {
+      id: "comment-2",
       user: "Marcus",
       comment: "Livets dojjor",
       date: "14 April 2026",
@@ -77,6 +63,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
       imageUrl: "https://i.pravatar.cc/100?img=2",
     },
     {
+      id: "comment-3",
       user: "Pontus",
       comment: "Jag fick bara en 😟",
       date: "14 April 2026",
@@ -85,27 +72,40 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
     },
   ]);
 
-  function handleSaveComment() {
-    if (!commentText.trim() || commentRating === 0) return;
-    
+    async function handleAddToCart() {
+      if (!selectedVariantId) {
+        setCartMessage("Choose a size and color first");
+        return;
+      }
+
+      try {
+        await addToCart(selectedVariantId, 1);
+        setCartMessage("Item added to cart");
+
+        setTimeout(() => {
+          setCartMessage("");
+        }, 2500);
+      } catch {
+        setCartMessage("Could not add item to cart");
+      }
+    }
+
+  function handleSaveComment(newComment: { comment: string; rating: number }) {
     setComments([
-      ...comments,
       {
+        id: crypto.randomUUID(),
         user: "You",
-        comment: commentText,
-        date: new Date().toLocaleDateString("en-GB", {
-          day: "numeric",
-          month:"long",
-          year:"numeric"
+        comment: newComment.comment,
+        date: new Date().toLocaleDateString("sv-SE", {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
         }),
-        rating: commentRating,
+        rating: newComment.rating,
         imageUrl: "https://i.pravatar.cc/100?img=1",
       },
+      ...comments,
     ]);
-
-    setCommentText("");
-    setCommentRating(0)
-    setIsCommentModalOpen(false);
   }
 
   return (
@@ -186,90 +186,55 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         </Card>
 
         <Card>
-            <p className={styles.commentsText}>Comments:</p>
+          <p className={styles.commentsText}>Comments:</p>
 
           <section className={styles.comment}>
-            {comments.map((c, index) => (
-              <div key={index} className={styles.commentItem}>
+                {comments.length === 0 ? (
+      <p className={styles.noComment}> No comment yet</p>
+          ) : (
+            comments.map((comment, index) => (
+              <div key={comment.id} className={styles.commentItem}>
                 <div className={styles.commentContainer}>
                   <div className={styles.commentImg}>
-                    <img src={c.imageUrl} alt="" />
+                    <img src={comment.imageUrl} alt="" />
                   </div>
                   <div className={styles.commentText}>
                     <h2 className={styles.commentName}>
-                      {c.user}{" "}
+                      {comment.user}{" "}
                       <span className={styles.commentRating}>
-                        Rating: {c.rating}/5
+                        {[1, 2, 3, 4, 5].map ((star) =>(
+                          <span key={star}>
+                            {star <= comment.rating ? "★" : "☆"}
+                          </span>
+                        ))}
                       </span>
                     </h2>
-                    <p className={styles.commentComment}>{c.comment}</p>
+                    <p className={styles.commentDate}>{comment.date}</p>
+                    <p className={styles.commentComment}>{comment.comment}</p>
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          )}
+            
           </section>
+
           <div className={styles.commentsBtn}>
             <ButtonStd
               variant="ghost-dark"
               onClick={() => setIsCommentModalOpen(true)}
-              >
-                Add a comment
-              </ButtonStd>
+            >
+              Add a comment
+            </ButtonStd>
           </div>
         </Card>
       </div>
 
-            {/* ===== MODAL ===== */}
-      <Modal
-        title="Add a comment"
+      <ProductViewModal
         isOpen={isCommentModalOpen}
         onClose={() => setIsCommentModalOpen(false)}
-        actions={
-          <>
-            <ButtonStd
-              variant="ghost-dark"
-              onClick={() => {
-                setIsCommentModalOpen(false)
-              }} >
-              Cancel
-            </ButtonStd>
-
-            <ButtonStd
-              variant="primary"
-              onClick={handleSaveComment} 
-              disabled={!isCommentValid}>
-                Save
-              </ButtonStd>
-          </>
-        }
-      >
-        <div className="{styles.ratingSelect">
-          {[1, 2, 3, 4, 5].map((rating) => {
-            const activeRating = hoverRating || commentRating;
-
-            return (
-              <button
-              key={rating}
-              type="button"
-              className={styles.starButton}
-              onClick={()=> setCommentRating(rating)}
-              onMouseEnter={() => setHoverRating(rating)}
-              onMouseLeave={() => setHoverRating(0)}
-              >
-                {rating <= activeRating ? "★" : "☆"} 
-              </button>
-            )
-          })}
-        </div>
-
-        <textarea
-          className={styles.commentInput}
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          placeholder="Write your comment ..." 
-        />
-      </Modal>
-
+        onSave={handleSaveComment}
+      />
     </section>
   );
 };
