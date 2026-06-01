@@ -17,6 +17,11 @@ const NavBar = () => {
 
   const { cartCount } = useCart();
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   if (isAdmin && isAuthenticated) {
     return (
       <div className={styles.navbar}>
@@ -38,7 +43,7 @@ const NavBar = () => {
                 <button onClick={() => navigate("/profile/settings")}>
                   Settings
                 </button>
-                <button onClick={logout}>Log out</button>
+                <button onClick={handleLogout}>Log out</button>
               </Dropdown.Content>
             </Dropdown>
 
@@ -93,7 +98,7 @@ const NavBar = () => {
               <button onClick={() => navigate("/profile/settings")}>
                 Settings
               </button>
-              <button onClick={logout}>Log out</button>
+              <button onClick={handleLogout}>Log out</button>
             </Dropdown.Content>
           </Dropdown>
 
