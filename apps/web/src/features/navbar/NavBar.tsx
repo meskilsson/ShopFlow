@@ -15,6 +15,8 @@ const NavBar = () => {
 
   const isAdmin = user?.role === "admin";
 
+  const { cartCount } = useCart();
+
   if (isAdmin && isAuthenticated) {
     return (
       <div className={styles.navbar}>
