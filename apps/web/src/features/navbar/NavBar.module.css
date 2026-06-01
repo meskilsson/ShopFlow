@@ -61,3 +61,29 @@
     text-decoration: none;
     color: var(--text-primary);
 }
+
+.cartWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cartBadge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: var(--btn-primary);
+    color: var(--btn-primary-text);
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 3px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    line-height: 1;
+}

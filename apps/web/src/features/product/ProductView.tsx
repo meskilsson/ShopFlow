@@ -6,6 +6,7 @@ import Line from "@/assets/icons/line.svg?react";
 import ButtonStd from "@/components/UI/ButtonStd";
 import Card from "@/components/UI/Card";
 import { addToCart } from "@/api/cart";
+import { useCart } from "@/contexts/CartContext";
 
 type ProductVariant = {
   _id: string;
@@ -30,6 +31,7 @@ type ProductViewProps = {
 };
 
 const ProductView = ({ product, variants }: ProductViewProps) => {
+  const { setCartCount } = useCart();
   const [cartMessage, setCartMessage] = useState<string>("");
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
     variants.find((variant) => variant.inStock !== false)?._id ?? null,
@@ -43,6 +45,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
 
     try {
       await addToCart(selectedVariantId, 1);
+      setCartCount((prev) => prev + 1);
       setCartMessage("Item added to cart");
 
       setTimeout(() => {
