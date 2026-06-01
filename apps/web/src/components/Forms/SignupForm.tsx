@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import styles from "../Forms/Signup.module.css";
 import SignupCard from "../UI/SignupCard";
 import { createUserRequest } from "@/api/user";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 type Role = "buyer" | "seller";
 
@@ -39,11 +40,7 @@ export default function SignupForm() {
 
             navigate("/login");
         } catch (err) {
-            if (err instanceof Error) {
-                setErrors(err.message);
-            } else {
-                setErrors("Something went wrong.");
-            }
+            setErrors(getErrorMessage(err));
         } finally {
             setIsLoading(false);
         }
