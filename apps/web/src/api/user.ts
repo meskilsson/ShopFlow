@@ -110,3 +110,18 @@ export async function changePasswordRequest(
 
     return data;
 }
+
+export async function getOrderWithItemRequest(id: string) {
+    const response = await fetch(`${API_URL}/orders/user/${id}/with-items`, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || data.error || "Failed to update password");
+    }
+
+    return data;
+}
