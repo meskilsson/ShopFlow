@@ -6,6 +6,7 @@ import CartIcon from "@/assets/icons/cart-shopping-solid-full.svg?react";
 import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import Dropdown from "@/components/UI/Dropdown";
 
 const NavBar = () => {
@@ -50,9 +51,16 @@ const NavBar = () => {
               )}
             </Link>
 
-            <Link to="/cart" className={styles.iconBtn}>
-              <CartIcon className={styles.icon} />
-            </Link>
+            <div className={styles.cartWrapper}>
+              <Link to="/cart" className={styles.iconBtn}>
+                <CartIcon className={styles.icon} />
+              </Link>
+              {cartCount > 0 && (
+                <span className={styles.cartBadge}>
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
+            </div>
 
             <Link to="/admin" className={styles.iconBtn}>
               Admin Dashboard
@@ -98,9 +106,16 @@ const NavBar = () => {
             )}
           </Link>
 
-          <Link to="/cart" className={styles.iconBtn}>
-            <CartIcon className={styles.icon} />
-          </Link>
+          <div className={styles.cartWrapper}>
+            <Link to="/cart" className={styles.iconBtn}>
+              <CartIcon className={styles.icon} />
+            </Link>
+            {cartCount > 0 && (
+              <span className={styles.cartBadge}>
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -135,9 +150,16 @@ const NavBar = () => {
             )}
           </Link>
 
-          <Link to="/cart" className={styles.iconBtn}>
-            <CartIcon className={styles.icon} />
-          </Link>
+          <div className={styles.cartWrapper}>
+            <Link to="/cart" className={styles.iconBtn}>
+              <CartIcon className={styles.icon} />
+            </Link>
+            {cartCount > 0 && (
+              <span className={styles.cartBadge}>
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

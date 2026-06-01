@@ -1,4 +1,5 @@
 import { changePasswordRequest } from "@/api/user";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import ButtonStd from "../UI/ButtonStd";
@@ -46,9 +47,7 @@ export default function ChangePasswordForm() {
 
             setSuccess("Password updated successfully.");
         } catch (error) {
-            setError(
-                error instanceof Error ? error.message : "Failed to update password"
-            );
+            setError(getErrorMessage(error));
         } finally {
             setIsLoading(false);
         }
