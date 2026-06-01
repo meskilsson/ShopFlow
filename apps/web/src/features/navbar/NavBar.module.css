@@ -80,3 +80,29 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   z-index: 10;
 }
+
+.cartWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cartBadge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: var(--btn-primary);
+    color: var(--btn-primary-text);
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 3px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    line-height: 1;
+}
