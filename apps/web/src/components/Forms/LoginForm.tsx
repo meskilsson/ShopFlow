@@ -6,7 +6,7 @@ import styles from "./Login.module.css";
 import { loginRequest } from "@/api/auth";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 
-import { getErrorMessage } from "@/utils/getErrorMessage";
+
 
 type LoginLocationState = {
   redirectTo?: string;
@@ -37,15 +37,7 @@ export default function LoginForm() {
       login(data.user);
       navigate(redirectTo || "/", { replace: true });
     } catch (error) {
-<<<<<<< HEAD
-      if (error instanceof Error) {
-        setErrors(getErrorMessage(error));
-      } else {
-        setErrors("Something went wrong");
-      }
-=======
       setErrors(getErrorMessage(error));
->>>>>>> a686e470b5ecfeda51b7ba17fb91c9e41e75b622
     } finally {
       setIsLoading(false);
     }
