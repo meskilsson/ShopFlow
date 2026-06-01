@@ -1,14 +1,13 @@
 export type UserRole = "buyer" | "seller" | "admin";
 
 export type AuthTokenPayload = {
-    userId: string;
+    id: string;
     email?: string;
     username?: string;
-    role?: UserRole;
-
+    role: UserRole;
 };
 
-interface PublicUser {
+export interface PublicUser {
     _id: string;
     name: string;
     email: string;

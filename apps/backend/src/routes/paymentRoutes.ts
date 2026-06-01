@@ -5,8 +5,14 @@ import {
   getPaymentsByOrder,
   updatePaymentStatus,
 } from "../controllers/paymentController";
+import { requireAuth } from "../middleware/requireAuth";
+import { authorizeRoles } from "../middleware/authorizeRoles";
 
 const paymentRouter = Router();
+
+paymentRouter.use(requireAuth);
+paymentRouter.use(authorizeRoles("admin"));
+
 
 // CREATE payment
 paymentRouter.post("/", createPayment);

@@ -9,6 +9,9 @@ import ButtonStd from "@/components/UI/ButtonStd";
 import Card from "@/components/UI/Card";
 import Modal from "@/components/UI/Modal/Modal";
 import styles from "./AdminOrderPage.module.css";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { formatDateEnglish } from "@/utils/formatDateEnglish";
+import { formatPrice } from "@/utils/formatPrice";
 
 type OrderUser =
     | {
@@ -35,22 +38,6 @@ export interface OrderInput {
     updatedAt?: string;
 }
 
-function formatDate(value?: string | null) {
-    if (!value) return "N/A";
-
-    return new Date(value).toLocaleDateString("sv-SE", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    });
-}
-
-function formatPrice(price: number) {
-    return new Intl.NumberFormat("sv-SE", {
-        style: "currency",
-        currency: "SEK",
-    }).format(price);
-}
 
 function getCustomerLabel(user?: OrderUser, sessionId?: string) {
     if (!user && sessionId) return `Guest session: ${sessionId}`;
@@ -107,7 +94,7 @@ export default function AdminOrderPage() {
                 setTotalOrders(data.totalOrders);
             } catch (error) {
                 if (error instanceof Error) {
-                    setError(error.message || "Failed to fetch orders");
+                    setError(getErrorMessage(error.message) || "Failed to fetch orders");
                 } else {
                     setError("Something went wrong");
                 }
@@ -138,7 +125,7 @@ export default function AdminOrderPage() {
             setIsDeleteModalOpen(false);
         } catch (error) {
             if (error instanceof Error) {
-                setDeleteError(error.message || "Failed to delete order");
+                setDeleteError(getErrorMessage(error.message) || "Failed to delete order");
             } else {
                 setDeleteError("Something went wrong");
             }
@@ -165,7 +152,7 @@ export default function AdminOrderPage() {
             setIsRestoreModalOpen(false);
         } catch (error) {
             if (error instanceof Error) {
-                setRestoreError(error.message || "Failed to restore order");
+                setRestoreError(getErrorMessage(error.message) || "Failed to restore order");
             } else {
                 setRestoreError("Something went wrong");
             }
@@ -258,8 +245,8 @@ export default function AdminOrderPage() {
 
                                 <span
                                     className={`${styles.statusBadge} ${isDeleted
-                                            ? styles.deletedBadge
-                                            : styles.activeBadge
+                                        ? styles.deletedBadge
+                                        : styles.activeBadge
                                         }`}
                                 >
                                     {isDeleted ? "Deleted" : "Active"}
@@ -294,12 +281,12 @@ export default function AdminOrderPage() {
 
                                 <div className={styles.metaItem}>
                                     <span>Created</span>
-                                    <strong>{formatDate(order.createdAt)}</strong>
+                                    <strong>{formatDateEnglish(order.createdAt)}</strong>
                                 </div>
 
                                 <div className={styles.metaItem}>
                                     <span>Deleted at</span>
-                                    <strong>{formatDate(order.deletedAt)}</strong>
+                                    <strong>{formatDateEnglish(order.deletedAt)}</strong>
                                 </div>
 
                                 <div className={styles.metaItem}>

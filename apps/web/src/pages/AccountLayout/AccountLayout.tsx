@@ -1,31 +1,59 @@
 import Container from "@/components/containers/Container";
-import { NavLink, Outlet } from "react-router-dom";
+import { Navigate, NavLink, Outlet } from "react-router-dom";
 import styles from "./AccountLayout.module.css";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { getUserByIdRequest } from "@/api/user";
 import { useEffect, useState } from "react";
 
+type AccountUser = {
+    _id: string;
+    name: string;
+    email: string;
+    role?: string;
+};
+
 export default function AccountLayout() {
     const { user: authUser } = useAuth();
 
     const [name, setName] = useState("");
+    const [user, setUser] = useState<AccountUser | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         async function getUser() {
-            if (!authUser?._id) return;
+            if (!authUser?._id) {
+                setIsLoading(false);
+                return;
+            }
 
             try {
                 const user = await getUserByIdRequest(authUser._id);
 
+                setUser(user);
                 setName(user.name);
             } catch (error) {
                 console.error("Failed to get user:", error);
+                setUser(null);
+            } finally {
+                setIsLoading(false);
             }
         }
 
         getUser();
     }, [authUser?._id]);
+
+    if (isLoading) {
+        return (
+            <Container>
+                <p>Loading account...</p>
+            </Container>
+        );
+    }
+
+    if (!authUser || !user) {
+        return <Navigate to="/login" replace />;
+    }
 
     return (
         <Container>
@@ -33,11 +61,9 @@ export default function AccountLayout() {
                 <div className={styles.pageHeader}>
                     <p className={styles.kicker}>My account</p>
 
-                    {name && (
+                    {name ? (
                         <p className={styles.subtitle}>Welcome back, {name}</p>
-                    )}
-
-                    {!name && (
+                    ) : (
                         <p className={styles.subtitle}>
                             Manage your profile, orders, addresses and returns.
                         </p>
@@ -53,7 +79,9 @@ export default function AccountLayout() {
                                 to="/profile"
                                 end
                                 className={({ isActive }) =>
-                                    isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+                                    isActive
+                                        ? `${styles.link} ${styles.activeLink}`
+                                        : styles.link
                                 }
                             >
                                 Profile
@@ -62,7 +90,9 @@ export default function AccountLayout() {
                             <NavLink
                                 to="/profile/settings"
                                 className={({ isActive }) =>
-                                    isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+                                    isActive
+                                        ? `${styles.link} ${styles.activeLink}`
+                                        : styles.link
                                 }
                             >
                                 Settings
@@ -71,7 +101,9 @@ export default function AccountLayout() {
                             <NavLink
                                 to="/profile/address"
                                 className={({ isActive }) =>
-                                    isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+                                    isActive
+                                        ? `${styles.link} ${styles.activeLink}`
+                                        : styles.link
                                 }
                             >
                                 Address
@@ -80,7 +112,9 @@ export default function AccountLayout() {
                             <NavLink
                                 to="/profile/orders"
                                 className={({ isActive }) =>
-                                    isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+                                    isActive
+                                        ? `${styles.link} ${styles.activeLink}`
+                                        : styles.link
                                 }
                             >
                                 Orders
@@ -89,7 +123,9 @@ export default function AccountLayout() {
                             <NavLink
                                 to="/profile/returns"
                                 className={({ isActive }) =>
-                                    isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+                                    isActive
+                                        ? `${styles.link} ${styles.activeLink}`
+                                        : styles.link
                                 }
                             >
                                 Returns

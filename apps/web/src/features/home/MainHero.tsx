@@ -8,11 +8,11 @@ import NavSpacer from '../navbar/NavSpacer'
 import { useNavigate } from "react-router-dom"
 
 interface HeroProps {
-  image: string
-  title?: string
-  subtitle?: string
-  children?: React.ReactNode
-  fullWidth?: boolean
+    image: string
+    title?: string
+    subtitle?: string
+    children?: React.ReactNode
+    fullWidth?: boolean
 }
 
 const categories = [
@@ -26,42 +26,42 @@ const categories = [
 
 const Hero = ({ image, title, subtitle, children, fullWidth = false }: HeroProps) => {
     const navigate = useNavigate()
-  return (
-    <>
-        <div
-            className={`${styles.hero} ${fullWidth ? styles.fullWidth : ""}`}
-            style={{ backgroundImage: `url(${image})` }}
-        >
-            <div className={styles.overlay}>
-            <div className={styles.heroNav}>
-                <nav className={styles.productCategories}>
-                <div className={styles.container}>
-                    <ButtonStd variant="ghost-light" bold onClick={() => navigate("/products")}>All Products</ButtonStd>
-                    <NavSpacer size={"0.5rem"}/>
+    return (
+        <>
+            <div
+                className={`${styles.hero} ${fullWidth ? styles.fullWidth : ""}`}
+                style={{ backgroundImage: `url(${image})` }}
+            >
+                <div className={styles.overlay}>
+                    <div className={styles.heroNav}>
+                        <nav className={styles.productCategories}>
+                            <div className={styles.container}>
+                                <ButtonStd variant="ghost-light" bold onClick={() => navigate("/products")}>All Products</ButtonStd>
+                                <NavSpacer size={"0.5rem"} />
 
-                    {categories.map((category) => (
-                        <ButtonStd
-                            key={category.value}
-                            variant="ghost-light"
-                            onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} > 
-                            {category.label}
-                        </ButtonStd>
-                    ))}
+                                {categories.map((category) => (
+                                    <ButtonStd
+                                        key={category.value}
+                                        variant="ghost-light"
+                                        onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} >
+                                        {category.label}
+                                    </ButtonStd>
+                                ))}
+                            </div>
+                            <div className={styles.container}>
+                                <SearchBar />
+                            </div>
+                        </nav>
+                    </div>
+                    <div className={styles.textContainer}>
+                        {title && <h1>{title}</h1>}
+                        {subtitle && <p>{subtitle}</p>}
+                        {children}
+                    </div>
                 </div>
-                <div className={styles.container}>
-                    <SearchBar/>
-                </div>
-            </nav>
             </div>
-            <div className={styles.textContainer}>
-                {title && <h1>{title}</h1>}
-                {subtitle && <p>{subtitle}</p>}
-                {children}
-            </div>
-            </div>
-        </div>
-    </>
-)
+        </>
+    )
 }
 
 export default Hero

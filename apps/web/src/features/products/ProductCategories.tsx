@@ -23,18 +23,18 @@ const ProductCategories = () => {
     <nav className={styles.productCategories}>
       <div className={styles.container}>
         <ButtonStd variant="secondary" bold onClick={() => navigate("/products")}>All Products</ButtonStd>
-        <NavSpacer size={"0.5rem"}/>
+        <NavSpacer size={"0.5rem"} />
         {categories.map((category) => (
           <ButtonStd
-              key={category.value}
-              variant="secondary"
-              onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} > 
-              {category.label}
+            key={category.value}
+            variant="secondary"
+            onClick={() => navigate(`/products?category=${encodeURIComponent(category.value)}`)} >
+            {category.label}
           </ButtonStd>
-          ))}
+        ))}
       </div>
       <div className={styles.container}>
-        <SearchBar/>
+        <SearchBar />
       </div>
     </nav>
   )

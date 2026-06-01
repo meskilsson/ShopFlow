@@ -53,7 +53,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         );
         setIsInWishlist(alreadyInWishlist);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [isAuthenticated, product._id]);
 
   const { refreshWishlist } = useAuth();
