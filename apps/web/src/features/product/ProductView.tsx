@@ -9,6 +9,7 @@ import Card from "@/components/UI/Card";
 import { addToCart } from "@/api/cart";
 import { toggleWishlist } from "@/api/wishlist";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 
 type ProductVariant = {
   _id: string;
