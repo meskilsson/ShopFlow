@@ -10,11 +10,12 @@ import { useCart } from "@/contexts/CartContext";
 import Dropdown from "@/components/UI/Dropdown";
 
 const NavBar = () => {
-  const { logout, isAuthenticated, user } = useAuth();
-  const { cartCount } = useCart();
+  const { logout, isAuthenticated, user, wishlistCount } = useAuth();
   const navigate = useNavigate();
 
   const isAdmin = user?.role === "admin";
+
+  const { cartCount } = useCart();
 
   if (isAdmin && isAuthenticated) {
     return (
@@ -33,19 +34,24 @@ const NavBar = () => {
               </Dropdown.Trigger>
 
               <Dropdown.Content>
-                <button
-                  onClick={() => navigate("/profile")}
-                >Profile</button>
-                <button
-                  onClick={() => navigate("/profile/settings")}
-                >Settings</button>
+                <button onClick={() => navigate("/profile")}>Profile</button>
+                <button onClick={() => navigate("/profile/settings")}>
+                  Settings
+                </button>
                 <button onClick={logout}>Log out</button>
               </Dropdown.Content>
             </Dropdown>
 
-            <a className={styles.iconBtn}>
+            <Link
+              to="/wishlist"
+              className={styles.iconBtn}
+              style={{ position: "relative" }}
+            >
               <HeartIcon className={styles.icon} />
-            </a>
+              {wishlistCount > 0 && (
+                <span className={styles.wishlistCount}>{wishlistCount}</span>
+              )}
+            </Link>
 
             <div className={styles.cartWrapper}>
               <Link to="/cart" className={styles.iconBtn}>
@@ -67,7 +73,6 @@ const NavBar = () => {
     );
   }
 
-
   return isAuthenticated ? (
     <div className={styles.navbar}>
       <div className={styles.container}>
@@ -84,19 +89,24 @@ const NavBar = () => {
             </Dropdown.Trigger>
 
             <Dropdown.Content>
-              <button
-                onClick={() => navigate("/profile")}
-              >Profile</button>
-              <button
-                onClick={() => navigate("/profile/settings")}
-              >Settings</button>
+              <button onClick={() => navigate("/profile")}>Profile</button>
+              <button onClick={() => navigate("/profile/settings")}>
+                Settings
+              </button>
               <button onClick={logout}>Log out</button>
             </Dropdown.Content>
           </Dropdown>
 
-          <a className={styles.iconBtn}>
+          <Link
+            to="/wishlist"
+            className={styles.iconBtn}
+            style={{ position: "relative" }}
+          >
             <HeartIcon className={styles.icon} />
-          </a>
+            {wishlistCount > 0 && (
+              <span className={styles.wishlistCount}>{wishlistCount}</span>
+            )}
+          </Link>
 
           <div className={styles.cartWrapper}>
             <Link to="/cart" className={styles.iconBtn}>
@@ -131,9 +141,16 @@ const NavBar = () => {
             </Dropdown.Content>
           </Dropdown>
 
-          <a className={styles.iconBtn}>
+          <Link
+            to="/wishlist"
+            className={styles.iconBtn}
+            style={{ position: "relative" }}
+          >
             <HeartIcon className={styles.icon} />
-          </a>
+            {wishlistCount > 0 && (
+              <span className={styles.wishlistCount}>{wishlistCount}</span>
+            )}
+          </Link>
 
           <div className={styles.cartWrapper}>
             <Link to="/cart" className={styles.iconBtn}>

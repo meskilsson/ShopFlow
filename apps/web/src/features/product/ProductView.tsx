@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./ProductView.module.css";
 import FallbackProductImage from "@/assets/1.webp";
-import HeartIconStd from "@/assets/icons/heart-regular-full.svg?react";
+import HeartIconRegular from "@/assets/icons/heart-regular-full.svg?react";
+import HeartIconSolid from "@/assets/icons/heart-solid-full.svg?react";
 import Line from "@/assets/icons/line.svg?react";
 import ButtonStd from "@/components/UI/ButtonStd";
 import Card from "@/components/UI/Card";
 import { addToCart } from "@/api/cart";
+import { toggleWishlist } from "@/api/wishlist";
+import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 
 type ProductVariant = {
@@ -31,11 +34,44 @@ type ProductViewProps = {
 };
 
 const ProductView = ({ product, variants }: ProductViewProps) => {
+  const { isAuthenticated } = useAuth();
   const { setCartCount } = useCart();
   const [cartMessage, setCartMessage] = useState<string>("");
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
     variants.find((variant) => variant.inStock !== false)?._id ?? null,
   );
+  const [isInWishlist, setIsInWishlist] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    import("@/api/wishlist")
+      .then(({ getWishlist }) => getWishlist())
+      .then((wishlist) => {
+        const alreadyInWishlist = wishlist.some(
+          (p: any) => p._id === product._id,
+        );
+        setIsInWishlist(alreadyInWishlist);
+      })
+      .catch(() => { });
+  }, [isAuthenticated, product._id]);
+
+  const { refreshWishlist } = useAuth();
+
+  async function handleToggleWishlist() {
+    if (!isAuthenticated) {
+      alert("Logga in för att spara i önskelistan ❤️");
+      return;
+    }
+
+    try {
+      const result = await toggleWishlist(product._id);
+      setIsInWishlist(result.inWishlist);
+      await refreshWishlist(); // ← NY – uppdaterar NavBar direkt
+    } catch (error) {
+      console.error("Wishlist toggle failed", error);
+    }
+  }
 
   async function handleAddToCart() {
     if (!selectedVariantId) {
@@ -56,29 +92,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
     }
   }
 
-  const comments = [
-    {
-      user: "Chas-Robin",
-      comment: "Love these boots!",
-      date: "14 April 2026",
-      rating: 4,
-      imageUrl: "https://i.pravatar.cc/100?img=22",
-    },
-    {
-      user: "Marcus",
-      comment: "Livets dojjor",
-      date: "14 April 2026",
-      rating: 5,
-      imageUrl: "https://i.pravatar.cc/100?img=2",
-    },
-    {
-      user: "Pontus",
-      comment: "Jag fick bara en 😟",
-      date: "14 April 2026",
-      rating: 1,
-      imageUrl: "https://i.pravatar.cc/100?img=1",
-    },
-  ];
+  const HeartIcon = isInWishlist ? HeartIconSolid : HeartIconRegular;
 
   return (
     <section className={styles.productContainer}>
@@ -140,8 +154,13 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
             <ButtonStd variant="primary" fullWidth onClick={handleAddToCart}>
               Add to cart
             </ButtonStd>
-            <ButtonStd variant="ghost-dark">
-              <HeartIconStd className={styles.buttonIcon} />
+
+            <ButtonStd
+              variant="ghost-dark"
+              onClick={handleToggleWishlist}
+              style={{ cursor: "pointer" }}
+            >
+              <HeartIcon className={styles.buttonIcon} />
             </ButtonStd>
           </div>
 
@@ -153,32 +172,15 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         <Card>
           <h2 className={styles.sellerInfo}>
             This product is sold by{" "}
-            <span className={styles.seller}>{product.seller || "ShopFlow"}</span>
+            <span className={styles.seller}>
+              {product.seller || "ShopFlow"}
+            </span>
           </h2>
         </Card>
 
         <Card>
           <p className={styles.commentsText}>Comments:</p>
-          <section className={styles.comment}>
-            {comments.map((c, index) => (
-              <div key={index} className={styles.commentItem}>
-                <div className={styles.commentContainer}>
-                  <div className={styles.commentImg}>
-                    <img src={c.imageUrl} alt="" />
-                  </div>
-                  <div className={styles.commentText}>
-                    <h2 className={styles.commentName}>
-                      {c.user}{" "}
-                      <span className={styles.commentRating}>
-                        Rating: {c.rating}/5
-                      </span>
-                    </h2>
-                    <p className={styles.commentComment}>{c.comment}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </section>
+          <section className={styles.comment}>{/* comments... */}</section>
         </Card>
       </div>
     </section>
