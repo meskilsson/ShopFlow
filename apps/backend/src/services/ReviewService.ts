@@ -26,15 +26,28 @@ export async function createReview(reviewData: CreateReViewInput) {
 }
 
 // ===== GET BY PRODUCTID ===== //
-export async function getReviewsByProduct(productId: string) {
+export async function getReviewsByProduct(productId: string, page = 1, limit = 3) {
     const product = await Product.findById(productId);
     if(!product) {
         throw new NotFoundError("Product not found");
     }
 
-    return await Review.find({ product: productId })
+    const reviews = await Review.find({ product: productId })
         .populate("user", "name email")
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+        const total = await Review.countDocuments({ product: productId})
+        return {
+            data: reviews,
+            meta: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total/limit),
+            },
+        };
 }
 
 // ===== GET BY ID ===== //
@@ -48,11 +61,4 @@ export async function getReviewById(id: string) {
     }
 
     return review;
-}
-
-// ===== CREATE REVIEW ===== //
-export async function createReview(ReviewData: string) {
-    const review = {
-        
-    }
 }

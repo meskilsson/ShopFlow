@@ -142,6 +142,12 @@
 .commentsBtn {
   display: flex;
   justify-content: flex-end;
+  margin-top: 0.45rem;
+}
+
+.commentsBtn button {
+  padding: 0.2rem 0.45rem;
+  font-size: 0.7rem;
 }
 
 .variantDiv {
@@ -188,4 +194,28 @@
   font-size: 0.65rem;
   color: var(--text-gray);
   margin-top: 0.1rem;
+}
+
+.reviewError {
+  margin-top: 0.5rem;
+  color: #b42318;
+  font-size: 0.85rem;
+}
+
+.reviewPagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+}
+
+.reviewPagination button {
+  padding: 0.2rem 0.45rem;
+  font-size: 0.7rem;
+}
+
+.reviewPageText {
+  font-size: 0.85rem;
+  color: var(--text-gray);
 }

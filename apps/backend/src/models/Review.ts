@@ -38,5 +38,5 @@ const reviewSchema = new Schema<IReview>(
         timestamps: true 
     },
 )
-const Review = model<IReview>("review", reviewSchema);
+const Review = model<IReview>("Review", reviewSchema);
 export default Review;
