@@ -145,11 +145,6 @@
   margin-top: 0.45rem;
 }
 
-.commentsBtn button {
-  padding: 0.2rem 0.45rem;
-  font-size: 0.7rem;
-}
-
 .variantDiv {
   margin-top: 1rem;
 }
@@ -208,11 +203,6 @@
   justify-content: space-between;
   gap: 0.4rem;
   margin-top: 0.45rem;
-}
-
-.reviewPagination button {
-  padding: 0.2rem 0.45rem;
-  font-size: 0.7rem;
 }
 
 .reviewPageText {
