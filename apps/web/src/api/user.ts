@@ -125,3 +125,29 @@ export async function getOrderWithItemRequest(id: string) {
 
     return data;
 }
+
+export async function getUserDataRequest() {
+    const response = await fetch(`${API_URL}/users/me/data`, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to export user data");
+    }
+
+    return response.json();
+}
+
+export async function deleteMyAccountRequest() {
+    const response = await fetch(`${API_URL}/users/me`, {
+        method: "DELETE",
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to delete account");
+    }
+
+    return response.json();
+}
