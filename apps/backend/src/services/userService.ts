@@ -1,16 +1,23 @@
 import User from "../models/User";
+import Product from "../models/Products";
 import bcrypt from "bcrypt";
-import { ValidationError, ConflictError, NotFoundError } from "../errors/AppError";
+import {
+  ValidationError,
+  ConflictError,
+  NotFoundError,
+} from "../errors/AppError";
 import type { UpdateUserInput, CreateUserInput } from "../schemas/userSchemas";
 
-
-
-
-
 export async function createUser(userData: CreateUserInput) {
-  if (!userData?.name || !userData?.email || !userData?.username || !userData?.password) {
-    throw new ValidationError("Name, email, username and password are required");
-
+  if (
+    !userData?.name ||
+    !userData?.email ||
+    !userData?.username ||
+    !userData?.password
+  ) {
+    throw new ValidationError(
+      "Name, email, username and password are required",
+    );
   }
 
   const name = userData.name.trim();
@@ -121,7 +128,7 @@ export async function updateUser(id: string, userData: UpdateUserInput) {
 export async function changePasswordService(
   userId: string,
   currentPassword: string,
-  newPassword: string
+  newPassword: string,
 ) {
   const user = await User.findById(userId).select("+passwordHash");
 
@@ -131,7 +138,7 @@ export async function changePasswordService(
 
   const isPasswordCorrect = await bcrypt.compare(
     currentPassword,
-    user.passwordHash
+    user.passwordHash,
   );
 
   if (!isPasswordCorrect) {
@@ -153,4 +160,36 @@ export async function changePasswordService(
   return {
     message: "Password updated successfully",
   };
+}
+
+export async function getWishlist(userId: string) {
+  const user = await User.findById(userId).populate({
+    path: "wishlist",
+    select: "name price category ProductImage",
+  });
+
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  return user.wishlist;
+}
+
+export async function toggleWishlist(userId: string, productId: string) {
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError("User not found");
+
+  const productExists = await Product.exists({ _id: productId });
+  if (!productExists) throw new NotFoundError("Product not found");
+
+  const isInWishlist = user.wishlist.some((id) => id.toString() === productId);
+
+  if (isInWishlist) {
+    user.wishlist = user.wishlist.filter((id) => id.toString() !== productId);
+  } else {
+    user.wishlist.push(productId as any);
+  }
+
+  await user.save();
+  return { inWishlist: !isInWishlist };
 }

@@ -9,6 +9,7 @@ export interface IUser {
   username: string;
   passwordHash: string;
   role: UserRole;
+  wishlist: Types.ObjectId[];
   deletedAt?: Date | null;
   deletedBy?: Types.ObjectId | null;
   deleteReason?: string | null;
@@ -53,6 +54,13 @@ const userSchema = new Schema<IUser>(
       default: "buyer",
       required: true,
     },
+    wishlist: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+        default: [],
+      },
+    ],
     deletedAt: {
       type: Date,
       default: null,
@@ -76,6 +84,4 @@ const userSchema = new Schema<IUser>(
 
 const User = model<IUser>("User", userSchema);
 
-
 export default User;
-

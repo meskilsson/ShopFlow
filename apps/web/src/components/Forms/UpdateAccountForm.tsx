@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateUserRequest } from "@/api/user";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { useAuth } from "@/contexts/AuthContext";
 import type { UpdateUserData } from "@/types/userTypes";
 import ButtonStd from "../UI/ButtonStd";
@@ -45,7 +46,7 @@ export default function UpdateAccountForm() {
 
             setSuccess("Account updated successfully.");
         } catch (error) {
-            setError(error instanceof Error ? error.message : "Failed to update account.");
+            setError(getErrorMessage(error));
         } finally {
             setIsLoading(false);
         }

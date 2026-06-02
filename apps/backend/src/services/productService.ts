@@ -8,6 +8,7 @@ import type {
     UpdateProductInput,
     UpdateProductInputVariant,
 } from "../schemas/productSchemas";
+import { UserRole } from "../types/authTypes";
 
 type ProductFilters = {
     category?: ProductQueryInput["category"];
@@ -17,6 +18,11 @@ type ProductFilters = {
     sortOrder: 1 | -1;
     page: number;
     limit: number;
+}
+
+type ProductActor = {
+    id: string;
+    role: UserRole;
 }
 
 const SIZE_ORDER = ["xs", "s", "m", "l", "xl"];
@@ -69,7 +75,7 @@ function sortBySizeOrder(variants: IProductVariant[]) {
 }
 
 // ===== CREATE ===== //
-export async function createProduct(productData: CreateProductInput) {
+export async function createProduct(productData: CreateProductInput, actor: ProductActor) {
     const product = {
         name: productData.name,
         price: productData.price,
@@ -77,7 +83,14 @@ export async function createProduct(productData: CreateProductInput) {
         ...(productData.ProductImage !== undefined && {
             ProductImage: productData.ProductImage,
         }),
+
+        ...(actor.role === "seller" && {
+            seller: actor.id,
+        }),
+
     };
+
+
 
     return await Product.create(product);
 }

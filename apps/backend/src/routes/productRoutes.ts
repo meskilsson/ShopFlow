@@ -26,6 +26,8 @@ import {
     updateProductVariantSchema,
 } from "../schemas/productSchemas.ts"
 
+import { requireProductOwnerOrRole } from "../middleware/requireProductOwnerOrRole.ts";
+
 const productRouter = Router();
 
 // Must be before /:id to avoid route collision
@@ -37,64 +39,84 @@ productRouter.post(
     uploadProductImageController,
 );
 
+// ===== PUBLIC PRODUCT ROUTES ===== //
+
 productRouter.get(
     "/",
     validateRequest({ query: productQuerySchema }),
-    getAllProducts),
-    productRouter.get(
-        "/:id",
-        validateRequest({ params: productIdParamsSchema }),
-        getProductById),
+    getAllProducts);
 
-    productRouter.post(
-        "/",
-        validateRequest({ body: createProductSchema }),
-        createProduct),
 
-    productRouter.patch(
-        "/:id",
-        validateRequest({
-            params: productIdParamsSchema,
-            body: updateProductSchema,
-        }),
-        updateProduct),
+productRouter.get(
+    "/:id",
+    validateRequest({ params: productIdParamsSchema }),
+    getProductById);
 
-    productRouter.delete(
-        "/:id",
-        validateRequest({ params: productIdParamsSchema }),
-        deleteProduct)
+// ===== PROTECTED PRODUCT ROUTES ===== //
+
+productRouter.post(
+    "/",
+    requireAuth,
+    authorizeRoles("admin", "seller"),
+    validateRequest({ body: createProductSchema }),
+    createProduct);
+
+productRouter.patch(
+    "/:id",
+    requireAuth,
+    validateRequest({
+        params: productIdParamsSchema,
+        body: updateProductSchema,
+    }),
+    requireProductOwnerOrRole("admin"),
+    updateProduct);
+
+productRouter.delete(
+    "/:id",
+    requireAuth,
+    validateRequest({ params: productIdParamsSchema }),
+    requireProductOwnerOrRole("admin"),
+    deleteProduct);
 
 // ===== VARIANT ===== //
 productRouter.get(
     "/:id/variants",
     validateRequest({ params: productIdParamsSchema }),
-    getProductVariants),
+    getProductVariants);
 
-    productRouter.get(
-        "/variants/:variantId",
-        validateRequest({ params: variantIdParamsSchema }),
-        getVariantById),
+productRouter.get(
+    "/variants/:variantId",
+    validateRequest({ params: variantIdParamsSchema }),
+    getVariantById);
 
-    productRouter.post(
-        "/:id/variants",
-        validateRequest({
-            params: productIdParamsSchema,
-            body: createProductVariantSchema
-        }),
-        createProductVariant),
+// ===== PROTECTED VARIANT ROUTES ===== //
 
-    productRouter.patch(
-        "/variants/:variantId",
-        validateRequest({
-            params: variantIdParamsSchema,
-            body: updateProductVariantSchema
-        }),
-        updateVariant),
+productRouter.post(
+    "/:id/variants",
+    requireAuth,
+    validateRequest({
+        params: productIdParamsSchema,
+        body: createProductVariantSchema
+    }),
+    requireProductOwnerOrRole("admin"),
+    createProductVariant);
 
-    productRouter.delete(
-        "/variants/:variantId",
-        validateRequest({ params: variantIdParamsSchema }),
-        deleteVariant)
+productRouter.patch(
+    "/variants/:variantId",
+    requireAuth,
+    authorizeRoles("admin"),
+    validateRequest({
+        params: variantIdParamsSchema,
+        body: updateProductVariantSchema
+    }),
+    updateVariant);
+
+productRouter.delete(
+    "/variants/:variantId",
+    requireAuth,
+    authorizeRoles("admin"),
+    validateRequest({ params: variantIdParamsSchema }),
+    deleteVariant);
 
 
 export default productRouter;

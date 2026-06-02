@@ -6,6 +6,7 @@ import {
   updateCartItemQuantity,
 } from "@/api/cart";
 import Container from "@/components/containers/Container";
+import { useCart } from "@/contexts/CartContext";
 import ButtonStd from "@/components/UI/ButtonStd";
 import CartItems from "@/features/cart/CartItems";
 import CartSummary from "@/features/cart/CartSummary";
@@ -28,6 +29,7 @@ function applyCartResponse(
 
 const CartPage = () => {
   const navigate = useNavigate();
+  const { setCartCount } = useCart();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -36,11 +38,13 @@ const CartPage = () => {
     getCart()
       .then((data: CartResponse) => {
         applyCartResponse(data, setCartItems, setCartTotal);
+        setCartCount(data.items.reduce((sum, item) => sum + item.quantity, 0));
       })
       .catch((error: ApiError) => {
         if (error.status === 404) {
           setCartItems([]);
           setCartTotal(0);
+          setCartCount(0);
           return;
         }
 
@@ -61,6 +65,7 @@ const CartPage = () => {
         quantity - 1,
       );
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
+      setCartCount(updatedCart.items.reduce((sum, item) => sum + item.quantity, 0));
     } catch (error) {
       console.error("Failed to decrease quantity:", error);
     }
@@ -76,6 +81,7 @@ const CartPage = () => {
         quantity + 1,
       );
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
+      setCartCount(updatedCart.items.reduce((sum, item) => sum + item.quantity, 0));
     } catch (error) {
       console.error("Failed to increase quantity:", error);
     }
@@ -85,6 +91,7 @@ const CartPage = () => {
     try {
       const updatedCart = await removeCartItem(productVariantId);
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
+      setCartCount(updatedCart.items.reduce((sum, item) => sum + item.quantity, 0));
     } catch (error) {
       console.error("Failed to remove item:", error);
     }

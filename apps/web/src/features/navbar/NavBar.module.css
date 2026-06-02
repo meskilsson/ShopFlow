@@ -1,63 +1,109 @@
 .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    background-color: var(--bg-secondary);
-    height: var(--navbar-height);
+  background-color: var(--bg-secondary);
+  height: var(--navbar-height);
 
-    position: relative;
-    z-index: 1000;
-
+  position: relative;
+  z-index: 1000;
 }
 
 .container {
-    width: var(--max-width);
-    display: flex;
-    justify-content: space-between;
-    /* background-color: aquamarine; */
+  width: var(--max-width);
+  display: flex;
+  justify-content: space-between;
+  /* background-color: aquamarine; */
 }
 
 .iconContainer {
-    /* background-color: aqua; */
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
+  /* background-color: aqua; */
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .iconContainer a {
-    /* background-color: tomato; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* background-color: tomato; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .icon {
-    width: var(--icon-size);
-    height: var(--icon-size);
-    fill: "var(--icon-secondary)";
-    cursor: pointer;
-    transition: fill 0.2s ease-in-out;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  fill: "var(--icon-secondary)";
+  cursor: pointer;
+  transition: fill 0.2s ease-in-out;
 }
 
 .icon:hover {
-    fill: var(--icon-secondary-hover);
+  fill: var(--icon-secondary-hover);
 }
 
 .dropdownHighlight {
-    font-weight: var(--dropdown-text-highlight-weight);
-    color: var(--dropdown-text-red);
+  font-weight: var(--dropdown-text-highlight-weight);
+  color: var(--dropdown-text-red);
 }
 
 .dropdownDivider {
-    height: 1px;
-    background-color: var(--dropdown-hover);
-    margin: 0.5rem 0;
+  height: 1px;
+  background-color: var(--dropdown-hover);
+  margin: 0.5rem 0;
 }
 
 .link {
-    text-decoration: none;
-    color: var(--text-primary);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.wishlistCount {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--btn-primary);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+.cartWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cartBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--btn-primary);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  z-index: 10;
 }

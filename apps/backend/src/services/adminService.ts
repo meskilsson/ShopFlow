@@ -103,6 +103,10 @@ export async function deleteAdminUserById({
         }
     }
 
+    if (user.role === "admin") {
+        throw new ForbiddenError("Admins cannot delete other admin accounts");
+    }
+
     user.deletedAt = new Date();
     user.deletedBy = new Types.ObjectId(adminUserId);
     user.deleteReason = deleteReason ?? null;

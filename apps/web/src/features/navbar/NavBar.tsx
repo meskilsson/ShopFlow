@@ -6,13 +6,21 @@ import CartIcon from "@/assets/icons/cart-shopping-solid-full.svg?react";
 import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import Dropdown from "@/components/UI/Dropdown";
 
 const NavBar = () => {
-  const { logout, isAuthenticated, user } = useAuth();
+  const { logout, isAuthenticated, user, wishlistCount } = useAuth();
   const navigate = useNavigate();
 
   const isAdmin = user?.role === "admin";
+
+  const { cartCount } = useCart();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   if (isAdmin && isAuthenticated) {
     return (
@@ -31,23 +39,35 @@ const NavBar = () => {
               </Dropdown.Trigger>
 
               <Dropdown.Content>
-                <button
-                  onClick={() => navigate("/profile")}
-                >Profile</button>
-                <button
-                  onClick={() => navigate("/profile/settings")}
-                >Settings</button>
-                <button onClick={logout}>Log out</button>
+                <button onClick={() => navigate("/profile")}>Profile</button>
+                <button onClick={() => navigate("/profile/settings")}>
+                  Settings
+                </button>
+                <button onClick={handleLogout}>Log out</button>
               </Dropdown.Content>
             </Dropdown>
 
-            <a className={styles.iconBtn}>
+            <Link
+              to="/wishlist"
+              className={styles.iconBtn}
+              style={{ position: "relative" }}
+            >
               <HeartIcon className={styles.icon} />
-            </a>
-
-            <Link to="/cart" className={styles.iconBtn}>
-              <CartIcon className={styles.icon} />
+              {wishlistCount > 0 && (
+                <span className={styles.wishlistCount}>{wishlistCount}</span>
+              )}
             </Link>
+
+            <div className={styles.cartWrapper}>
+              <Link to="/cart" className={styles.iconBtn}>
+                <CartIcon className={styles.icon} />
+              </Link>
+              {cartCount > 0 && (
+                <span className={styles.cartBadge}>
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
+            </div>
 
             <Link to="/admin" className={styles.iconBtn}>
               Admin Dashboard
@@ -57,7 +77,6 @@ const NavBar = () => {
       </div>
     );
   }
-
 
   return isAuthenticated ? (
     <div className={styles.navbar}>
@@ -75,23 +94,35 @@ const NavBar = () => {
             </Dropdown.Trigger>
 
             <Dropdown.Content>
-              <button
-                onClick={() => navigate("/profile")}
-              >Profile</button>
-              <button
-                onClick={() => navigate("/profile/settings")}
-              >Settings</button>
-              <button onClick={logout}>Log out</button>
+              <button onClick={() => navigate("/profile")}>Profile</button>
+              <button onClick={() => navigate("/profile/settings")}>
+                Settings
+              </button>
+              <button onClick={handleLogout}>Log out</button>
             </Dropdown.Content>
           </Dropdown>
 
-          <a className={styles.iconBtn}>
+          <Link
+            to="/wishlist"
+            className={styles.iconBtn}
+            style={{ position: "relative" }}
+          >
             <HeartIcon className={styles.icon} />
-          </a>
-
-          <Link to="/cart" className={styles.iconBtn}>
-            <CartIcon className={styles.icon} />
+            {wishlistCount > 0 && (
+              <span className={styles.wishlistCount}>{wishlistCount}</span>
+            )}
           </Link>
+
+          <div className={styles.cartWrapper}>
+            <Link to="/cart" className={styles.iconBtn}>
+              <CartIcon className={styles.icon} />
+            </Link>
+            {cartCount > 0 && (
+              <span className={styles.cartBadge}>
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -115,13 +146,27 @@ const NavBar = () => {
             </Dropdown.Content>
           </Dropdown>
 
-          <a className={styles.iconBtn}>
+          <Link
+            to="/wishlist"
+            className={styles.iconBtn}
+            style={{ position: "relative" }}
+          >
             <HeartIcon className={styles.icon} />
-          </a>
-
-          <Link to="/cart" className={styles.iconBtn}>
-            <CartIcon className={styles.icon} />
+            {wishlistCount > 0 && (
+              <span className={styles.wishlistCount}>{wishlistCount}</span>
+            )}
           </Link>
+
+          <div className={styles.cartWrapper}>
+            <Link to="/cart" className={styles.iconBtn}>
+              <CartIcon className={styles.icon} />
+            </Link>
+            {cartCount > 0 && (
+              <span className={styles.cartBadge}>
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
