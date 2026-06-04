@@ -136,7 +136,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
     setIsCommentModalOpen(true);
   }
 
-  useEffect(() => {
+   useEffect(() => {
     if (!isAuthenticated) return;
 
     import("@/api/wishlist")
@@ -147,20 +147,19 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         );
         setIsInWishlist(alreadyInWishlist);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [isAuthenticated, product._id]);
-
 
   async function handleToggleWishlist() {
     if (!isAuthenticated) {
-      alert("Logga in for att spara i onskelistan");
+      alert("Logga in för att spara i önskelistan ❤️");
       return;
     }
 
     try {
       const result = await toggleWishlist(product._id);
       setIsInWishlist(result.inWishlist);
-      await refreshWishlist();
+      await refreshWishlist(); // ← NY – uppdaterar NavBar direkt
     } catch (error) {
       console.error("Wishlist toggle failed", error);
     }
