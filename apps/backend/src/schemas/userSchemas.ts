@@ -6,6 +6,7 @@ export const userIdParamsSchema = z.strictObject({
 });
 
 const nameSchema = z.string().trim().min(2).max(50);
+const storeNameSchema = z.string().trim().min(2).max(50);
 
 const emailSchema = z.string().trim().toLowerCase().pipe(z.email());
 
@@ -40,6 +41,7 @@ export const updateUserSchema = z
     name: nameSchema.optional(),
     email: emailSchema.optional(),
     username: usernameSchema.optional(),
+    storeName: storeNameSchema.optional(),
   })
 
   //if key === pass

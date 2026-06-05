@@ -1,6 +1,6 @@
 import Product, { IProduct } from "../models/Products";
 import ProductVariant, { IProductVariant } from "../models/ProductVariant";
-import { NotFoundError } from "../errors/AppError";
+import { NotFoundError, UnauthorizedError } from "../errors/AppError";
 import type {
     CreateProductInput,
     CreateProductInputVariant,
@@ -80,19 +80,37 @@ export async function createProduct(productData: CreateProductInput, actor: Prod
         name: productData.name,
         price: productData.price,
         category: productData.category,
+        ...(productData.description !== undefined && {
+            description: productData.description,
+        }),
+        ...(productData.active !== undefined && {
+            active: productData.active,
+        }),
         ...(productData.ProductImage !== undefined && {
             ProductImage: productData.ProductImage,
         }),
-
         ...(actor.role === "seller" && {
             seller: actor.id,
         }),
-
     };
 
 
 
     return await Product.create(product);
+}
+
+// ===== GET MY PRODUCTS ===== //
+export async function getProductsBySeller(sellerId: string) {
+    const products = await Product.find({ seller: sellerId, deletedAt: null });
+
+    const productsWithVariants = await Promise.all(
+        products.map(async (product) => {
+            const variants = await ProductVariant.countDocuments({ product: product._id });
+            return { ...product.toObject(), variants };
+        })
+    );
+
+    return productsWithVariants;
 }
 
 // ===== CREATE PRODUCT VARIANT ===== //
@@ -117,7 +135,7 @@ export async function createProductVariant(productId: string, variantData: Creat
 
 // ===== GET ALL  ===== //
 export async function getAllProducts(filters: ProductFilters) {
-    const query: Record<string, unknown> = {};
+    const query: Record<string, unknown> = { active: { $ne: false } };
 
     if (filters.category) {
         query.category = filters.category;
@@ -168,7 +186,7 @@ export async function getAllProducts(filters: ProductFilters) {
 
 // ===== GET ID ===== //
 export async function getProductById(id: string) {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate("seller", "name storeName");
     const foundProduct = handlerNotFound(product, "Product not found")
 
     const variants = await ProductVariant.find({ product: id });
@@ -200,6 +218,8 @@ export async function updateProduct(id: string, updateData: UpdateProductInput) 
     if (updateData.name !== undefined) productUpdate.name = updateData.name;
     if (updateData.price !== undefined) productUpdate.price = updateData.price;
     if (updateData.category !== undefined) productUpdate.category = updateData.category;
+    if (updateData.description !== undefined) productUpdate.description = updateData.description;
+    if (updateData.active !== undefined) productUpdate.active = updateData.active;
     if (updateData.ProductImage !== undefined) productUpdate.ProductImage = updateData.ProductImage;
 
     const product = await Product.findByIdAndUpdate(id, productUpdate, {
@@ -231,9 +251,18 @@ export async function deleteProduct(id: string) {
 }
 
 // ===== DELETE VARIANT ===== //
-export async function deleteVariant(variantId: string) {
-    const variant = await ProductVariant.findByIdAndDelete(variantId);
-    return handlerNotFound(variant, "Variant not found")
+export async function deleteVariant(variantId: string, actor?: { id: string; role: string }) {
+    const variant = await ProductVariant.findById(variantId);
+    handlerNotFound(variant, "Variant not found");
+
+    if (actor?.role === "seller") {
+        const product = await Product.findById(variant!.product);
+        if (!product || product.seller?.toString() !== actor.id) {
+            throw new UnauthorizedError("Forbidden");
+        }
+    }
+
+    await ProductVariant.findByIdAndDelete(variantId);
 }
 
 

@@ -80,6 +80,13 @@
   color: var(--text-gray);
 }
 
+.productDescription {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
 .sellerInfo {
   font-size: 1rem;
   font-weight: 400;;

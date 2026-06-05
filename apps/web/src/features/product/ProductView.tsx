@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./ProductView.module.css";
-import FallbackProductImage from "@/assets/1.webp";
 import HeartIconRegular from "@/assets/icons/heart-regular-full.svg?react";
+import NoImagePlaceholder from "@/components/UI/NoImagePlaceholder";
 import HeartIconSolid from "@/assets/icons/heart-solid-full.svg?react";
 import Line from "@/assets/icons/line.svg?react";
 import ButtonStd from "@/components/UI/ButtonStd";
@@ -27,7 +27,8 @@ type ProductViewProps = {
     category: string;
     price: number;
     rating?: number;
-    seller?: string;
+    description?: string;
+    seller?: { _id: string; name: string; storeName?: string } | null;
     ProductImage?: string;
   };
   variants: ProductVariant[];
@@ -96,11 +97,10 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
 
   return (
     <section className={styles.productContainer}>
-      <img
-        src={product.ProductImage || FallbackProductImage}
-        alt={product.name}
-        className={styles.productImage}
-      />
+      {product.ProductImage
+        ? <img src={product.ProductImage} alt={product.name} className={styles.productImage} />
+        : <NoImagePlaceholder className={styles.productImage} style={{ backgroundColor: '#e4e4e4', color: '#999' }} />
+      }
 
       <div className={styles.sidebar}>
         <Card>
@@ -115,6 +115,9 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
             <p className={styles.productPrice}>
               {product.price} kr <span className={styles.vat}>incl. VAT</span>
             </p>
+            {product.description && (
+              <p className={styles.productDescription}>{product.description}</p>
+            )}
           </div>
 
           <div className={styles.variantDiv}>
@@ -173,7 +176,9 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
           <h2 className={styles.sellerInfo}>
             This product is sold by{" "}
             <span className={styles.seller}>
-              {product.seller || "ShopFlow"}
+              {product.seller
+                ? (product.seller.storeName || product.seller.name)
+                : "ShopFlow"}
             </span>
           </h2>
         </Card>

@@ -12,6 +12,24 @@ import type {
 } from "../schemas/productSchemas";
 import { UnauthorizedError } from "../errors/AppError";
 
+// ===== GET MY PRODUCTS ===== //
+export async function getMyProducts(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        if (!req.user) {
+            throw new UnauthorizedError("Unauthorized");
+        }
+
+        const products = await productService.getProductsBySeller(req.user.id);
+        res.status(200).json(products);
+    } catch (error) {
+        next(error);
+    }
+}
+
 // ===== CREATE ===== //
 export async function createProduct(
     req: Request,
@@ -195,7 +213,10 @@ export async function deleteVariant(
 ): Promise<void> {
     try {
         const params = req.validatedParams as VariantIdParams;
-        await productService.deleteVariant(params.variantId);
+        await productService.deleteVariant(
+            params.variantId,
+            req.user ? { id: req.user.id, role: req.user.role } : undefined,
+        );
 
         res.status(204).send();
     } catch (error) {

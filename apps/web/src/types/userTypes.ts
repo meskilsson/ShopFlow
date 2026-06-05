@@ -22,4 +22,5 @@ export type UpdateUserData = {
     username?: string;
     password?: string;
     role?: UserRoles;
+    storeName?: string;
 };

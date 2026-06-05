@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
     getAllProducts,
     getProductById,
+    getMyProducts,
     createProduct,
     updateProduct,
     deleteProduct,
@@ -31,6 +32,13 @@ import { requireProductOwnerOrRole } from "../middleware/requireProductOwnerOrRo
 const productRouter = Router();
 
 // Must be before /:id to avoid route collision
+productRouter.get(
+    "/mine",
+    requireAuth,
+    authorizeRoles("seller", "admin"),
+    getMyProducts,
+);
+
 productRouter.post(
     "/upload-image",
     requireAuth,
@@ -114,7 +122,7 @@ productRouter.patch(
 productRouter.delete(
     "/variants/:variantId",
     requireAuth,
-    authorizeRoles("admin"),
+    authorizeRoles("seller", "admin"),
     validateRequest({ params: variantIdParamsSchema }),
     deleteVariant);
 

@@ -22,6 +22,7 @@ import AdminUsersPage from "./pages/AdminPages/AdminUsersPage/AdminUsersPage";
 import AdminOrderPage from "./pages/AdminPages/AdminOrderPage/AdminOrderPage";
 import AdminProductPage from "./pages/AdminPages/AdminProductPage/AdminProductPage";
 import WishlistPage from "@/pages/WishlistPage";
+import RequireRole from "@/components/RequireRole";
 
 import NavBar from "@/features/navbar/NavBar";
 import ContentWrapper from "@/components/ContentWrapper";
@@ -62,7 +63,11 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route
                 path="/sellerdashboard"
-                element={<SellerDashboardPage />}
+                element={
+                  <RequireRole roles={["seller"]}>
+                    <SellerDashboardPage />
+                  </RequireRole>
+                }
               />
 
               <Route path="/checkout" element={<CheckoutPage />} />
