@@ -36,7 +36,7 @@ const CartItemCard = ({
     <article className={styles.card}>
       {image
         ? <img src={image} alt={name} className={`${styles.image} ${readonly ? styles.imageReadonly : ""}`} />
-        : <NoImagePlaceholder className={`${styles.image} ${readonly ? styles.imageReadonly : ""}`} style={{ backgroundColor: '#e4e4e4', color: '#999' }} />
+        : <NoImagePlaceholder className={`${styles.image} ${readonly ? styles.imageReadonly : ""}`} style={{ backgroundColor: '#e4e4e4', color: '#999', height: 'auto' }} />
       }
 
       <div className={styles.content}>

@@ -2,6 +2,7 @@ import styles from './NoImagePlaceholder.module.css'
 
 import type { CSSProperties } from 'react'
 
+
 type Props = {
   className?: string
   style?: CSSProperties
