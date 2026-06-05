@@ -94,7 +94,13 @@
 
 .seller {
   font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
   cursor: pointer;
+}
+
+.seller:hover {
+  text-decoration: underline;
 }
 
 .commentsText {

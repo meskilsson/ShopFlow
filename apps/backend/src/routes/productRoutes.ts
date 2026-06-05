@@ -3,6 +3,7 @@ import {
     getAllProducts,
     getProductById,
     getMyProducts,
+    getSellerProducts,
     createProduct,
     updateProduct,
     deleteProduct,
@@ -20,6 +21,7 @@ import { upload } from "../middleware/upload.ts";
 import {
     productIdParamsSchema,
     variantIdParamsSchema,
+    sellerIdParamsSchema,
     productQuerySchema,
     createProductSchema,
     updateProductSchema,
@@ -32,6 +34,12 @@ import { requireProductOwnerOrRole } from "../middleware/requireProductOwnerOrRo
 const productRouter = Router();
 
 // Must be before /:id to avoid route collision
+productRouter.get(
+    "/seller/:sellerId",
+    validateRequest({ params: sellerIdParamsSchema }),
+    getSellerProducts,
+);
+
 productRouter.get(
     "/mine",
     requireAuth,

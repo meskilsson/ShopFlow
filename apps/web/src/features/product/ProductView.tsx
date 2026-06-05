@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styles from "./ProductView.module.css";
 import HeartIconRegular from "@/assets/icons/heart-regular-full.svg?react";
 import NoImagePlaceholder from "@/components/UI/NoImagePlaceholder";
@@ -175,11 +176,12 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         <Card>
           <h2 className={styles.sellerInfo}>
             This product is sold by{" "}
-            <span className={styles.seller}>
-              {product.seller
-                ? (product.seller.storeName || product.seller.name)
-                : "ShopFlow"}
-            </span>
+            {product.seller
+              ? <Link to={`/seller/${product.seller._id}`} className={styles.seller}>
+                  {product.seller.storeName || product.seller.name}
+                </Link>
+              : <span className={styles.seller}>ShopFlow</span>
+            }
           </h2>
         </Card>
 

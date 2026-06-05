@@ -4,6 +4,7 @@ import { uploadProductImage } from "../services/imageService";
 import type {
     ProductIdParams,
     VariantIdParams,
+    SellerIdParams,
     ProductQueryInput,
     CreateProductInput,
     UpdateProductInput,
@@ -11,6 +12,21 @@ import type {
     UpdateProductInputVariant
 } from "../schemas/productSchemas";
 import { UnauthorizedError } from "../errors/AppError";
+
+// ===== GET PUBLIC PRODUCTS BY SELLER ===== //
+export async function getSellerProducts(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        const params = req.validatedParams as SellerIdParams;
+        const result = await productService.getPublicProductsBySeller(params.sellerId);
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+}
 
 // ===== GET MY PRODUCTS ===== //
 export async function getMyProducts(

@@ -10,6 +10,12 @@ export const variantIdParamsSchema = z.strictObject({
     variantId: mongoIdSchema,
 });
 
+export const sellerIdParamsSchema = z.strictObject({
+    sellerId: mongoIdSchema,
+});
+
+export type SellerIdParams = z.infer<typeof sellerIdParamsSchema>;
+
 const productNameSchema = z.string().trim().min(2).max(100);
 const productPriceSchema = z.number().positive();
 const productCategorySchema = z.enum([

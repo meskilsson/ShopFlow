@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import styles from "./CartItemCard.module.css";
-import FallbackProductImage from "@/assets/1.webp";
+import NoImagePlaceholder from "@/components/UI/NoImagePlaceholder";
 
 type CartItemCardProps = {
   productVariantId: string;
@@ -34,11 +34,10 @@ const CartItemCard = ({
 }: CartItemCardProps) => {
   return (
     <article className={styles.card}>
-      <img
-        src={image || FallbackProductImage}
-        alt={name}
-        className={`${styles.image} ${readonly ? styles.imageReadonly : ""}`}
-      />
+      {image
+        ? <img src={image} alt={name} className={`${styles.image} ${readonly ? styles.imageReadonly : ""}`} />
+        : <NoImagePlaceholder className={`${styles.image} ${readonly ? styles.imageReadonly : ""}`} style={{ backgroundColor: '#e4e4e4', color: '#999' }} />
+      }
 
       <div className={styles.content}>
         <div className={styles.header}>

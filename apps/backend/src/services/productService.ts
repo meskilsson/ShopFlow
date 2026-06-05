@@ -99,6 +99,24 @@ export async function createProduct(productData: CreateProductInput, actor: Prod
     return await Product.create(product);
 }
 
+// ===== GET PUBLIC PRODUCTS BY SELLER ===== //
+export async function getPublicProductsBySeller(sellerId: string) {
+    const products = await Product.find({ seller: sellerId, active: { $ne: false }, deletedAt: null })
+        .populate("seller", "name storeName");
+
+    const productsWithVariants = await Promise.all(
+        products.map(async (product) => {
+            const variants = await ProductVariant.countDocuments({ product: product._id });
+            return { ...product.toObject(), variants };
+        })
+    );
+
+    const firstProduct = productsWithVariants[0];
+    const seller = firstProduct?.seller ?? null;
+
+    return { seller, products: productsWithVariants };
+}
+
 // ===== GET MY PRODUCTS ===== //
 export async function getProductsBySeller(sellerId: string) {
     const products = await Product.find({ seller: sellerId, deletedAt: null });
