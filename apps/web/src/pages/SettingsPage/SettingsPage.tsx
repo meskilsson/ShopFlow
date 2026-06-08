@@ -1,4 +1,4 @@
-import { deleteUserRequest } from "@/api/user";
+import { deleteMyAccountRequest, getUserDataRequest } from "@/api/user";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -33,16 +33,10 @@ export default function SettingsPage() {
 
     async function handleDeleteAccount() {
         setDeleteError("");
-
-        if (!authUser?._id) {
-            setDeleteError("No logged in user found.");
-            return;
-        }
-
         setIsDeleting(true);
 
         try {
-            await deleteUserRequest(authUser._id);
+            await deleteMyAccountRequest();
 
             setIsDeleteModalOpen(false);
             logout();
@@ -56,6 +50,23 @@ export default function SettingsPage() {
         } finally {
             setIsDeleting(false);
         }
+    }
+
+    async function handleDownloadMyData() {
+        const data = await getUserDataRequest();
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+            type: "application/json",
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "my-shopflow-data.json";
+        link.click();
+
+        URL.revokeObjectURL(url);
     }
 
     return (
@@ -74,12 +85,25 @@ export default function SettingsPage() {
 
                     <ChangePasswordForm />
 
+
+                    <section className={styles.section}>
+                        <div>
+                            <h2>Download my data</h2>
+                            <p>Download a copy of the personal data connected to your account.</p>
+                        </div>
+                        <ButtonStd
+                            variant="primary"
+                            onClick={handleDownloadMyData}
+                        >Download Data</ButtonStd>
+                    </section>
+
+
                     <section className={`${styles.section} ${styles.dangerZone}`}>
                         <div>
                             <h2>Delete account</h2>
                             <p>
-                                Permanently delete your account and all account data. This
-                                action cannot be undone.
+                                Delete your account and remove or anonymize personal data connected to it.
+                                Some order records may be kept for administrative reasons.
                             </p>
                         </div>
 
@@ -114,9 +138,7 @@ export default function SettingsPage() {
                     </>
                 }
             >
-                <p>This will permanently delete your account.</p>
-
-                <p className={styles.warning}>This action cannot be undone.</p>
+                <p>This will delete your account.</p>
 
                 {deleteError && <p className={styles.error}>{deleteError}</p>}
             </Modal>

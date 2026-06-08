@@ -146,3 +146,33 @@ export async function toggleWishlist(
     next(error);
   }
 }
+
+export async function getMyGdprData(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const data = await userService.getMyGdprData(req.user!.id);
+
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteMyAccount(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const result = await userService.deleteMyAccount(req.user!.id);
+
+    res.clearCookie("token");
+
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+}

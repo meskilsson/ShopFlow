@@ -7,6 +7,13 @@ import {
   NotFoundError,
 } from "../errors/AppError";
 import type { UpdateUserInput, CreateUserInput } from "../schemas/userSchemas";
+import Address from "../models/Address";
+import Order from "../models/Order";
+import OrderItem from "../models/OrderItem";
+import Payment from "../models/Payment";
+import Cart from "../models/Cart";
+import CartItem from "../models/CartItem";
+
 
 export async function createUser(userData: CreateUserInput) {
   if (
@@ -192,4 +199,74 @@ export async function toggleWishlist(userId: string, productId: string) {
 
   await user.save();
   return { inWishlist: !isInWishlist };
+}
+
+export async function getMyGdprData(userId: string) {
+  const user = await User.findById(userId).select(
+    "name email username role createdAt updatedAt",
+  );
+
+  const addresses = await Address.find({ user: userId });
+
+  const orders = await Order.find({ user: userId });
+
+  const orderIds = orders.map((order) => order.id);
+
+  const orderItems = await OrderItem.find({
+    order: { $in: orderIds },
+  }).populate("productVariant");
+
+  const payments = await Payment.find({
+    order: { $in: orderIds },
+  });
+
+  const cart = await Cart.findOne({ user: userId });
+
+  const cartItems = cart
+    ? await CartItem.find({ cart: cart._id }).populate("productVariant")
+    : [];
+
+  const sellerProducts = await Product.find({ seller: userId });
+
+  return {
+    exportedAt: new Date(),
+    account: user,
+    addresses,
+    orders,
+    orderItems,
+    payments,
+    cart,
+    cartItems,
+    sellerProducts,
+  };
+}
+
+export async function deleteMyAccount(userId: string) {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  await Address.deleteMany({ user: userId });
+
+  const cart = await Cart.findOne({ user: userId });
+
+  if (cart) {
+    await CartItem.deleteMany({ cart: cart._id });
+    await cart.deleteOne();
+  }
+
+  await User.findByIdAndUpdate(userId, {
+    name: "Deleted user",
+    email: `deleted-${userId}$deleted.local`,
+    username: `deleted-${userId}`,
+    passwordHash: "deleted",
+    deletedAt: new Date(),
+    deleteReason: "User requested account deletion",
+  });
+
+  return {
+    message: "Account deleted successfully",
+  };
 }

@@ -8,6 +8,8 @@ import {
   changePassword,
   getWishlist,
   toggleWishlist,
+  deleteMyAccount,
+  getMyGdprData
 } from "../controllers/userController";
 
 import {
@@ -46,6 +48,18 @@ userRouter.post(
 userRouter.get("/", requireAuth, getAllUsers);
 
 userRouter.get(
+  "/me/data",
+  requireAuth,
+  getMyGdprData,
+);
+
+userRouter.delete(
+  "/me",
+  requireAuth,
+  deleteMyAccount,
+);
+
+userRouter.get(
   "/:id",
   requireAuth,
   validateRequest({ params: userIdParamsSchema }),
@@ -77,5 +91,6 @@ userRouter.delete(
   requireSelfOrRole("id", "admin"),
   deleteUser,
 );
+
 
 export default userRouter;
