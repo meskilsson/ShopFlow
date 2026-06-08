@@ -53,7 +53,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
         );
         setIsInWishlist(alreadyInWishlist);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [isAuthenticated, product._id]);
 
   const { refreshWishlist } = useAuth();
@@ -67,7 +67,7 @@ const ProductView = ({ product, variants }: ProductViewProps) => {
     try {
       const result = await toggleWishlist(product._id);
       setIsInWishlist(result.inWishlist);
-      await refreshWishlist(); // ← NY – uppdaterar NavBar direkt
+      await refreshWishlist();
     } catch (error) {
       console.error("Wishlist toggle failed", error);
     }
