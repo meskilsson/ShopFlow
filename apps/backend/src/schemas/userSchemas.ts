@@ -6,6 +6,7 @@ export const userIdParamsSchema = z.strictObject({
 });
 
 const nameSchema = z.string().trim().min(2).max(50);
+const storeNameSchema = z.string().trim().min(2).max(50);
 
 const emailSchema = z.string().trim().toLowerCase().pipe(z.email());
 
@@ -20,7 +21,10 @@ const usernameSchema = z
     "Username can only contain letters, numbers, and underscores",
   );
 
-const passwordSchema = z.string().min(8).max(100);
+const passwordSchema = z
+  .string()
+  .min(8, "Password must be at least 8 characters")
+  .max(100, "Password cannot be more than 100 characters");
 
 export const createUserSchema = z.strictObject({
   name: nameSchema,
@@ -40,6 +44,7 @@ export const updateUserSchema = z
     name: nameSchema.optional(),
     email: emailSchema.optional(),
     username: usernameSchema.optional(),
+    storeName: storeNameSchema.optional(),
   })
 
   //if key === pass

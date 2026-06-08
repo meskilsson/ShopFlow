@@ -89,6 +89,7 @@ export async function updateUser(id: string, userData: UpdateUserInput) {
     name?: string;
     email?: string;
     username?: string;
+    storeName?: string;
   } = {};
 
   if (userData.name !== undefined) {
@@ -101,6 +102,10 @@ export async function updateUser(id: string, userData: UpdateUserInput) {
 
   if (userData.username !== undefined) {
     updateData.username = userData.username;
+  }
+
+  if (userData.storeName !== undefined) {
+    updateData.storeName = userData.storeName;
   }
 
   const conflictConditions = [];

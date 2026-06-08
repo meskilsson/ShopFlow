@@ -16,6 +16,8 @@ type ProductData = {
   name: string;
   category: string;
   price: number;
+  description?: string;
+  seller?: { _id: string; name: string; storeName?: string } | null;
   };
   variants: {
     _id: string;

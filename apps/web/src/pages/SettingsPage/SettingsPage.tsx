@@ -13,7 +13,7 @@ import styles from "./SettingsPage.module.css";
 
 export default function SettingsPage() {
     const navigate = useNavigate();
-    const { user: authUser, logout } = useAuth();
+    const { logout } = useAuth();
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteError, setDeleteError] = useState("");

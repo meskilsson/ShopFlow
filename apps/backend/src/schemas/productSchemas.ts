@@ -10,6 +10,12 @@ export const variantIdParamsSchema = z.strictObject({
     variantId: mongoIdSchema,
 });
 
+export const sellerIdParamsSchema = z.strictObject({
+    sellerId: mongoIdSchema,
+});
+
+export type SellerIdParams = z.infer<typeof sellerIdParamsSchema>;
+
 const productNameSchema = z.string().trim().min(2).max(100);
 const productPriceSchema = z.number().positive();
 const productCategorySchema = z.enum([
@@ -20,6 +26,8 @@ const productCategorySchema = z.enum([
     "Jackets",
     "Accessories",
 ]);
+const productDescriptionSchema = z.string().trim().max(1000).optional();
+const productActiveSchema = z.boolean().optional();
 const productImageSchema = z.string().trim().url().optional();
 
 export const productQuerySchema = z.strictObject({
@@ -36,6 +44,8 @@ export const createProductSchema = z.strictObject({
     name: productNameSchema,
     price: productPriceSchema,
     category: productCategorySchema,
+    description: productDescriptionSchema,
+    active: productActiveSchema,
     ProductImage: productImageSchema,
 });
 
@@ -43,6 +53,8 @@ export const updateProductSchema = z.strictObject({
     name: productNameSchema.optional(),
     price: productPriceSchema.optional(),
     category: productCategorySchema.optional(),
+    description: productDescriptionSchema,
+    active: productActiveSchema,
     ProductImage: productImageSchema,
 })
     .refine((data) => Object.keys(data).length > 0, {

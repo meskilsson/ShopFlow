@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { getMeRequest, logoutRequest } from "@/api/auth";
-import { getWishlist } from "@/api/wishlist"; // ← NY
+import { getWishlist } from "@/api/wishlist";
 
 type UserRole = "buyer" | "seller" | "admin";
 
@@ -17,6 +17,7 @@ export type AuthUser = {
   email: string;
   username: string;
   role: UserRole;
+  storeName?: string;
 };
 
 type AuthContextValue = {
@@ -41,14 +42,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [wishlistCount, setWishlistCount] = useState(0);
 
+  // Initial load av user + wishlist count
   useEffect(() => {
     async function loadUser() {
       try {
         const currentUser = await getMeRequest();
         setUser(currentUser);
 
-        const wishlist = await getWishlist();
-        setWishlistCount(wishlist.length);
+        if (currentUser) {
+          const wishlist = await getWishlist();
+          setWishlistCount(wishlist.length);
+        }
       } catch {
         setUser(null);
         setWishlistCount(0);
@@ -59,18 +63,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     loadUser();
   }, []);
 
-  const refreshWishlist = async () => {
-    if (!user) return;
-    try {
-      const wishlist = await getWishlist();
-      setWishlistCount(wishlist.length);
-    } catch {
-      setWishlistCount(0);
-    }
-  };
-
   function login(newUser: AuthUser) {
     setUser(newUser);
+
+    (async () => {
+      try {
+        const wishlist = await getWishlist();
+        setWishlistCount(wishlist.length);
+      } catch {
+        setWishlistCount(0);
+      }
+    })();
   }
 
   async function logout() {
@@ -82,6 +85,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   function updateAuthUser(updatedUser: AuthUser) {
     setUser(updatedUser);
   }
+
+  const refreshWishlist = async () => {
+    try {
+      const wishlist = await getWishlist();
+      setWishlistCount(wishlist.length);
+    } catch {
+      setWishlistCount(0);
+    }
+  };
 
   const value = useMemo<AuthContextValue>(
     () => ({
@@ -102,8 +114,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
+
   if (!ctx) {
     throw new Error("useAuth must be used inside an AuthProvider");
   }
+
   return ctx;
 }

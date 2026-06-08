@@ -14,6 +14,7 @@ export default function SignupForm() {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [role, setRole] = useState<Role | "">("");
     const [errors, setErrors] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +25,11 @@ export default function SignupForm() {
 
         if (!role) {
             setErrors("Please select a role.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setErrors("Passwords do not match.");
             return;
         }
 
@@ -111,6 +117,21 @@ export default function SignupForm() {
                             placeholder="******"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className={styles.input}
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <label htmlFor="confirmPassword" className={styles.label}>
+                            Confirm Password
+                        </label>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            placeholder="******"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             className={styles.input}
                             required
                         />

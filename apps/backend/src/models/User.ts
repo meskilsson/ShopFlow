@@ -9,6 +9,7 @@ export interface IUser {
   username: string;
   passwordHash: string;
   role: UserRole;
+  storeName?: string;
   wishlist: Types.ObjectId[];
   deletedAt?: Date | null;
   deletedBy?: Types.ObjectId | null;
@@ -53,6 +54,10 @@ const userSchema = new Schema<IUser>(
       enum: ["buyer", "seller", "admin"],
       default: "buyer",
       required: true,
+    },
+    storeName: {
+      type: String,
+      trim: true,
     },
     wishlist: [
       {
