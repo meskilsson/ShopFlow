@@ -21,7 +21,10 @@ const usernameSchema = z
     "Username can only contain letters, numbers, and underscores",
   );
 
-const passwordSchema = z.string().min(8).max(100);
+const passwordSchema = z
+  .string()
+  .min(8, "Password must be at least 8 characters")
+  .max(100, "Password cannot be more than 100 characters");
 
 export const createUserSchema = z.strictObject({
   name: nameSchema,
