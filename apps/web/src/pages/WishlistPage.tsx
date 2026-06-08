@@ -45,14 +45,14 @@ const WishlistPage = () => {
   if (isLoading)
     return (
       <Container>
-        <p>Laddar önskelista...</p>
+        <p>Loading wishlist...</p>
       </Container>
     );
 
   return (
     <Container>
       <ProductCategories />
-      <h1 style={{ marginBottom: "2rem" }}>Min önskelista</h1>
+      <h1 style={{ marginBottom: "2rem" }}>My wishlist</h1>
 
       {products.length === 0 ? (
         <div
@@ -76,14 +76,14 @@ const WishlistPage = () => {
               margin: 0,
             }}
           >
-            Din önskelista är tom
+            Your wishlist is empty
           </p>
 
           <ButtonStd
             onClick={() => navigate("/products")}
             style={{ minWidth: "240px" }}
           >
-            Bläddra bland produkter
+            Browse products
           </ButtonStd>
         </div>
       ) : (
