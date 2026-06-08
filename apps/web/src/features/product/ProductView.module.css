@@ -134,9 +134,15 @@
 }
 
 .commentRating {
-  font-size: 0.75rem;
-  color: var(--text-gray);
+  font-size: 0.90rem;
+  color: var(--icon-rating);
   padding-left: .2rem;
+}
+
+.commentsBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.45rem;
 }
 
 .variantDiv {
@@ -177,4 +183,29 @@
   height: 160%;
   opacity: 50%;
   pointer-events: none;
+}
+
+.commentDate {
+  font-size: 0.65rem;
+  color: var(--text-gray);
+  margin-top: 0.1rem;
+}
+
+.reviewError {
+  margin-top: 0.5rem;
+  color: #b42318;
+  font-size: 0.85rem;
+}
+
+.reviewPagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+}
+
+.reviewPageText {
+  font-size: 0.85rem;
+  color: var(--text-gray);
 }

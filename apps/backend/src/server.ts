@@ -17,6 +17,7 @@ import paymentRouter from "./routes/paymentRoutes";
 import adminRouter from "./routes/adminRoutes";
 import { authorizeRoles } from "./middleware/authorizeRoles";
 import { requireAuth } from "./middleware/requireAuth";
+import reviewRouter from "./routes/reviewRoutes";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -53,6 +54,8 @@ app.use("/api/v1/payments", paymentRouter);
 
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1/cart", cartRouter);
+
+app.use("/api/v1/", reviewRouter)
 
 app.use(notFound);
 app.use(errorHandler);
