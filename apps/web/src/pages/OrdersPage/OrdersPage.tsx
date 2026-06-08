@@ -192,6 +192,10 @@ export default function OrdersPage() {
                               Size: {variant.size}
                               {variant.color && ` · Color: ${variant.color}`}
                             </p>
+
+                            <p className={styles.itemQuantity}>
+                              Quantity: {item.quantity}
+                            </p>
                           </div>
 
                           <p className={styles.itemPrice}>
