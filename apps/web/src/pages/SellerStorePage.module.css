@@ -1,0 +1,36 @@
+.soldBy {
+  font-size: 0.85rem;
+  color: var(--text-gray);
+  margin-bottom: -0.75rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: flex-start;
+}
+
+.categoryHeading {
+  font-family: Poppins, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 1.5rem 0;
+}
+
+.empty {
+  color: var(--text-gray);
+  margin-top: 1rem;
+}

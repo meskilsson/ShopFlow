@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import styles from "./ProductCard.module.css";
 import TrashIcon from "@/assets/icons/trash-can-solid-full.svg?react";
+import NoImagePlaceholder from "@/components/UI/NoImagePlaceholder";
 
 interface ProductCardProps {
   title: string;
@@ -42,7 +43,10 @@ const ProductCard = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className={styles.imageWrapper}>
-        <img src={image} alt={title} className={styles.productImage} />
+        {image
+          ? <img src={image} alt={title} className={styles.productImage} />
+          : <NoImagePlaceholder />
+        }
 
         {isWishlist && onRemove && isHovered && (
           <button

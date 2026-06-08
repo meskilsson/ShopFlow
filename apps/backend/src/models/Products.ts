@@ -13,6 +13,8 @@ export interface IProduct {
     name: string;
     price: number;
     category: ProductCategory;
+    description?: string;
+    active?: boolean;
     ProductImage?: string;
     seller?: Types.ObjectId | null;
     deletedAt?: Date | null;
@@ -51,6 +53,14 @@ const productSchema = new Schema<IProduct>(
             ],
         },
 
+        description: {
+            type: String,
+            trim: true,
+        },
+        active: {
+            type: Boolean,
+            default: true,
+        },
         ProductImage: {
             type: String,
             trim: true,
