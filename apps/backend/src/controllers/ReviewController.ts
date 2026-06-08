@@ -1,5 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 import { createReview, getReviewsByProduct } from "../services/ReviewService";
+import {
+    CreateReviewInput,
+    ReviewProductIdParams,
+} from "../schemas/reviewSchemas"
 
 type ProductIdParams = {
     productId: string;
@@ -11,11 +15,14 @@ export async function createProductReview (
     next: NextFunction,
 ) {
     try {
+        const params = req.validatedParams as ReviewProductIdParams;
+        const body = req.validatedBody as CreateReviewInput;
+
         const review = await createReview({
-            product: req.params.productId,
+            product: params.productId,
             user: req.user!.id,
-            rating: req.body.rating,
-            comment: req.body.comment,
+            rating: body.rating,
+            comment: body.comment,
         });
 
         res.status(201).json(review);
@@ -30,11 +37,13 @@ export async function getProductReviews(
     next: NextFunction
 ) {
     try {
+        const params = req.validatedParams as ReviewProductIdParams;
+
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 3;
         
         const reviews = await getReviewsByProduct(
-            req.params.productId,
+            params.productId,
             page,
             limit,
         );
