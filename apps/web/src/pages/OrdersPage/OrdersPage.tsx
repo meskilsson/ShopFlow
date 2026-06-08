@@ -57,6 +57,10 @@ function formatPrice(price: number) {
   }).format(price);
 }
 
+function getTotalItemQuantity(items: OrderItem[]) {
+  return items.reduce((total, item) => total + item.quantity, 0);
+}
+
 function formatDate(date: string) {
   return new Intl.DateTimeFormat("en-EN", {
     year: "numeric",
@@ -160,7 +164,7 @@ export default function OrdersPage() {
 
                     <div>
                       <span className={styles.summaryLabel}>Items</span>
-                      <strong>{order.items.length}</strong>
+                      <strong>{getTotalItemQuantity(order.items)}</strong>
                     </div>
                   </div>
 
