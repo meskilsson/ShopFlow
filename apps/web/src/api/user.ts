@@ -1,5 +1,5 @@
 import type { CreateUserData, UpdateUserData } from "@/types/userTypes";
-import { handleApiResponse } from "@/utils/ApiErrorData";
+import { handleApiResponse } from "@/utils/handleApiResponse";
 import type { AuthUser } from "@/contexts/AuthContext";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api/v1";
@@ -95,21 +95,7 @@ export async function changePasswordRequest(
 
     const data = await response.json();
 
-    if (!response.ok) {
-        const error = new Error(
-            data.message || data.error || "Failed to update password"
-        ) as Error & {
-            status: number,
-            data: typeof data,
-        };
-
-        error.status = response.status;
-        error.data = data;
-
-        throw error;
-    }
-
-    return data;
+    return handleApiResponse(response, "Failed to update password");
 }
 
 export async function getOrderWithItemRequest(id: string) {
@@ -133,11 +119,7 @@ export async function getUserDataRequest() {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to export user data");
-    }
-
-    return response.json();
+    return handleApiResponse(response, "Failed to export user data");
 }
 
 export async function deleteMyAccountRequest() {
