@@ -3,6 +3,7 @@ import Card from "@/components/UI/Card";
 import Container from "@/components/containers/Container";
 import { useAuth } from "@/contexts/AuthContext";
 import styles from "./OrdersPage.module.css";
+import { getOrderWithItemRequest } from "@/api/user";
 
 type Product = {
   _id: string;
@@ -83,15 +84,8 @@ export default function OrdersPage() {
           return;
         }
 
-        const response = await fetch(
-          `http://localhost:5000/api/v1/orders/user/${authUser._id}/with-items`,
-        );
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data?.message || "Could not fetch orders");
-        }
+        const data = await getOrderWithItemRequest(authUser._id);
 
         setOrders(data);
       } catch (error) {

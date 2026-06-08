@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Container from "@/components/containers/Container";
 import ButtonStd from "@/components/UI/ButtonStd";
 
-import { getUserByIdRequest } from "@/api/user";
+import { getUserByIdRequest, getUserDataRequest } from "@/api/user";
 import { useAuth } from "@/contexts/AuthContext";
 
 import type { User } from "@/types/userTypes";
@@ -50,6 +50,23 @@ export default function ProfilePage() {
 
         getUser();
     }, [authUser?._id]);
+
+    async function handleDownloadMyData() {
+        const data = await getUserDataRequest();
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+            type: "application/json",
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "my-shopflow-data.json";
+        link.click();
+
+        URL.revokeObjectURL(url);
+    }
 
     if (isLoading) {
         return (

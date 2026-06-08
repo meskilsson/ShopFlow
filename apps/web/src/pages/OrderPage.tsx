@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { apiFetch } from "@/api/client";
 import { getCart } from "@/api/cart";
+import { useCart } from "@/contexts/CartContext";
 import CheckoutStepper from "@/features/checkout/CheckoutStepper";
 import CartItems from "../features/cart/CartItems";
 import CartSummary from "../features/cart/CartSummary";
@@ -18,6 +19,7 @@ const OrderPage = () => {
     | Address
     | undefined;
 
+  const { setCartCount } = useCart();
   const [cart, setCart] = useState<CartResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [orderLoading, setOrderLoading] = useState(false);
@@ -55,6 +57,7 @@ const OrderPage = () => {
 
     try {
       const order = await apiFetch("/orders/from-cart", { method: "POST" });
+      setCartCount(0);
       navigate(`/order-confirmation/${order._id}`);
     } catch (err: any) {
       console.error(err);
