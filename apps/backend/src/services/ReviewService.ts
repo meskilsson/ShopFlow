@@ -22,7 +22,12 @@ export async function createReview(reviewData: CreateReViewInput) {
         comment: reviewData.comment,
     };
 
-    return await Review.create(review);
+    const createdReview = await Review.create(review);
+        return await Review.findById(createdReview._id)
+        .populate("user", "name email");
+    
+    return await Review.findById(createdReview._id)
+        .populate("user", "name email");
 }
 
 // ===== GET BY PRODUCTID ===== //
