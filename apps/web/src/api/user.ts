@@ -1,4 +1,6 @@
 import type { CreateUserData, UpdateUserData } from "@/types/userTypes";
+import { handleApiResponse } from "@/utils/ApiErrorData";
+import type { AuthUser } from "@/contexts/AuthContext";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api/v1";
 
@@ -16,13 +18,7 @@ export async function createUserRequest(userData: CreateUserData) {
         body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-        throw new Error(data.message || data.error || "Failed to create user");
-    }
-
-    return data;
+    return handleApiResponse(response, "Failed to create user");
 }
 
 export async function getAllUsersRequest() {
@@ -79,13 +75,8 @@ export async function updateUserRequest(
         body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
 
-    if (!response.ok) {
-        throw new Error(data.message || data.error || "Failed to update user");
-    }
-
-    return data;
+    return handleApiResponse<AuthUser>(response, "Failed to update user");
 }
 
 export async function changePasswordRequest(
@@ -105,7 +96,17 @@ export async function changePasswordRequest(
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message || data.error || "Failed to update password");
+        const error = new Error(
+            data.message || data.error || "Failed to update password"
+        ) as Error & {
+            status: number,
+            data: typeof data,
+        };
+
+        error.status = response.status;
+        error.data = data;
+
+        throw error;
     }
 
     return data;
