@@ -8,7 +8,7 @@ function setGuestCookie(res: Response, guestId: string) {
   res.cookie(GUEST_COOKIE_NAME, guestId, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: GUEST_COOKIE_MAX_AGE,
   });
 }

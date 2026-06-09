@@ -28,7 +28,7 @@ export async function loginUser(
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24,
     });
 
@@ -46,7 +46,7 @@ export async function logoutUser(
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
   });
 
   res.status(200).json({ message: "Logged out" });
