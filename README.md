@@ -1,6 +1,14 @@
 # ShopFlow
 
-A full-stack e-commerce platform built as a production-like team project for the Node.js backend development course.
+<div align="center">
+  <img 
+    src="apps/web/src/assets/readme_images/shopflow_hero.webp" 
+    alt="ShopFlow - Modern full-stack e-commerce platform" 
+    width="900"
+  />
+</div>
+
+A full-stack e-commerce platform built as a production-like team project for a Node.js backend development course at Chas Academy.
 
 **Group:** Malmö 1 (Team Kattarp)  
 **Members:** Mattias Eskilsson, Olivia Mach, Pontus Ingenius, Marcus William Johansson, Tomac Jansson  
@@ -23,16 +31,17 @@ A full-stack e-commerce platform built as a production-like team project for the
 ## Tech Stack
 
 **Backend**
+
 - Node.js (ES Modules) + Express 5
 - TypeScript 6
 - MongoDB Atlas via Mongoose 9
 - Zod 4 for schema validation
 - bcrypt + JWT (cookie-based) for authentication
-- Pino for structured logging
-- Multer + Supabase for image storage
+- Supabase for image storage
 - Jest + Supertest for testing
 
 **Frontend**
+
 - React 19 SPA
 - React Router 7
 - Vite 8 build tool
@@ -41,6 +50,7 @@ A full-stack e-commerce platform built as a production-like team project for the
 - Zod (client-side validation)
 
 **Infrastructure**
+
 - MongoDB Atlas (database)
 - Supabase (image storage)
 - npm workspaces (monorepo)
@@ -79,18 +89,18 @@ The backend API will be available at `http://localhost:5000` and the frontend at
 Copy `apps/backend/.env.example` to `apps/backend/.env` and fill in each value.  
 **Never commit the `.env` file — it is listed in `.gitignore`.**
 
-| Variable | Required | Description |
-|---|---|---|
-| `PORT` | Yes | Port the Express server listens on (default: `5000`) |
-| `NODE_ENV` | Yes | `development` or `production` |
-| `MONGODB_URI` | Yes | MongoDB connection string (Atlas or localhost) |
-| `JWT_SECRET` | Yes | Secret for signing JWT tokens — generate with `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"` |
-| `JWT_EXPIRES_IN` | Yes | Token lifetime, e.g. `7d` |
-| `GUEST_COOKIE_NAME` | Yes | Cookie name for guest session IDs (default: `shopflow.guestId`) |
-| `CORS_ORIGIN` | Yes | Allowed frontend origin, e.g. `http://localhost:5173` |
-| `SUPABASE_URL` | Yes | Your Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Supabase service role key (keep secret) |
-| `SUPABASE_BUCKET` | Yes | Supabase storage bucket name for images |
+| Variable                    | Required | Description                                                                                                              |
+| --------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `PORT`                      | Yes      | Port the Express server listens on (default: `5000`)                                                                     |
+| `NODE_ENV`                  | Yes      | `development` or `production`                                                                                            |
+| `MONGODB_URI`               | Yes      | MongoDB connection string (Atlas or localhost)                                                                           |
+| `JWT_SECRET`                | Yes      | Secret for signing JWT tokens — generate with `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"` |
+| `JWT_EXPIRES_IN`            | Yes      | Token lifetime, e.g. `7d`                                                                                                |
+| `GUEST_COOKIE_NAME`         | Yes      | Cookie name for guest session IDs (default: `shopflow.guestId`)                                                          |
+| `CORS_ORIGIN`               | Yes      | Allowed frontend origin, e.g. `http://localhost:5173`                                                                    |
+| `SUPABASE_URL`              | Yes      | Your Supabase project URL                                                                                                |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes      | Supabase service role key (keep secret)                                                                                  |
+| `SUPABASE_BUCKET`           | Yes      | Supabase storage bucket name for images                                                                                  |
 
 ## Usage
 
@@ -121,17 +131,17 @@ npm run start -w @shopflow/backend
 
 The REST API base URL is `/api/v1`. Full endpoint documentation with request/response examples is in [docs/API.md](docs/API.md).
 
-| Resource | Endpoints | Auth |
-|---|---|---|
-| Auth | `POST /auth/login`, `POST /auth/logout`, `GET /auth/me` | Mixed |
-| Users | `POST /users`, `GET/PATCH/DELETE /users/:id`, wishlist, GDPR export | Mixed |
-| Products | Full CRUD + image upload + variants | Mixed |
-| Cart | Create, view, update, clear (guest + user) | None required |
-| Address | Create, view, update, delete (guest + user) | None required |
-| Orders | Create from cart, view, update status | Mixed |
-| Payments | Create, view, update status | Admin only |
-| Reviews | Get reviews, post review | Mixed |
-| Admin | Manage users, products, orders (soft-delete + restore) | Admin only |
+| Resource | Endpoints                                                           | Auth          |
+| -------- | ------------------------------------------------------------------- | ------------- |
+| Auth     | `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`             | Mixed         |
+| Users    | `POST /users`, `GET/PATCH/DELETE /users/:id`, wishlist, GDPR export | Mixed         |
+| Products | Full CRUD + image upload + variants                                 | Mixed         |
+| Cart     | Create, view, update, clear (guest + user)                          | None required |
+| Address  | Create, view, update, delete (guest + user)                         | None required |
+| Orders   | Create from cart, view, update status                               | Mixed         |
+| Payments | Create, view, update status                                         | Admin only    |
+| Reviews  | Get reviews, post review                                            | Mixed         |
+| Admin    | Manage users, products, orders (soft-delete + restore)              | Admin only    |
 
 ## Folder Structure
 
@@ -187,13 +197,19 @@ Current test coverage includes unit tests for JWT utilities, guest cookie genera
 
 ## Team Roles
 
-| Role | Person | Responsibilities |
-|---|---|---|
-| Project Manager | Tomac Jansson | Planning, GitHub Project Board, meetings |
-| Git Master & Auth Lead | Mattias Eskilsson | Git workflow, JWT, RBAC, security |
-| Backend Lead – Data & Core Features | Olivia Mach | Mongoose models, CRUD, order flow, soft delete |
-| Frontend & API Integration | Marcus William Johansson | React SPA, UI, API consumption |
-| Testing, Docs & DevOps | Pontus Ingenius | Jest, logging, documentation, deployment |
+This project was built collaboratively by five students. We started with a clear role distribution, but as the project progressed the responsibilities evolved naturally based on each team member's strengths, interests and the needs that emerged during development. This flexible approach allowed us to work efficiently and deliver a complete full-stack e-commerce platform.
+
+### Final Responsibilities & Key Deliverables
+
+| Team Member                                                 | Focus Area                       | Key Contributions                                                                                                                                                           |
+| ----------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Tomac Jansson](https://github.com/TomacBarin)**          | Project Manager & Scrum Master   | Overall project planning, sprint coordination, GitHub Project Board, README, Wishlist page & functionality, Order page & order management features                          |
+| **[Mattias Eskilsson](https://github.com/meskilsson)**      | Git Master, Auth & Security Lead | Git workflow, repository management, feature branches & code reviews, JWT authentication, RBAC, security measures, Mongoose setup and database configuration                |
+| **[Olivia Mach](https://github.com/oliviaaMach)**           | Product Features & Interactions  | Product pages & related functionality, search/pagination & filtering system, commenting/reviews feature on product pages                                                    |
+| **[Marcus William Johansson](https://github.com/maraccus)** | Frontend Lead & Seller Backend   | Designed and built the entire React SPA frontend. Additionally developed the backend API endpoints, routes and logic for seller product management and selling capabilities |
+| **[Pontus Ingenius](https://github.com/Awreally)**          | Testing, Documentation & DevOps  | Shopping cart page & cart functionality, Adress page and adress functionality, Jest + Supertest testing suite, project documentation, Supabase integration                  |
+
+Everyone helped across role boundaries when needed. We followed a proper Git workflow with feature branches, pull requests and code reviews throughout the project.
 
 ## License
 

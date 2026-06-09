@@ -32,13 +32,11 @@
 
 - **Zod validation schemas** — infrastructure exists (`middleware/validate.ts`, `schemas/`) but many endpoints are not yet wired up. See `apps/backend/docs/VALIDATION.md` for the full list.
 - **Category and Brand management** — models, routes, controllers, and services are implemented but the routes are **not mounted** in `server.ts`.
-- **Integration tests** — Jest + Supertest are configured. Only utility unit tests exist; endpoint integration tests are not yet written.
 
 ### Not Done / Out of Scope
 
 - Full-text product search
 - CI/CD pipeline (GitHub Actions)
-- Rate limiting
 - Production CORS hardening (currently set via `CORS_ORIGIN` env var)
 
 ---
