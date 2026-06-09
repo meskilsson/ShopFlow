@@ -9,10 +9,11 @@ import { authorizeRoles } from "../middleware/authorizeRoles";
 import { validateRequest } from "../middleware/validate";
 import { loginSchema } from "../schemas/userSchemas";
 import { requireAuth } from "../middleware/requireAuth";
+import { authLimiter } from "../middleware/rateLimit";
 
 const authRouter = Router();
 
-authRouter.post("/login", validateRequest({ body: loginSchema }), loginUser);
+authRouter.post("/login", authLimiter, validateRequest({ body: loginSchema }), loginUser);
 authRouter.post("/logout", logoutUser);
 authRouter.get(
   "/profile",

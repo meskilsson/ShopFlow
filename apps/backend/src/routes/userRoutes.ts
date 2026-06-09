@@ -24,11 +24,12 @@ import { validateRequest } from "../middleware/validate";
 import { requireAuth } from "../middleware/requireAuth";
 import { requireSelfOrRole } from "../middleware/requireSelfOrRole";
 import { authorizeRoles } from "../middleware/authorizeRoles";
+import { authLimiter } from "../middleware/rateLimit";
 
 const userRouter = Router();
 
 
-userRouter.post("/", validateRequest({ body: createUserSchema }), createUser);
+userRouter.post("/", authLimiter, validateRequest({ body: createUserSchema }), createUser);
 
 userRouter.get("/", requireAuth, authorizeRoles("admin"), getAllUsers);
 // Temp: For debuging

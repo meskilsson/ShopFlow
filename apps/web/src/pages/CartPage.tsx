@@ -63,7 +63,7 @@ const CartPage = () => {
       const updatedCart = await updateCartItemQuantity(
         productVariantId,
         quantity - 1,
-      );
+      ) as CartResponse;
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
       setCartCount(updatedCart.items.reduce((sum, item) => sum + item.quantity, 0));
     } catch (error) {
@@ -79,7 +79,7 @@ const CartPage = () => {
       const updatedCart = await updateCartItemQuantity(
         productVariantId,
         quantity + 1,
-      );
+      ) as CartResponse;
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
       setCartCount(updatedCart.items.reduce((sum, item) => sum + item.quantity, 0));
     } catch (error) {
@@ -89,7 +89,7 @@ const CartPage = () => {
 
   async function handleRemoveItem(productVariantId: string) {
     try {
-      const updatedCart = await removeCartItem(productVariantId);
+      const updatedCart = await removeCartItem(productVariantId) as CartResponse;
       applyCartResponse(updatedCart, setCartItems, setCartTotal);
       setCartCount(updatedCart.items.reduce((sum, item) => sum + item.quantity, 0));
     } catch (error) {

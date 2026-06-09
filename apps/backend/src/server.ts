@@ -18,6 +18,7 @@ import adminRouter from "./routes/adminRoutes";
 import { authorizeRoles } from "./middleware/authorizeRoles";
 import { requireAuth } from "./middleware/requireAuth";
 import reviewRouter from "./routes/reviewRoutes";
+import { apiLimiter, writeLimiter } from "./middleware/rateLimit";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -33,6 +34,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(logger);
+app.use("/api/v1", apiLimiter);
+app.use("/api/v1", writeLimiter);
 
 app.get("/", (_req, res) => {
   res.send("ShopFlow backend is running");
