@@ -147,16 +147,16 @@ graph TD
 
 **Middleware in use:**
 
-| Middleware | Purpose |
-|---|---|
-| `authenticateToken` | Reads and verifies the JWT cookie, sets `req.user` |
-| `requireAuth` | Combines token check + soft-delete check |
-| `authorizeRoles(...roles)` | Rejects if `req.user.role` is not in the allowed list |
-| `requireSelfOrRole` | Allows only the resource owner or a specified role |
-| `requireProductOwnerOrRole` | Allows only the product's seller or an admin |
-| `requireOrderOwnerOrRole` | Allows only the order's user or an admin |
-| `resolveCartOwner` | Resolves cart for both logged-in users and guests |
-| `resolveAddressOwner` | Resolves address for both logged-in users and guests |
+| Middleware                  | Purpose                                               |
+| --------------------------- | ----------------------------------------------------- |
+| `authenticateToken`         | Reads and verifies the JWT cookie, sets `req.user`    |
+| `requireAuth`               | Combines token check + soft-delete check              |
+| `authorizeRoles(...roles)`  | Rejects if `req.user.role` is not in the allowed list |
+| `requireSelfOrRole`         | Allows only the resource owner or a specified role    |
+| `requireProductOwnerOrRole` | Allows only the product's seller or an admin          |
+| `requireOrderOwnerOrRole`   | Allows only the order's user or an admin              |
+| `resolveCartOwner`          | Resolves cart for both logged-in users and guests     |
+| `resolveAddressOwner`       | Resolves address for both logged-in users and guests  |
 
 ---
 
