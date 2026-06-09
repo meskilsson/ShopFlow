@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import HeartIcon from "@/assets/icons/heart-solid-full.svg?react";
 import CartIcon from "@/assets/icons/cart-shopping-solid-full.svg?react";
 import ProfileIcon from "@/assets/icons/circle-user-solid-full.svg?react";
+import DashboardIcon from "@/assets/icons/dashboard-solid-full.svg?react";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
@@ -14,6 +15,7 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   const isAdmin = user?.role === "admin";
+  const isSeller = user?.role === "seller";
 
   const { cartCount } = useCart();
 
@@ -113,16 +115,22 @@ const NavBar = () => {
             )}
           </Link>
 
-          <div className={styles.cartWrapper}>
-            <Link to="/cart" className={styles.iconBtn}>
-              <CartIcon className={styles.icon} />
+          {isSeller ? (
+            <Link to="/sellerdashboard" className={styles.iconBtn}>
+              <DashboardIcon className={styles.icon} />
             </Link>
-            {cartCount > 0 && (
-              <span className={styles.cartBadge}>
-                {cartCount > 99 ? "99+" : cartCount}
-              </span>
-            )}
-          </div>
+          ) : (
+            <div className={styles.cartWrapper}>
+              <Link to="/cart" className={styles.iconBtn}>
+                <CartIcon className={styles.icon} />
+              </Link>
+              {cartCount > 0 && (
+                <span className={styles.cartBadge}>
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

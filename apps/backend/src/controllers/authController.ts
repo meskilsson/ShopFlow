@@ -78,7 +78,7 @@ export async function getMe(
       return;
     }
 
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.id).select("-passwordHash");
 
     if (!user) {
       res.status(404).json({ message: "User not found" });

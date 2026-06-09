@@ -49,6 +49,12 @@
     color: #b42318;
 }
 
+.itemQuantity {
+    margin: 0.25rem 0 0;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+}
+
 .ordersList {
     display: flex;
     flex-direction: column;

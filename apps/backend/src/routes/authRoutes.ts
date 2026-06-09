@@ -22,29 +22,5 @@ authRouter.get(
 );
 authRouter.get("/me", requireAuth, getMe);
 
-// TEST ROUTES!
-
-authRouter.get("/buyer", requireAuth, authorizeRoles("buyer"), (req, res) => {
-  res.json({ message: "Welcome buyer!", user: req.user });
-});
-
-authRouter.get("/seller", requireAuth, authorizeRoles("seller"), (req, res) => {
-  res.json({ message: "Welcome seller!", user: req.user });
-});
-
-authRouter.get("/admin", requireAuth, authorizeRoles("admin"), (req, res) => {
-  res.json({ message: "Welcome admin!", req: req.user });
-});
-
-authRouter.get(
-  "/seller-admin",
-  requireAuth,
-  authorizeRoles("seller", "admin"),
-  (req, res) => {
-    res.json({ message: "Welcome seller/admin", req: req.user });
-  },
-);
-
-//END OF TEST ROUTES
 
 export default authRouter;

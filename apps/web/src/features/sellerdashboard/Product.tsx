@@ -10,10 +10,12 @@ type ProductProps = {
   dateAdded: string,
   variants: number,
   active: boolean,
-  onEdit?: () => void
+  onEdit?: () => void,
+  onToggleActive?: () => void,
+  onDelete?: () => void,
 }
 
-const Product = ({name, dateAdded, variants, active, onEdit}:ProductProps) => {
+const Product = ({name, dateAdded, variants, active, onEdit, onToggleActive, onDelete}:ProductProps) => {
 
   return (
     <div className={styles.wrapper}>
@@ -34,11 +36,11 @@ const Product = ({name, dateAdded, variants, active, onEdit}:ProductProps) => {
         </div>
       </div>
       <div className={styles.rightSide}>
-          <div className={active ? styles.activeProduct : styles.disabledProduct}>
+          <button className={active ? styles.activeProduct : styles.disabledProduct} onClick={onToggleActive}>
             {active ? "Active" : "Disabled"}
-          </div>
+          </button>
           <ButtonStd variant='ghost-dark' onClick={onEdit}><EditIcon/></ButtonStd>
-          <ButtonStd variant='ghost-dark'><TrashIcon/></ButtonStd>
+          <ButtonStd variant='ghost-dark' onClick={onDelete}><TrashIcon/></ButtonStd>
       </div>
     </div>
   )
