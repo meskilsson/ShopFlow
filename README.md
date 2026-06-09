@@ -1,5 +1,13 @@
 # ShopFlow
 
+<div align="center">
+  <img 
+    src="apps/web/src/assets/readme_images/shopflow_hero.webp" 
+    alt="ShopFlow - Modern full-stack e-commerce platform" 
+    width="900"
+  />
+</div>
+
 A full-stack e-commerce platform built as a production-like team project for the Node.js backend development course.
 
 **Group:** Malmö 1 (Team Kattarp)  
