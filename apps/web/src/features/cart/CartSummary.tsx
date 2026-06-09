@@ -49,19 +49,19 @@ const CartSummary = ({
         {showActions && (
           <div className={styles.actions}>
             <ButtonStd
+              variant="ghost-dark"
+              fullWidth
+              onClick={onContinueShopping}
+            >
+              Continue shopping
+            </ButtonStd>
+            <ButtonStd
               variant="primary"
               fullWidth
               disabled={isCartEmpty}
               onClick={onCheckout}
             >
               Checkout
-            </ButtonStd>
-            <ButtonStd
-              variant="ghost-dark"
-              fullWidth
-              onClick={onContinueShopping}
-            >
-              Continue shopping
             </ButtonStd>
           </div>
         )}

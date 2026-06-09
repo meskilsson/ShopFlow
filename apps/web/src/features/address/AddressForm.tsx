@@ -113,7 +113,7 @@ export default function AddressForm({
 
       {error ? <p className={styles.error}>{error}</p> : null}
 
-      <ButtonStd variant="primary" fullWidth className={styles.submitBtn}>
+      <ButtonStd variant="primary" className={styles.submitBtn}>
         {saving ? "Saving..." : "Save address"}
       </ButtonStd>
     </form>

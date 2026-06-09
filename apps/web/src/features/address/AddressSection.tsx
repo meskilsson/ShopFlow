@@ -110,7 +110,6 @@ export default function AddressSection() {
         <div className={styles.actions}>
           <ButtonStd
             variant="primary"
-            fullWidth
             onClick={() =>
               navigate("/order", {
                 state: { selectedAddress: shippingAddress },

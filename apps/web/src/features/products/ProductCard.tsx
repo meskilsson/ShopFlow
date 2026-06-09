@@ -5,6 +5,7 @@ import TrashIcon from "@/assets/icons/trash-can-solid-full.svg?react";
 import NoImagePlaceholder from "@/components/UI/NoImagePlaceholder";
 
 interface ProductCardProps {
+  id: string;
   title: string;
   brand: string;
   variants: number;
@@ -13,7 +14,6 @@ interface ProductCardProps {
   image?: string;
   isWishlist?: boolean;
   onRemove?: (id: string) => void;
-  id: string;
 }
 
 const ProductCard = ({

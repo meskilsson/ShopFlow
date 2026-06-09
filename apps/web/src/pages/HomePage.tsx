@@ -58,6 +58,7 @@ const HomePage = () => {
                         {shoes.map((product) => (
                             <ProductCard
                                 key={product._id}
+                                id={product._id}
                                 title={product.name}
                                 brand={product.category}
                                 variants={product.variants}
@@ -76,6 +77,7 @@ const HomePage = () => {
                         {tshirts.map((product) => (
                             <ProductCard
                                 key={product._id}
+                                id={product._id}
                                 title={product.name}
                                 brand={product.category}
                                 variants={product.variants}
