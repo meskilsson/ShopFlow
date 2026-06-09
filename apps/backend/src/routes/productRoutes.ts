@@ -13,11 +13,11 @@ import {
     deleteVariant,
     updateVariant,
     uploadProductImageController,
-} from "../controllers/productsController.ts"
-import { validateRequest } from "../middleware/validate.ts";
-import { requireAuth } from "../middleware/requireAuth.ts";
-import { authorizeRoles } from "../middleware/authorizeRoles.ts";
-import { upload } from "../middleware/upload.ts";
+} from "../controllers/productsController"
+import { validateRequest } from "../middleware/validate";
+import { requireAuth } from "../middleware/requireAuth";
+import { authorizeRoles } from "../middleware/authorizeRoles";
+import { upload } from "../middleware/upload";
 import {
     productIdParamsSchema,
     variantIdParamsSchema,
@@ -27,9 +27,9 @@ import {
     updateProductSchema,
     createProductVariantSchema,
     updateProductVariantSchema,
-} from "../schemas/productSchemas.ts"
+} from "../schemas/productSchemas"
 
-import { requireProductOwnerOrRole } from "../middleware/requireProductOwnerOrRole.ts";
+import { requireProductOwnerOrRole } from "../middleware/requireProductOwnerOrRole";
 
 const productRouter = Router();
 

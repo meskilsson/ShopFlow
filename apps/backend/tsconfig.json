@@ -2,14 +2,14 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "module": "commonjs",
-    "target": "es2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "ES2020",
+    "ignoreDeprecations": "6.0",
     "types": [
       "node",
       "jest"
     ],
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
@@ -20,5 +20,11 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }

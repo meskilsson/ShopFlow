@@ -2,7 +2,7 @@
   "name": "@shopflow/backend",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "nodemon --watch src --ext ts,json --exec tsx src/server.ts",
     "build": "tsc",
