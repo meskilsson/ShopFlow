@@ -101,7 +101,7 @@ The main remaining gaps are:
 | POST | `/api/v1/cart` | — | `resolveCartOwner` | 🟢 | No request body. Duplicate cart is service conflict logic. |
 | GET | `/api/v1/cart` | — | `resolveCartOwner` | 🟢 | No request data. |
 | DELETE | `/api/v1/cart` | — | `resolveCartOwner` | 🟢 | No request data. |
-| POST | `/api/v1/cart/items` | `addCartItemSchema` body | `resolveCartOwner` | 🟡 | Validates product variant ID and integer quantity; quantity is not positive-only. |
+| POST | `/api/v1/cart/items` | `addCartItemSchema` body | `resolveCartOwner` | 🟢 | Validates product variant ID and integer quantity; quantity is positive-only. |
 | PATCH | `/api/v1/cart/items/:productVariantId` | `productVariantIdParamSchema` params, `updateCartItemQuantitySchema` body | `resolveCartOwner` | 🟢 | Quantity can be zero or below so controller/service can remove item. |
 | DELETE | `/api/v1/cart/items/:productVariantId` | `productVariantIdParamSchema` params | `resolveCartOwner` | 🟢 | Validates variant ID param. |
 

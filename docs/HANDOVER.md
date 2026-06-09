@@ -33,14 +33,6 @@
 - **Zod validation schemas** — infrastructure exists (`middleware/validate.ts`, `schemas/`) but many endpoints are not yet wired up. See `apps/backend/docs/VALIDATION.md` for the full list.
 - **Category and Brand management** — models, routes, controllers, and services are implemented but the routes are **not mounted** in `server.ts`.
 
-### Not Done / Out of Scope
-
-- Full-text product search
-- CI/CD pipeline (GitHub Actions)
-- Production CORS hardening (currently set via `CORS_ORIGIN` env var)
-
----
-
 ## Known Issues
 ---
 
@@ -87,11 +79,6 @@ Full implementations exist for both (controllers, services, models, schemas) but
 - The `POST /api/v1/payments` endpoint does not verify that the referenced `order` exists before creating the payment record.
 - No refresh token mechanism — when the 1-day token expires, the user must log in again with no automatic re-authentication.
 
----
-
-## Roadmap (Logical Next Steps)
-4. Write integration tests for all endpoint groups
-5. Add rate limiting (`express-rate-limit`)
 
 ---
 
