@@ -45,7 +45,6 @@ userRouter.post(
   toggleWishlist,
 );
 
-userRouter.get("/", requireAuth, getAllUsers);
 
 userRouter.get(
   "/me/data",

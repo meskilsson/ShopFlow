@@ -93,8 +93,6 @@ export async function changePasswordRequest(
         body: JSON.stringify(passwordData),
     });
 
-    const data = await response.json();
-
     return handleApiResponse(response, "Failed to update password");
 }
 
@@ -107,7 +105,7 @@ export async function getOrderWithItemRequest(id: string) {
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message || data.error || "Failed to update password");
+        throw new Error(data.message || data.error || "Failed to get orders");
     }
 
     return data;
@@ -128,9 +126,8 @@ export async function deleteMyAccountRequest() {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to delete account");
-    }
-
-    return response.json();
+    return handleApiResponse<{ message: string }>(
+        response,
+        "Failed to delete account"
+    );
 }

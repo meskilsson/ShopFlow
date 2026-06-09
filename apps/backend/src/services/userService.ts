@@ -161,9 +161,6 @@ export async function changePasswordService(
     throw new ValidationError("New password cannot be empty");
   }
 
-  if (newPassword.length < 6) {
-    throw new ValidationError("New password must be at least 6 characters");
-  }
 
   user.passwordHash = await bcrypt.hash(newPassword, 10);
 
