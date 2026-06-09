@@ -92,12 +92,8 @@ Full implementations exist for both (controllers, services, models, schemas) but
 ---
 
 ## Roadmap (Logical Next Steps)
-2. Wire up all remaining Zod validation schemas
-3. Mount brand and category routes (or remove dead code)
 4. Write integration tests for all endpoint groups
 5. Add rate limiting (`express-rate-limit`)
-6. Implement email notifications (order confirmation)
-7. Replace simulated payment with a real gateway
 
 ---
 

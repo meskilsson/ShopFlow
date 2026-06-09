@@ -108,3 +108,104 @@ describe("product endpoint validation", () => {
   });
 });
 
+describe("order endpoint authentication", () => {
+  it("GET /api/v1/orders requires admin authentication", async () => {
+    const response = await request(app).get("/api/v1/orders");
+
+    expect(response.status).toBe(401);
+    expect(response.body).toMatchObject({
+      message: "Authentication required",
+    });
+  });
+
+  it("POST /api/v1/orders requires admin authentication", async () => {
+    const response = await request(app)
+      .post("/api/v1/orders")
+      .send({ items: [] });
+
+    expect(response.status).toBe(401);
+    expect(response.body).toMatchObject({
+      message: "Authentication required",
+    });
+  });
+});
+
+describe("cart endpoint validation", () => {
+  it("POST /api/v1/cart/items rejects invalid cart item bodies", async () => {
+    const response = await request(app)
+      .post("/api/v1/cart/items")
+      .send({ productVariantId: "not-an-id", quantity: "two" });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("Validation error");
+    expect(response.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ location: "body", field: "productVariantId" }),
+        expect.objectContaining({ location: "body", field: "quantity" }),
+      ]),
+    );
+  });
+});
+
+describe("address endpoint validation", () => {
+  it("POST /api/v1/address rejects invalid address bodies", async () => {
+    const response = await request(app)
+      .post("/api/v1/address")
+      .send({
+        type: "home",
+        fullName: "A",
+        street: "NoNumberStreet",
+        postalCode: "abc",
+        city: "1",
+        country: "",
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("Validation error");
+    expect(response.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ location: "body", field: "type" }),
+        expect.objectContaining({ location: "body", field: "fullName" }),
+        expect.objectContaining({ location: "body", field: "street" }),
+        expect.objectContaining({ location: "body", field: "postalCode" }),
+        expect.objectContaining({ location: "body", field: "city" }),
+        expect.objectContaining({ location: "body", field: "country" }),
+      ]),
+    );
+  });
+});
+
+describe("review endpoint validation and auth", () => {
+  it("GET /api/v1/products/:productId/reviews validates product ids", async () => {
+    const response = await request(app).get("/api/v1/products/not-an-id/reviews");
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("Validation error");
+    expect(response.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ location: "params", field: "productId" }),
+      ]),
+    );
+  });
+
+  it("POST /api/v1/products/:productId/reviews requires authentication", async () => {
+    const productId = "64abc12364abc12364abc123";
+    const response = await request(app)
+      .post(`/api/v1/products/${productId}/reviews`)
+      .send({ rating: 5, comment: "Great" });
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({ error: "No token in cookie" });
+  });
+});
+
+describe("admin endpoint authentication", () => {
+  it("GET /api/v1/admin/users requires authentication", async () => {
+    const response = await request(app).get("/api/v1/admin/users");
+
+    expect(response.status).toBe(401);
+    expect(response.body).toMatchObject({
+      message: "Authentication required",
+    });
+  });
+});
