@@ -61,17 +61,18 @@ sequenceDiagram
     participant API as Express API
     participant DB as MongoDB
 
-    C->>API: POST /api/v1/auth/login\n{ email, password }
+    C->>API: POST /api/v1/auth/login with email and password
     API->>API: Validate input with Zod
     API->>DB: Find user by email
     DB-->>API: User document (with passwordHash)
     API->>API: bcrypt.compare(password, passwordHash)
     API->>API: Sign JWT { id, email, role }
-    API-->>C: 200 OK { user }\nSet-Cookie: token=<jwt>; httpOnly
+    API-->>C: 200 OK with user payload
+    API-->>C: Set-Cookie token jwt httpOnly
 
     Note over C: Token stored in httpOnly cookie
 
-    C->>MW: GET /api/v1/auth/me\nCookie: token=<jwt>
+    C->>MW: GET /api/v1/auth/me with token cookie
     MW->>MW: jwt.verify(token, JWT_SECRET)
     MW->>MW: Check user.deletedAt is null
     MW-->>API: req.user = { id, email, role }
@@ -96,9 +97,10 @@ sequenceDiagram
     C->>API: POST /api/v1/cart
     API->>API: resolveCartOwner middleware
     API->>API: No user token → generate guestId
-    API-->>C: 201 Created { cart }\nSet-Cookie: shopflow.guestId=<uuid>
+    API-->>C: 201 Created with cart
+    API-->>C: Set-Cookie shopflow.guestId uuid
 
-    C->>MW: POST /api/v1/cart/items\nCookie: shopflow.guestId=<uuid>
+    C->>MW: POST /api/v1/cart/items with guest cookie
     MW->>DB: Find cart by sessionId
     DB-->>MW: Cart document
     MW-->>API: req.cart = cart
@@ -106,7 +108,7 @@ sequenceDiagram
     API->>DB: Create CartItem
     API-->>C: 201 Created { cartItem }
 
-    C->>API: POST /api/v1/orders/from-cart\nCookie: shopflow.guestId=<uuid>
+    C->>API: POST /api/v1/orders/from-cart with guest cookie
     API->>DB: Find cart + items by sessionId
     API->>DB: Create Order (sessionId, totalPrice)
     API->>DB: Create OrderItems for each cart item
@@ -172,7 +174,7 @@ erDiagram
         string passwordHash
         string role
         string storeName
-        ObjectId[] wishlist
+        ObjectIdArray wishlist
         Date deletedAt
     }
     Product {

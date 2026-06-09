@@ -32,13 +32,10 @@
 
 - **Zod validation schemas** — infrastructure exists (`middleware/validate.ts`, `schemas/`) but many endpoints are not yet wired up. See `apps/backend/docs/VALIDATION.md` for the full list.
 - **Category and Brand management** — models, routes, controllers, and services are implemented but the routes are **not mounted** in `server.ts`.
-- **Payment flow** — Payment records can be created and updated by admins, but there is no real payment gateway integration. The flow is simulated.
 - **Integration tests** — Jest + Supertest are configured. Only utility unit tests exist; endpoint integration tests are not yet written.
 
 ### Not Done / Out of Scope
 
-- Real payment gateway (Stripe, Klarna, Swish)
-- Email notifications (order confirmation, password reset)
 - Full-text product search
 - CI/CD pipeline (GitHub Actions)
 - Rate limiting
@@ -47,16 +44,6 @@
 ---
 
 ## Known Issues
-
-The following issues were identified during a code audit on 2026-05-11. See `apps/backend/docs/VALIDATION.md` for full details.
-
-### Security Issues (High Priority)
-
-**§6 — Mutation endpoints missing authentication**  
-`POST`, `PATCH`, and `DELETE` on `/api/v1/products`, `/api/v1/orders`, and `/api/v1/payments` have no `authenticateToken` or `authorizeRoles` middleware. Any unauthenticated client can currently create, modify, or delete products, orders, and payments.
-
-**Fix:** Add `requireAuth` and appropriate `authorizeRoles(...)` to each route before the handler.
-
 ---
 
 ### Correctness Issues
@@ -105,8 +92,6 @@ Full implementations exist for both (controllers, services, models, schemas) but
 ---
 
 ## Roadmap (Logical Next Steps)
-
-1. Fix the six known issues above, in priority order (security first)
 2. Wire up all remaining Zod validation schemas
 3. Mount brand and category routes (or remove dead code)
 4. Write integration tests for all endpoint groups
@@ -123,20 +108,6 @@ Full implementations exist for both (controllers, services, models, schemas) but
 | MongoDB Atlas | Database (cloud) | Shared team account — contact Olivia Mach |
 | Supabase | Image storage | Shared project — contact Pontus Ingenius |
 | Render (planned) | Hosting | Not yet deployed to production |
-
----
-
-## Team Contacts
-
-If you have questions after handover, the following people are best placed to answer:
-
-| Area | Person |
-|---|---|
-| Git workflow, auth, JWT, RBAC | Mattias Eskilsson |
-| Data models, order flow, soft-delete | Olivia Mach |
-| Frontend, API client code, UI | Marcus William Johansson |
-| Tests, logging, deployment, Supabase | Pontus Ingenius |
-| Project coordination, GitHub Board | Tomac Jansson |
 
 ---
 
