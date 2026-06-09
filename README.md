@@ -37,7 +37,6 @@ A full-stack e-commerce platform built as a production-like team project for a N
 - MongoDB Atlas via Mongoose 9
 - Zod 4 for schema validation
 - bcrypt + JWT (cookie-based) for authentication
-- Pino for structured logging
 - Supabase for image storage
 - Jest + Supertest for testing
 
@@ -206,9 +205,9 @@ This project was built collaboratively by five students. We started with a clear
 | ----------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **[Tomac Jansson](https://github.com/TomacBarin)**          | Project Manager & Scrum Master   | Overall project planning, sprint coordination, GitHub Project Board, README, Wishlist page & functionality, Order page & order management features                          |
 | **[Mattias Eskilsson](https://github.com/meskilsson)**      | Git Master, Auth & Security Lead | Git workflow, repository management, feature branches & code reviews, JWT authentication, RBAC, security measures, Mongoose setup and database configuration                |
-| **[Olivia Mach](https://github.com/oliviaaMach)**           | Product Features & Interactions  | Product pages & related functionality, search & filtering system, commenting/reviews feature on product pages                                                               |
+| **[Olivia Mach](https://github.com/oliviaaMach)**           | Product Features & Interactions  | Product pages & related functionality, search/pagination & filtering system, commenting/reviews feature on product pages                                                    |
 | **[Marcus William Johansson](https://github.com/maraccus)** | Frontend Lead & Seller Backend   | Designed and built the entire React SPA frontend. Additionally developed the backend API endpoints, routes and logic for seller product management and selling capabilities |
-| **[Pontus Ingenius](https://github.com/Awreally)**          | Testing, Documentation & DevOps  | Shopping cart page & cart functionality, Jest + Supertest testing suite, project documentation, Supabase integration                                                        |
+| **[Pontus Ingenius](https://github.com/Awreally)**          | Testing, Documentation & DevOps  | Shopping cart page & cart functionality, Adress page and adress functionality, Jest + Supertest testing suite, project documentation, Supabase integration                  |
 
 Everyone helped across role boundaries when needed. We followed a proper Git workflow with feature branches, pull requests and code reviews throughout the project.
 
