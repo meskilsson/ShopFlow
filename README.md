@@ -8,7 +8,7 @@
   />
 </div>
 
-A full-stack e-commerce platform built as a production-like team project for the Node.js backend development course.
+A full-stack e-commerce platform built as a production-like team project for a Node.js backend development course at Chas Academy.
 
 **Group:** Malmö 1 (Team Kattarp)  
 **Members:** Mattias Eskilsson, Olivia Mach, Pontus Ingenius, Marcus William Johansson, Tomac Jansson  
