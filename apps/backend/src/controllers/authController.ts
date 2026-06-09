@@ -4,6 +4,9 @@ import type { LoginInput } from "../schemas/userSchemas";
 import { signAccessToken } from "../utils/jwt";
 import User from "../models/User";
 
+
+const isProduction = process.env.NODE_ENV === "production";
+
 export async function loginUser(
   req: Request,
   res: Response,
@@ -25,10 +28,11 @@ export async function loginUser(
       role: user.role,
     });
 
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 1000 * 60 * 60 * 24,
     });
 
@@ -45,8 +49,8 @@ export async function logoutUser(
 ): Promise<void> {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
   });
 
   res.status(200).json({ message: "Logged out" });
