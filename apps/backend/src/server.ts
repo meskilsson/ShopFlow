@@ -40,8 +40,6 @@ const allowedOrigins = [
   "http://localhost:4173",
 
   "https://shopflow-kattarp.vercel.app",
-  "https://shop-flow.app",
-  "https://www.shop-flow.app",
 
   ...parseCorsOrigins(process.env.CORS_ORIGIN),
   ...parseCorsOrigins(process.env.CORS_ORIGINS),
