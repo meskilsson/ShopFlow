@@ -8,6 +8,7 @@ type AddressFormProps = {
   saving?: boolean;
   error?: string;
   onSubmit: (address: CreateAddressData) => void | Promise<void>;
+  children?: React.ReactNode;
 };
 
 const emptyForm: CreateAddressData = {
@@ -24,6 +25,7 @@ export default function AddressForm({
   saving = false,
   error,
   onSubmit,
+  children,
 }: AddressFormProps) {
   const [formData, setFormData] = useState<CreateAddressData>(emptyForm);
 
@@ -113,9 +115,18 @@ export default function AddressForm({
 
       {error ? <p className={styles.error}>{error}</p> : null}
 
-      <ButtonStd variant="primary" className={styles.submitBtn}>
-        {saving ? "Saving..." : "Save address"}
-      </ButtonStd>
+      <div className={styles.actions}>
+        <ButtonStd
+          variant="secondary"
+          type="submit"
+          className={styles.submitBtn}
+          disabled={saving}
+        >
+          {saving ? "Saving..." : address ? "Save address" : "Save changes"}
+        </ButtonStd>
+
+        {children}
+      </div>
     </form>
   );
 }

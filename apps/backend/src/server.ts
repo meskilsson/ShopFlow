@@ -24,10 +24,34 @@ const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
 
+function parseCorsOrigins(value?: string): string[] {
+  if (!value) return [];
+
+  return value
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
+
+
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:4173",
+  ...parseCorsOrigins(process.env.CORS_ORIGIN),
+  ...parseCorsOrigins(process.env.CORS_ORIGINS),
+];
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked origin: ${origin}`));
+    },
     credentials: true,
   }),
 );
