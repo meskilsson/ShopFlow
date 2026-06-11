@@ -104,12 +104,13 @@ export default function AddressSection() {
         saving={saving}
         error={error}
         onSubmit={handleSaveAddress}
-      />
-
-      {shippingAddress ? (
-        <div className={styles.actions}>
+      >
+        {shippingAddress ? (
           <ButtonStd
             variant="primary"
+            type="button"
+            className={styles.continueBtn}
+            disabled={saving}
             onClick={() =>
               navigate("/order", {
                 state: { selectedAddress: shippingAddress },
@@ -118,8 +119,8 @@ export default function AddressSection() {
           >
             Continue to order
           </ButtonStd>
-        </div>
-      ) : null}
+        ) : null}
+      </AddressForm>
 
     </section>
   );

@@ -28,6 +28,12 @@
     justify-content: flex-end;
 }
 
+.continueBtn {
+    --button-height: 2.4rem;
+    padding-inline: 1rem;
+    font-size: 0.85rem;
+}
+
 .error {
     color: #b42318;
 }

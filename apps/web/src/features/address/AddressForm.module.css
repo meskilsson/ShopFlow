@@ -30,8 +30,18 @@
     background-color: white;
 }
 
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
 .submitBtn {
-    --button-height: 3.5rem;
+    --button-height: 2.4rem;
+    padding-inline: 1rem;
+    font-size: 0.85rem;
 }
 
 @media (max-width: 640px) {

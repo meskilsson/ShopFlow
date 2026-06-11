@@ -11,7 +11,6 @@ import CartPage from "./pages/CartPage";
 import SellerDashboardPage from "./pages/SellerDashboardPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import SettingsPage from "./pages/SettingsPage/SettingsPage";
-import ReturnsPage from "./pages/ReturnsPage/ReturnsPage";
 import OrdersPage from "./pages/OrdersPage/OrdersPage";
 import AddressPage from "./pages/AddressPage/AddressPage";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -83,7 +82,6 @@ function App() {
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="address" element={<AddressPage />} />
                 <Route path="orders" element={<OrdersPage />} />
-                <Route path="returns" element={<ReturnsPage />} />
               </Route>
             </Routes>
           </ContentWrapper>

@@ -4,11 +4,13 @@ import type { Request, Response } from "express";
 const GUEST_COOKIE_NAME = process.env.GUEST_COOKIE_NAME || "shopflow.guestId";
 const GUEST_COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 30;
 
+const isProduction = process.env.NODE_ENV === "production";
+
 function setGuestCookie(res: Response, guestId: string) {
   res.cookie(GUEST_COOKIE_NAME, guestId, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
     maxAge: GUEST_COOKIE_MAX_AGE,
   });
 }
