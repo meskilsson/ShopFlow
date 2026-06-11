@@ -76,19 +76,6 @@ Full implementations exist for both (controllers, services, models, schemas) but
 
 - Most Zod validation schemas are defined but not applied as middleware on routes. The full list of schemas that need to be wired up is in `apps/backend/docs/VALIDATION.md`.
 - Token expiry is hardcoded to `1d` in `src/utils/jwt.ts` and does not read from `JWT_EXPIRES_IN` in the environment. The env variable is documented but ignored.
-- The `POST /api/v1/payments` endpoint does not verify that the referenced `order` exists before creating the payment record.
-- No refresh token mechanism — when the 1-day token expires, the user must log in again with no automatic re-authentication.
-
-
----
-
-## Third-Party Services
-
-| Service | Purpose | Account |
-|---|---|---|
-| MongoDB Atlas | Database (cloud) | Shared team account — contact Olivia Mach |
-| Supabase | Image storage | Shared project — contact Pontus Ingenius |
-| Render (planned) | Hosting | Not yet deployed to production |
 
 ---
 

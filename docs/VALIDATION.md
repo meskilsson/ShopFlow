@@ -28,7 +28,7 @@ The main remaining gaps are:
 | Auth / Users | `userSchemas.ts` | 🟢 | Login, create/update user, password, user ID params, wishlist body. |
 | Products | `productSchemas.ts` | 🟢 | Product params/query/body and variant params/body. |
 | Orders | `orderSchemas.ts` | 🟢 | Order ID/user ID params, create order, update status/payment status. |
-| Cart | `cartSchemas.ts` | 🟡 | Cart item body/params exist. `quantity` is an integer with max 50, but is not positive-only. |
+| Cart | `cartSchemas.ts` | 🟢 | Cart item body/params exist. is quantity positive |
 | Address | `adressValidation.ts` | 🟢 | Create/update address body and address ID params. |
 | Reviews | `reviewSchemas.ts` | 🟢 | Product ID params and create review body. |
 | Admin | `admin.schemas.ts` | 🟡 | User soft-delete body exists. Product/order admin params/bodies are not yet Zod schemas. |
@@ -139,38 +139,6 @@ All admin routes are mounted behind `requireAuth` and `authorizeRoles("admin")` 
 | GET | `/api/v1/admin/orders/:id` | manual controller validation | 🟡 | TODO comment remains in route file. |
 | DELETE | `/api/v1/admin/orders/:id` | manual controller validation | 🟡 | TODO comment remains in route file. |
 | PATCH | `/api/v1/admin/orders/:id/restore` | manual controller validation | 🟡 | TODO comment remains in route file. |
-
-### Payments
-
-Payment routes are currently mock/demo routes. They are admin-only, but not Zod-validated.
-
-| Method | Path | Validation | Auth | Status | Notes |
-|---|---|---|---|---|---|
-| POST | `/api/v1/payments` | Mongoose model validation only | admin | 🟡 | Mock/demo only; no real gateway behavior. |
-| GET | `/api/v1/payments/:id` | Mongoose cast/error handling | admin | 🟡 | Route collision risk: declared before `/order/:orderId`. |
-| GET | `/api/v1/payments/order/:orderId` | Mongoose cast/error handling | admin | 🟡 | Should be declared before `/:id` if kept. |
-| PATCH | `/api/v1/payments/:id` | Mongoose model/service validation | admin | 🟡 | Mock/demo only. |
-
-### Brands and Categories
-
-Brand and category route files exist, but neither router is mounted in `server.ts`.
-
-| Area | Mounted? | Zod validation | Status | Notes |
-|---|---|---|---|---|
-| Brands | No | No | 🔴 | Decide whether to mount and validate, or remove/defer. |
-| Categories | No | No | 🔴 | Decide whether to mount and validate, or remove/defer. |
-
----
-
-## Remaining Validation Work
-
-1. Move admin product/order ID and delete-reason validation from controllers into Zod schemas.
-2. Consider Zod query schemas for admin user/product/order list filters.
-3. Decide whether payment mock routes should stay as admin-only mock routes or get lightweight Zod schemas.
-4. If payment routes stay, register `/order/:orderId` before `/:id` to avoid route collision.
-5. Decide whether brand/category routes should be mounted and validated or kept out of scope.
-6. Decide whether `addCartItemSchema.quantity` should require positive quantity on add.
-7. Remove or consolidate the duplicate `GET /api/v1/users` route.
 
 ---
 
