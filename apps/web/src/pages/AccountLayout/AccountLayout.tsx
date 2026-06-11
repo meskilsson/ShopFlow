@@ -65,7 +65,7 @@ export default function AccountLayout() {
                         <p className={styles.subtitle}>Welcome back, {name}</p>
                     ) : (
                         <p className={styles.subtitle}>
-                            Manage your profile, orders, addresses and returns.
+                            Manage your profile, orders, and addresses.
                         </p>
                     )}
                 </div>
@@ -118,17 +118,6 @@ export default function AccountLayout() {
                                 }
                             >
                                 Orders
-                            </NavLink>
-
-                            <NavLink
-                                to="/profile/returns"
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? `${styles.link} ${styles.activeLink}`
-                                        : styles.link
-                                }
-                            >
-                                Returns
                             </NavLink>
                         </nav>
                     </aside>

@@ -117,7 +117,7 @@ export default function AddressForm({
 
       <div className={styles.actions}>
         <ButtonStd
-          variant="secondary"
+          variant="primary"
           type="submit"
           className={styles.submitBtn}
           disabled={saving}
