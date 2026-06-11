@@ -120,7 +120,6 @@ export async function deleteAdminUserById({
 export async function restoreAdminUserById({
     targetUserId,
 }: RestoreAdminUserByIdInput) {
-
     const user = await User.findById(targetUserId);
 
     if (!user) {
@@ -131,10 +130,15 @@ export async function restoreAdminUserById({
         throw new ValidationError("User is not deleted");
     }
 
+    if (user.deleteReason === "User requested account deletion") {
+        throw new ValidationError(
+            "This account was anonymized by the user and cannot be restored"
+        );
+    }
+
     user.deletedAt = null;
     user.deletedBy = null;
     user.deleteReason = null;
-
 
     await user.save();
 
