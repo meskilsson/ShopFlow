@@ -70,9 +70,6 @@ app.get("/", (_req, res) => {
   res.send("ShopFlow backend is running");
 });
 
-app.get("/origin", (req, res) => {
-  console.log(req.headers.origin);
-})
 
 app.get("/health", (_req, res) => {
   res.status(200).json({ ok: true });
