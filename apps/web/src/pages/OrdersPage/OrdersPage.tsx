@@ -16,7 +16,7 @@ type Product = {
 
 type ProductVariant = {
   _id: string;
-  product: Product;
+  product: Product | null;
   color: string;
   size: string;
   inStock?: boolean;
@@ -26,7 +26,7 @@ type ProductVariant = {
 type OrderItem = {
   _id: string;
   order: string;
-  productVariant: ProductVariant;
+  productVariant: ProductVariant | null;
   quantity: number;
   priceAtPurchase: number;
   createdAt: string;
@@ -173,7 +173,29 @@ export default function OrdersPage() {
 
                     {order.items.map((item) => {
                       const variant = item.productVariant;
-                      const product = variant.product;
+                      const product = variant?.product;
+
+                      if (!variant || !product) {
+                        return (
+                          <div key={item._id} className={styles.itemRow}>
+                            <div>
+                              <p className={styles.itemName}>Deleted product</p>
+
+                              <p className={styles.itemMeta}>
+                                This product is no longer available.
+                              </p>
+
+                              <p className={styles.itemQuantity}>
+                                Quantity: {item.quantity}
+                              </p>
+                            </div>
+
+                            <p className={styles.itemPrice}>
+                              {formatPrice(item.priceAtPurchase)}
+                            </p>
+                          </div>
+                        );
+                      }
 
                       return (
                         <div key={item._id} className={styles.itemRow}>
