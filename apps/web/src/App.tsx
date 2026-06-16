@@ -65,7 +65,7 @@ function App() {
               <Route
                 path="/sellerdashboard"
                 element={
-                  <RequireRole roles={["seller"]}>
+                  <RequireRole roles={["seller", "admin"]}>
                     <SellerDashboardPage />
                   </RequireRole>
                 }
