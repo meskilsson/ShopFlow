@@ -18,7 +18,3 @@ We use MongoDB Atlas via Mongoose as the primary database.
 - Requires disciplined use of `populate` to avoid N+1 query patterns.
 - MongoDB Atlas provides managed hosting with automatic backups.
 - All data is stored as BSON documents — aggregation pipelines are needed for complex reporting queries.
-
-## Alternatives Considered
-
-**PostgreSQL** — Considered for its relational integrity and JOIN performance. Rejected because the team's experience with SQL was lower and the flexible schema of a document database is better suited to the evolving product model in this project phase.

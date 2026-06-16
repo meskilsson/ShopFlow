@@ -1,7 +1,7 @@
 # ShopFlow Handover Document
 
-**Date:** 2026-06-08  
-**Team:** Malmö 1 (Team Kattarp)  
+**Date:** 2026-06-16
+**Team:** Malmö 1 (Team Kattarp)
 **Project:** ShopFlow – Boiler Room, Backend Development in Node.js, Databases and Security
 
 ---
@@ -24,61 +24,73 @@
 - GDPR: soft-delete, personal data export endpoint, data minimization
 - Structured logging with Pino
 - Centralized error handling with custom error classes
-- Input validation with Zod (partial — see known issues)
-- Unit tests for utilities (JWT, guest cookie, error classes, validation formatting)
+- Rate limiting on `/api/v1` and stricter auth routes
+- Input validation with Zod across most core routes (auth, users, products, orders, cart, address, reviews) — see `docs/VALIDATION.md`
+- Unit + Supertest endpoint coverage for utilities and core validation/auth gates (5 suites, 37 tests, all passing as of this writing)
 - Seller dashboard: list own products, upload images
+- Frontend (`apps/web`): React/Vite SPA covering home, products, product detail, cart, checkout, order confirmation, account/profile, address management, wishlist, seller dashboard, admin pages
+- Vercel deployment config for the frontend (`vercel.json`, SPA rewrite rule)
+
+### Fixed Since Last Handover (2026-06-08)
+
+The following issues were previously listed as open bugs. They have been verified fixed in the current code:
+
+- Product variant and order route collisions — static segments (`/seller/:sellerId`, `/variants/:variantId`, `/user/:userId`) are now registered before dynamic `/:id` segments in `productRoutes.ts` and `orderRoutes.ts`.
+- `getOrdersWithItemsByUser` now correctly reads `req.validatedParams.userId` (previously read the wrong param).
+- `deleteProduct` and `deleteVariant` now throw `NotFoundError` (404) instead of silently returning 204 when the target doesn't exist.
 
 ### Partially Done
 
-- **Zod validation schemas** — infrastructure exists (`middleware/validate.ts`, `schemas/`) but many endpoints are not yet wired up. See `apps/backend/docs/VALIDATION.md` for the full list.
-- **Category and Brand management** — models, routes, controllers, and services are implemented but the routes are **not mounted** in `server.ts`.
+- **Zod validation** — most routes are wired up now (see `docs/VALIDATION.md` for the full per-route table). Remaining gaps: admin product/order routes still use manual controller validation (route files literally have `// FIXA VALIDATEREQUEST NÄR SCHEMAT ÄR GJORT!` comments in `adminRoutes.ts`), and payment routes have no Zod schemas at all.
+- **Category and Brand management** — models, routes, controllers, and services are implemented but the routes are still **not mounted** in `server.ts`. This has been known for at least a week and hasn't moved.
+- **Test infrastructure** — there's an uncommitted change in progress (`apps/backend/jest.config.cjs` + new `apps/backend/tsconfig.test.json`) that points ts-jest at a dedicated test tsconfig. It works locally but isn't committed yet — decide whether to land it.
+- **Frontend testing** — there are zero automated tests in `apps/web` despite it being a fairly large SPA (10+ feature folders, 15+ pages). Everything frontend has been verified manually only, as far as I can tell from the repo.
 
 ## Known Issues
+
 ---
 
 ### Correctness Issues
 
-**§2 — Product variant route collision**  
-`GET/PATCH/DELETE /api/v1/products/variants/:variantId` and `GET/PATCH/DELETE /api/v1/products/:id` share the same router. If `/:id` is registered before `/variants/:variantId`, Express captures the literal string `"variants"` as `:id`, causing incorrect DB lookups.
+**§1 — `createPayment` doesn't verify the order exists**
+`POST /api/v1/payments` calls `Payment.create(req.body)` directly. There's no check that `req.body.order` actually references an existing order, so you can create orphaned payment records.
 
-**Fix:** Ensure all static segments (`/variants/`) are registered before dynamic segments (`/:id`) in `productRoutes.ts`.
+**Fix:** Look up the order in `paymentService.createPayment` and throw `NotFoundError` if it doesn't exist.
 
-**§3 — Order route collision**  
-`GET /api/v1/orders/:id` and `GET /api/v1/orders/user/:userId` have the same issue. A request to `/orders/user/xxx` may match `:id = "user"` and attempt `Order.findById("user")`.
+**§2 — JWT expiry still hardcoded**
+`src/utils/jwt.ts` hardcodes `expiresIn: "1d"` and ignores the documented `JWT_EXPIRES_IN` env variable. This was flagged in the last handover and is still true.
 
-**Fix:** Register `/user/:userId` before `/:id` in `orderRoutes.ts`.
+**Fix:** Read from `process.env.JWT_EXPIRES_IN` with a sensible default.
 
-**§4 — Payment route collision**  
-Same collision pattern as §3 between `GET /api/v1/payments/:id` and `GET /api/v1/payments/order/:orderId`.
-
-**Fix:** Register `/order/:orderId` before `/:id` in `paymentRoutes.ts`.
-
-**§5 — `getOrdersWithItemsByUser` reads wrong param**  
-The handler reportedly reads `req.params.id` instead of `req.params.userId`. Calls to `GET /api/v1/orders/user/:userId/with-items` pass `undefined` as the user ID and silently return wrong results.
-
-**Fix:** Update `orderController.ts → getOrdersWithItemsByUser` to read `req.params.userId`.
-
-**§7 — Silent 204 on delete of non-existent resource**  
-`productService.deleteProduct` and `deleteVariant` call `findByIdAndDelete` without checking the return value. Deleting a non-existent ID returns `204 No Content` instead of `404 Not Found`.
-
-**Fix:** Add a null check after `findByIdAndDelete` and throw `NotFoundError` if the result is null.
+**§3 — No refresh token mechanism**
+Still no automatic re-authentication when the access token expires — also unchanged from last handover.
 
 ---
 
-### Low Priority
+### Low Priority / Cleanup
 
-**§1 — Brand and Category routes not mounted**  
-Full implementations exist for both (controllers, services, models, schemas) but are not registered in `server.ts`. Decide whether to mount them at `/api/v1/brands` and `/api/v1/categories` or remove the unused code.
+**§4 — Brand and Category routes not mounted**
+Full implementations exist for both (controllers, services, models, schemas) but are not registered in `server.ts`. Decide whether to mount them at `/api/v1/brands` and `/api/v1/categories` or remove the unused code. This has been sitting unmounted for a while now — worth a decision either way rather than leaving it dangling.
+
+**§5 — Leftover debug route**
+`userRoutes.ts` still has `GET /api/v1/users/test-wishlist`, a temporary debug endpoint with a comment that literally says "Temp: For debuging". Should be removed before any real deployment.
+
+**§6 — Payment route declaration order**
+`paymentRoutes.ts` declares `GET /:id` before `GET /order/:orderId`. In practice these don't collide in Express since they have different path-segment counts, so this isn't an active bug — but `docs/VALIDATION.md` and the previous handover both flagged it as a collision risk, which isn't quite accurate. Worth reordering anyway for clarity/consistency with the other route files, but it's cosmetic, not a correctness fix.
+
+**§7 — `docs/VALIDATION.md` overstates a "duplicate route" issue**
+The validation doc claims `GET /api/v1/users` is registered twice in `userRoutes.ts`. Checked the current file — it isn't; there's only one `GET "/"` registration. That line in `VALIDATION.md` should be corrected or removed.
 
 ---
 
 ## Technical Debt
 
-- Most Zod validation schemas are defined but not applied as middleware on routes. The full list of schemas that need to be wired up is in `apps/backend/docs/VALIDATION.md`.
-- Token expiry is hardcoded to `1d` in `src/utils/jwt.ts` and does not read from `JWT_EXPIRES_IN` in the environment. The env variable is documented but ignored.
-- The `POST /api/v1/payments` endpoint does not verify that the referenced `order` exists before creating the payment record.
-- No refresh token mechanism — when the 1-day token expires, the user must log in again with no automatic re-authentication.
-
+- Admin product/order list/detail/delete/restore routes still rely on manual controller-side validation rather than Zod schemas (see `docs/VALIDATION.md` for the full list).
+- Payment routes have no Zod validation and are explicitly mock/demo-only (no real payment gateway behavior).
+- `createPayment` doesn't verify the referenced order exists (§1 above).
+- No refresh token mechanism (§3 above).
+- No automated frontend tests.
+- Backend deployment target is unclear from the repo — recent commits (`cors changes`, `origins added`, `deploy?`) suggest deployment work is in progress, but there's no Render config, Procfile, or similar in the repo, and the third-party services table below (carried over from the last handover) still lists Render as "planned." Whoever picks this up should confirm where the backend is actually meant to run before trusting that table.
 
 ---
 
@@ -88,7 +100,8 @@ Full implementations exist for both (controllers, services, models, schemas) but
 |---|---|---|
 | MongoDB Atlas | Database (cloud) | Shared team account — contact Olivia Mach |
 | Supabase | Image storage | Shared project — contact Pontus Ingenius |
-| Render (planned) | Hosting | Not yet deployed to production |
+| Vercel | Frontend hosting | `vercel.json` present, SPA rewrites configured |
+| Render (status unconfirmed) | Backend hosting (originally planned) | No deployment config found in repo as of this writing — verify before relying on this |
 
 ---
 

@@ -1,7 +1,6 @@
 # ADR-003: Zod for Input Validation
 
 **Status:** Accepted  
-**Date:** 2025-10-15
 
 ## Context
 

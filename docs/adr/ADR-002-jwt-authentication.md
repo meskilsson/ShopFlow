@@ -1,7 +1,6 @@
 # ADR-002: JWT Stored in httpOnly Cookie
 
 **Status:** Accepted  
-**Date:** 2025-10-01
 
 ## Context
 
