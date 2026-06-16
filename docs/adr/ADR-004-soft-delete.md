@@ -1,7 +1,6 @@
 # ADR-004: Soft-Delete Strategy
 
-**Status:** Accepted  
-**Date:** 2025-10-20
+**Status:** Accepted
 
 ## Context
 
